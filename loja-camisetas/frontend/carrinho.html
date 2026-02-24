@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho de Compras</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="./css/styles.css" rel="stylesheet">
+  <link rel="shortcut icon" href="./image/camisa.gif" type="image/x-icon">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100" style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm py-3" style="border-bottom: 3px solid #0d6efd;">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand fw-bold fs-3 tracking-tight" href="#" style="letter-spacing: -1.5px; text-transform: uppercase;">Foot<span class="text-primary">Coder</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link fw-bold px-3 text-uppercase" href="index.html" style="font-size: 0.9rem;">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bold px-3 text-uppercase" href="produtos.html" style="font-size: 0.9rem;">Camisetas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active fw-bold px-3 text-uppercase text-primary" aria-current="page" href="#" style="font-size: 0.9rem;">Carrinho</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5 pt-5 pb-5">
+  <h1 class="fw-extrabold mb-4 text-dark text-uppercase" style="letter-spacing: -1px;">Meu <span class="text-primary">Carrinho de Compras</span></h1>
+  <div class="row g-4">
+    <div class="col-lg-8">
+      
+      <ul class="list-group mb-3 shadow-sm border-0" id="cart-items" style="border-radius: 16px; overflow: hidden; background: #fff;">
+       
+      </ul>
+    </div>
+    <div class="col-lg-4">
+     
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted fw-bold text-uppercase small" style="letter-spacing: 1px;">Resumo do Pedido</span>
+        <span class="badge bg-primary rounded-pill px-3 py-2" id="cart-count">0</span>
+      </h4>
+      <ul class="list-group mb-3 shadow-sm border-0" style="border-radius: 16px; overflow: hidden;">
+        <li class="list-group-item d-flex justify-content-between p-4 bg-white">
+          <span class="fw-bold text-muted text-uppercase small">Total (BRL)</span>
+          <strong class="fs-4 text-dark" id="cart-total">R$ 0,00</strong>
+        </li>
+      </ul>
+      <button class="w-100 btn btn-primary btn-lg fw-bold py-3 rounded-pill shadow text-uppercase" id="checkout-btn" data-bs-toggle="modal" data-bs-target="#paymentModal" style="transition: all 0.3s ease; letter-spacing: 1px; font-size: 0.9rem;">Finalizar Compra</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+      <div class="modal-header bg-dark text-white border-0 py-4">
+        <h5 class="modal-title fw-bold text-uppercase fs-5" id="paymentModalLabel" style="letter-spacing: 1px;">💳 Checkout Seguro</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 bg-light">
+        
+        <form id="paymentForm">
+          
+          <div class="mb-3">
+            <label for="paymentMethod" class="form-label fw-bold text-muted text-uppercase small" style="letter-spacing: 0.5px;">Selecione o Método de Pagamento:</label>
+            <select class="form-select form-select-lg border-2" id="paymentMethod" required style="border-radius: 12px; font-size: 1rem;">
+              <option value="">Escolha uma opção...</option>
+              <option value="pix">Pix</option>
+              <option value="creditCard">Cartão de Crédito</option>
+              <option value="debitCard">Cartão de Débito</option>
+              <option value="boleto">Boleto Bancário</option>
+            </select>
+            <div class="invalid-feedback fw-bold">Por favor, selecione um método para prosseguir.</div>
+          </div>
+          
+        </form>
+      </div>
+      <div class="modal-footer border-0 bg-white py-3">
+        <button type="button" class="btn btn-outline-secondary fw-bold px-4 py-2 rounded-pill text-uppercase" data-bs-dismiss="modal" style="font-size: 0.75rem;">Voltar</button>
+        <button type="button" class="btn btn-primary fw-bold px-4 py-2 rounded-pill shadow-sm text-uppercase" id="pay-btn" style="font-size: 0.75rem;">Confirmar e Pagar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-dark text-white py-5 mt-auto" style="border-top: 5px solid #0d6efd;">
+  <div class="container text-center">
+    <span class="text-secondary small fw-bold text-uppercase" style="letter-spacing: 1px;">&copy; <script>document.write(new Date().getFullYear())</script> FootCoder. Todos os direitos reservados.</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script src="./js/script.js"></script>
+</body>
+</html>

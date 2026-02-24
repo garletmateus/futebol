@@ -1,0 +1,41 @@
+/* Estilos gerais */
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: none;
+}
+
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.navbar-brand {
+  letter-spacing: -1px;
+}
+
+.btn-add-to-cart {
+  transition: all 0.3s ease;
+}
+
+.modal-dialog {
+  max-width: 800px;
+}
+
+footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+footer a {
+  transition: all 0.3s ease;
+}
+
+footer a:hover {
+  opacity: 0.7;
+}
