@@ -1,0 +1,17 @@
+CREATE DATABASE IF NOT EXISTS resenha_sports
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
+
+USE resenha_sports;
+
+INSERT INTO produtos (nome, preco, imagem, descricao) VALUES
+('Corinthians', 120.00, 'Corinthians.jpg', 'Camisa inspirada no manto do Timão.'),
+('Flamengo', 100.00, 'Flamengo.jpg', 'Camisa rubro-negra tradicional.'),
+('Fluminense', 111.00, 'Fluminense.jpg', 'Camisa tricolor clássica.'),
+('São Paulo', 100.00, 'SaoPaulo.jpg', 'Camisa do Tricolor Paulista.'),
+('Atlético MG', 100.00, 'Atletico MG.jpg', 'Camisa inspirada no Galo.'),
+('Red Bull Bragantino', 130.00, 'RedBull.jpg', 'Camisa moderna e estilosa.'),
+('Vasco', 90.00, 'Vasco.jpg', 'Camisa cruzmaltina clássica.'),
+('Palmeiras', 110.00, 'Palmeiras.jpg', 'Camisa alviverde histórica.');
+
+SELECT * FROM produtos;
