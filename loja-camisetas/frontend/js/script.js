@@ -1,19 +1,16 @@
-fetch("http://localhost:3000/produtos")
-  .then(res => res.json())
-  .then(produtos => {
-    const container = document.getElementById("produtos");
-
-    produtos.forEach(produto => {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      card.innerHTML = `
-        <img src="${produto.imagem}">
-        <h3>${produto.time}</h3>
-        <p>R$ ${produto.preco.toFixed(2)}</p>
-        <button>Comprar</button>
-      `;
-
-      container.appendChild(card);
+function listar() {
+  fetch("http://localhost:3000/produtos")
+    .then(r => r.json())
+    .then(d => {
+      lista.innerHTML = "";
+      d.forEach(p => {
+        lista.innerHTML += `
+          <div class="card">
+            <h3>${p.nome}</h3>
+            <p>R$ ${p.preco}</p>
+            <button onclick="excluir(${p.id})">Excluir</button>
+          </div>
+        `;
+      });
     });
-  });
+}
