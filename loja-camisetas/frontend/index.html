@@ -15,6 +15,7 @@ body{
 background:#f5f5f5;
 }
 
+/* CARDS */
 .card{
 transition:0.3s;
 cursor:pointer;
@@ -30,9 +31,29 @@ height:300px;
 object-fit:cover;
 }
 
+/* BUSCA */
 #buscar{
 max-width:400px;
 margin:auto;
+}
+
+/* BANNER */
+.banner{
+height: 300px;
+background:
+linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+url('./image/banner-brasileirao.webp') center/cover no-repeat;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px){
+.banner{
+height:200px;
+}
+
+.card img{
+height:220px;
+}
 }
 
 </style>
@@ -60,13 +81,11 @@ Carrinho 🛒
 </div>
 </nav>
 
-<header class="text-white text-center p-5"
-style="background:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018') center/cover">
-
-<h1 class="fw-bold">Vista o seu Manto</h1>
-
-<p>Camisas da temporada 2026 <span id="ano"></span></p>
-
+<header class="banner text-white text-center d-flex align-items-center justify-content-center">
+  <div>
+    <h1 class="fw-bold"></h1>
+    <p><span id="ano"></span></p>
+  </div>
 </header>
 
 <div class="container mt-4">
@@ -159,9 +178,9 @@ Finalizar Compra
 <div class="modal-body">
 
 <select id="metodoPagamento" class="form-control mb-3">
-<option>Pix</option>
-<option>Cartão</option>
-<option>Boleto</option>
+<option value="Pix">Pix</option>
+<option value="Cartao">Cartão</option>
+<option value="Boleto">Boleto</option>
 </select>
 
 <button class="btn btn-primary w-100" onclick="confirmarPagamento()">
@@ -172,6 +191,16 @@ Confirmar Pagamento
 
 </div>
 </div>
+</div>
+
+<!-- TOAST AVISO -->
+<div id="toastAviso" class="toast align-items-center text-bg-danger border-0 position-fixed bottom-0 end-0 m-3">
+  <div class="d-flex">
+    <div class="toast-body">
+      ⚠️ Escolha um tamanho antes de continuar!
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+  </div>
 </div>
 
 <footer class="bg-dark text-white text-center p-3 mt-5">
@@ -247,7 +276,6 @@ Ver mais
 carregarProdutos(produtos)
 
 /* BUSCA */
-
 document.getElementById("buscar")
 .addEventListener("input",function(){
 
@@ -262,7 +290,6 @@ carregarProdutos(filtrados)
 })
 
 /* CARRINHO */
-
 let carrinho=JSON.parse(localStorage.getItem("carrinho"))||[]
 
 const contador=document.getElementById("cart-count")
@@ -285,12 +312,16 @@ document.getElementById("modalPagamento")
 
 let atual
 
-function atualizarCarrinho(){
+function mostrarAviso(){
+  const toastEl = document.getElementById('toastAviso')
+  const toast = new bootstrap.Toast(toastEl)
+  toast.show()
+}
 
+function atualizarCarrinho(){
 contador.innerText=carrinho.length
 localStorage.setItem("carrinho",JSON.stringify(carrinho))
 renderizarCarrinho()
-
 }
 
 function renderizarCarrinho(){
@@ -350,7 +381,13 @@ let select=document.querySelector(`.tamanho[data-id='${id}']`)
 let tamanho=select.value
 
 if(!tamanho){
-alert("Escolha um tamanho!")
+mostrarAviso()
+select.style.border="2px solid red"
+
+select.addEventListener("change",()=>{
+select.style.border=""
+})
+
 return
 }
 
@@ -378,10 +415,17 @@ modalProduto.show()
 
 mAdd.onclick=()=>{
 
-let tamanho=document.getElementById("mTamanho").value
+let select=document.getElementById("mTamanho")
+let tamanho=select.value
 
 if(!tamanho){
-alert("Escolha um tamanho!")
+mostrarAviso()
+select.style.border="2px solid red"
+
+select.addEventListener("change",()=>{
+select.style.border=""
+})
+
 return
 }
 
@@ -394,7 +438,7 @@ modalProduto.hide()
 function abrirPagamento(){
 
 if(carrinho.length===0){
-alert("Carrinho vazio!")
+mostrarAviso()
 return
 }
 
@@ -404,12 +448,21 @@ modalPagamento.show()
 
 function confirmarPagamento(){
 
-alert("Compra realizada com sucesso!")
+let metodo = document.getElementById("metodoPagamento").value
 
-carrinho=[]
-atualizarCarrinho()
+localStorage.removeItem("carrinho")
 
-modalPagamento.hide()
+if(metodo === "Pix"){
+window.location.href = "pagamento_pix.html"
+}
+
+else if(metodo === "Cartao"){
+window.location.href = "pagamento_cartao_credito.html"
+}
+
+else if(metodo === "Boleto"){
+window.location.href = "pagamento_boleto.html"
+}
 
 }
 
@@ -417,7 +470,6 @@ document.getElementById("cartModal")
 .addEventListener("show.bs.modal",renderizarCarrinho)
 
 /* ANO */
-
 document.getElementById("ano").innerText=new Date().getFullYear()
 document.getElementById("ano2").innerText=new Date().getFullYear()
 
