@@ -15,8 +15,6 @@ body{
 background:#f5f5f5;
 }
 
-/* hover nas camisas */
-
 .card{
 transition:0.3s;
 cursor:pointer;
@@ -32,8 +30,6 @@ height:300px;
 object-fit:cover;
 }
 
-/* barra busca */
-
 #buscar{
 max-width:400px;
 margin:auto;
@@ -45,10 +41,7 @@ margin:auto;
 
 <body>
 
-<!-- NAVBAR -->
-
 <nav class="navbar navbar-dark bg-dark">
-
 <div class="container">
 
 <span class="navbar-brand fw-bold fs-4">
@@ -65,70 +58,47 @@ Carrinho 🛒
 </button>
 
 </div>
-
 </nav>
-
-
-<!-- HERO -->
 
 <header class="text-white text-center p-5"
 style="background:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018') center/cover">
 
-<h1 class="fw-bold">
-Vista o seu Manto
-</h1>
+<h1 class="fw-bold">Vista o seu Manto</h1>
 
-<p>
-Camisas da temporada <span id="ano"></span>
-</p>
+<p>Camisas da temporada 2026 <span id="ano"></span></p>
 
 </header>
 
-
-<!-- BUSCA -->
-
 <div class="container mt-4">
-
-<input
-type="text"
-id="buscar"
-class="form-control"
-placeholder="Buscar camisa...">
-
+<input type="text" id="buscar" class="form-control" placeholder="Buscar camisa...">
 </div>
 
-
-<!-- PRODUTOS -->
-
 <section class="container mt-4">
-
 <div class="row g-4" id="lista-produtos"></div>
-
 </section>
 
-
-
 <!-- MODAL PRODUTO -->
-
 <div class="modal fade" id="modalProduto">
-
 <div class="modal-dialog modal-dialog-centered">
-
 <div class="modal-content">
 
 <div class="modal-header bg-dark text-white">
-
 <h5 id="mTitulo"></h5>
-
 <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-
 </div>
 
 <div class="modal-body text-center">
 
 <img id="mImg" class="img-fluid mb-3">
-
 <p id="mDesc"></p>
+
+<select id="mTamanho" class="form-select mb-3">
+<option value="">Escolha o tamanho</option>
+<option>P</option>
+<option>M</option>
+<option>G</option>
+<option>GG</option>
+</select>
 
 <h4 class="text-primary">
 R$ <span id="mPreco"></span>,00
@@ -137,39 +107,22 @@ R$ <span id="mPreco"></span>,00
 </div>
 
 <div class="modal-footer">
-
-<button class="btn btn-secondary" data-bs-dismiss="modal">
-Voltar
-</button>
-
-<button id="mAdd" class="btn btn-primary">
-Adicionar
-</button>
-
+<button class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+<button id="mAdd" class="btn btn-primary">Adicionar</button>
 </div>
 
 </div>
-
 </div>
-
 </div>
-
-
 
 <!-- CARRINHO -->
-
 <div class="modal fade" id="cartModal">
-
 <div class="modal-dialog modal-dialog-centered">
-
 <div class="modal-content">
 
 <div class="modal-header bg-dark text-white">
-
 <h5>Seu Carrinho</h5>
-
 <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-
 </div>
 
 <div class="modal-body">
@@ -179,38 +132,55 @@ Adicionar
 <hr>
 
 <div class="d-flex justify-content-between">
-
 <strong>Total</strong>
+<strong>R$ <span id="cart-total">0</span>,00</strong>
+</div>
 
-<strong>
-R$ <span id="cart-total">0</span>,00
-</strong>
+<button class="btn btn-success w-100 mt-3" onclick="abrirPagamento()">
+Finalizar Compra
+</button>
 
 </div>
 
 </div>
+</div>
+</div>
+
+<!-- PAGAMENTO -->
+<div class="modal fade" id="modalPagamento">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+
+<div class="modal-header bg-success text-white">
+<h5>Pagamento</h5>
+<button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<select id="metodoPagamento" class="form-control mb-3">
+<option>Pix</option>
+<option>Cartão</option>
+<option>Boleto</option>
+</select>
+
+<button class="btn btn-primary w-100" onclick="confirmarPagamento()">
+Confirmar Pagamento
+</button>
 
 </div>
 
 </div>
-
 </div>
-
+</div>
 
 <footer class="bg-dark text-white text-center p-3 mt-5">
-
 © <span id="ano2"></span> Resenha Sports
-
 </footer>
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
 <script>
-
-/* PRODUTOS */
 
 const produtos=[
 
@@ -236,7 +206,6 @@ listaProdutos.forEach((p,i)=>{
 lista.innerHTML+=`
 
 <div class="col-lg-3 col-md-4 col-sm-6">
-
 <div class="card">
 
 <img src="./image/${p.img}" class="card-img-top">
@@ -249,6 +218,14 @@ lista.innerHTML+=`
 R$ ${p.preco},00
 </p>
 
+<select class="form-select mb-2 tamanho" data-id="${i}">
+<option value="">Tamanho</option>
+<option>P</option>
+<option>M</option>
+<option>G</option>
+<option>GG</option>
+</select>
+
 <button class="btn btn-dark w-100 mb-2 add" data-id="${i}">
 Adicionar
 </button>
@@ -258,9 +235,7 @@ Ver mais
 </button>
 
 </div>
-
 </div>
-
 </div>
 
 `
@@ -270,8 +245,6 @@ Ver mais
 }
 
 carregarProdutos(produtos)
-
-
 
 /* BUSCA */
 
@@ -287,8 +260,6 @@ p.nome.toLowerCase().includes(valor)
 carregarProdutos(filtrados)
 
 })
-
-
 
 /* CARRINHO */
 
@@ -308,33 +279,29 @@ const modalProduto=new bootstrap.Modal(
 document.getElementById("modalProduto")
 )
 
+const modalPagamento=new bootstrap.Modal(
+document.getElementById("modalPagamento")
+)
+
 let atual
 
 function atualizarCarrinho(){
 
 contador.innerText=carrinho.length
-
 localStorage.setItem("carrinho",JSON.stringify(carrinho))
-
 renderizarCarrinho()
 
 }
 
-
 function renderizarCarrinho(){
 
 cartItems.innerHTML=""
-
 let total=0
 
 if(carrinho.length===0){
-
 cartItems.innerHTML="<p class='text-center text-muted'>Carrinho vazio</p>"
-
 cartTotal.innerText="0"
-
 return
-
 }
 
 carrinho.forEach((item,i)=>{
@@ -350,6 +317,7 @@ cartItems.innerHTML+=`
 <div class="flex-grow-1">
 
 <strong>${item.nome}</strong><br>
+Tamanho: ${item.tamanho || "-"}<br>
 R$ ${item.preco}
 
 </div>
@@ -368,24 +336,25 @@ cartTotal.innerText=total
 
 }
 
-
 function removerItem(i){
-
 carrinho.splice(i,1)
-
 atualizarCarrinho()
-
 }
-
 
 document.addEventListener("click",e=>{
 
 if(e.target.classList.contains("add")){
 
 let id=e.target.dataset.id
+let select=document.querySelector(`.tamanho[data-id='${id}']`)
+let tamanho=select.value
 
-carrinho.push(produtos[id])
+if(!tamanho){
+alert("Escolha um tamanho!")
+return
+}
 
+carrinho.push({...produtos[id], tamanho})
 atualizarCarrinho()
 
 }
@@ -407,30 +376,50 @@ modalProduto.show()
 
 })
 
-
 mAdd.onclick=()=>{
 
-carrinho.push(atual)
+let tamanho=document.getElementById("mTamanho").value
 
+if(!tamanho){
+alert("Escolha um tamanho!")
+return
+}
+
+carrinho.push({...atual, tamanho})
 atualizarCarrinho()
-
 modalProduto.hide()
 
 }
 
+function abrirPagamento(){
+
+if(carrinho.length===0){
+alert("Carrinho vazio!")
+return
+}
+
+modalPagamento.show()
+
+}
+
+function confirmarPagamento(){
+
+alert("Compra realizada com sucesso!")
+
+carrinho=[]
+atualizarCarrinho()
+
+modalPagamento.hide()
+
+}
 
 document.getElementById("cartModal")
 .addEventListener("show.bs.modal",renderizarCarrinho)
 
-
-
 /* ANO */
 
-const ano=document.getElementById("ano")
-const ano2=document.getElementById("ano2")
-
-ano.innerText=new Date().getFullYear()
-ano2.innerText=new Date().getFullYear()
+document.getElementById("ano").innerText=new Date().getFullYear()
+document.getElementById("ano2").innerText=new Date().getFullYear()
 
 atualizarCarrinho()
 
