@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boleto</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="./css/styles.css" rel="stylesheet">
+  <link rel="shortcut icon" href="./image/camisa.gif" type="image/x-icon">
+</head>
+<body class="bg-secondary bg-opacity-10 d-flex flex-column min-vh-100" style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm py-3" style="border-bottom: 3px solid #0d6efd;">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand fw-bold fs-3 tracking-tight" href="index.html" style="letter-spacing: -1.5px; text-transform: uppercase;">Resenha<span class="text-primary">Sports</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link fw-bold px-3 text-uppercase" href="index.html" style="font-size: 0.9rem;">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bold px-3 text-uppercase" href="produtos.html" style="font-size: 0.9rem;">Camisetas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bold px-3 text-uppercase" href="carrinho.html" style="font-size: 0.9rem;">Carrinho</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active fw-bold px-3 text-uppercase text-primary" aria-current="page" href="#" style="font-size: 0.9rem;">Boleto</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container flex-grow-1 d-flex align-items-center justify-content-center mt-5 pt-5 pb-5">
+  <h1 class="visually-hidden">Boleto</h1>
+  <div class="row w-100 justify-content-center">
+    <div class="col-lg-5 col-md-8 offset-lg-0">
+      <div class="card border-0 shadow-lg p-2" style="border-radius: 24px; background: #ffffff;">
+        <div class="card-body p-4 p-md-5">
+          <h5 class="card-title fw-bold mb-2 text-center fs-2" style="color: #1a1d20;">Pagamento</h5>
+          <p class="text-muted text-center mb-5 fw-medium" style="font-size: 0.95rem;">Confirme seus dados para gerar o boleto bancário</p>
+          <form id="boletoForm">
+            <div class="mb-4">
+              <label for="fullName" class="form-label fw-bold text-secondary small text-uppercase" style="letter-spacing: 1px;">Nome Completo</label>
+              <input type="text" class="form-control form-control-lg border-2 bg-light shadow-none" id="fullName" placeholder="Digite seu nome completo" required style="border-radius: 12px; font-size: 0.95rem; border-color: #e9ecef;">
+            </div>
+            <div class="mb-5">
+              <label for="cpf" class="form-label fw-bold text-secondary small text-uppercase" style="letter-spacing: 1px;">CPF</label>
+              <input type="text" class="form-control form-control-lg border-2 bg-light shadow-none" id="cpf" placeholder="000.000.000-00" required style="border-radius: 12px; font-size: 0.95rem; border-color: #e9ecef;">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow rounded-pill border-0 text-uppercase" style="letter-spacing: 2px; font-size: 0.85rem; transition: all 0.3s ease;">Gerar Boleto agora</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="boletoToast" class="toast align-items-center text-white bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" style="border-radius: 12px;">
+    <div class="d-flex p-2">
+      <div class="toast-body fw-bold">
+        ✅ Boleto gerado com sucesso!
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-dark text-white py-5 mt-auto" style="border-top: 5px solid #0d6efd;">
+  <div class="container text-center">
+    <span class="text-secondary small fw-bold text-uppercase" style="letter-spacing: 1px;">&copy; <script>document.write(new Date().getFullYear())</script> FootCoder. Todos os direitos reservados.</span>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<!-- External JS -->
+<script src="./js/boleto.js"></script>
+</body>
+</html>
