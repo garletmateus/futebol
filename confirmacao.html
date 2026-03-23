@@ -1,17 +1,42 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Compra Confirmada</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedido Confirmado | Resenha Sports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body{min-height:100vh;display:grid;place-items:center;background:linear-gradient(180deg,#f7fbfa 0%,#eef4f3 100%);font-family:"DM Sans",sans-serif}.card-confirm{width:min(100%,760px);border:none;border-radius:28px;box-shadow:0 24px 44px rgba(17,33,27,.12)}
+</style>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
-
-  <div class="card shadow p-5 text-center" style="border-radius:20px;">
-    <h1 class="text-success fw-bold">✅ Pedido Confirmado!</h1>
-    <p class="mt-3">Obrigado pela sua compra na <strong>Resenha Sports</strong>.</p>
-    <a href="index.html" class="btn btn-primary mt-3">Voltar para Loja</a>
+<body>
+<div class="card card-confirm p-4 p-md-5">
+  <div class="text-center mb-4">
+    <h1 class="text-success fw-bold mb-2" style="font-family:'Barlow',sans-serif">Pedido confirmado</h1>
+    <p class="text-secondary mb-0">Obrigado pela compra na <strong>Resenha Sports</strong>. Esta tela simula a confirmacao do pedido.</p>
   </div>
-
+  <div class="row g-3 mb-4">
+    <div class="col-md-6"><div class="border rounded-4 p-3 h-100"><strong class="d-block mb-2">Cliente</strong><span id="resumoNome" class="text-secondary">Nao informado</span></div></div>
+    <div class="col-md-6"><div class="border rounded-4 p-3 h-100"><strong class="d-block mb-2">Telefone</strong><span id="resumoTelefone" class="text-secondary">Nao informado</span></div></div>
+    <div class="col-md-6"><div class="border rounded-4 p-3 h-100"><strong class="d-block mb-2">Metodo</strong><span id="resumoMetodo" class="text-secondary">Nao informado</span></div></div>
+    <div class="col-md-6"><div class="border rounded-4 p-3 h-100"><strong class="d-block mb-2">CEP</strong><span id="resumoCep" class="text-secondary">Nao informado</span></div></div>
+    <div class="col-12"><div class="border rounded-4 p-3"><strong class="d-block mb-2">Endereco de entrega</strong><span id="resumoEndereco" class="text-secondary">Nao informado</span></div></div>
+  </div>
+  <div class="d-flex gap-2 justify-content-center flex-wrap">
+    <a href="frontend/index.html" class="btn btn-success">Voltar para a loja</a>
+    <button class="btn btn-outline-dark" type="button" onclick="window.print()">Imprimir comprovante</button>
+  </div>
+</div>
+<script>
+const checkout = JSON.parse(localStorage.getItem('resenha_checkout') || '{}');
+document.getElementById('resumoNome').innerText = checkout.nome || 'Nao informado';
+document.getElementById('resumoTelefone').innerText = checkout.telefone || 'Nao informado';
+document.getElementById('resumoMetodo').innerText = checkout.metodo || 'Nao informado';
+document.getElementById('resumoCep').innerText = checkout.cep || 'Nao informado';
+document.getElementById('resumoEndereco').innerText = checkout.rua ? `${checkout.rua}, ${checkout.numero} - ${checkout.bairro}, ${checkout.cidade}${checkout.complemento ? ' (' + checkout.complemento + ')' : ''}` : 'Nao informado';
+</script>
 </body>
 </html>

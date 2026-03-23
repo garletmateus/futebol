@@ -1,88 +1,24 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boleto</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  <link href="./css/styles.css" rel="stylesheet">
-  <link rel="shortcut icon" href="./image/camisa.gif" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagamento Boleto | Resenha Sports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+:root{--primary:#0d7a5f;--primary-dark:#085542;--accent:#f3b03d}body{min-height:100vh;font-family:"DM Sans",sans-serif;background:linear-gradient(180deg,#f7fbf9 0%,#eef3f1 100%)}.brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#ffd978);color:#111;font-weight:800;font-family:"Barlow",sans-serif}.payment-shell{max-width:980px}.payment-card{border:none;border-radius:30px;box-shadow:0 24px 44px rgba(17,33,27,.12);overflow:hidden}.btn-primary{background:var(--primary);border-color:var(--primary)}.btn-primary:hover{background:var(--primary-dark);border-color:var(--primary-dark)}
+</style>
 </head>
-<body class="bg-secondary bg-opacity-10 d-flex flex-column min-vh-100" style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm py-3" style="border-bottom: 3px solid #0d6efd;">
-  <div class="container-fluid px-4">
-    <a class="navbar-brand fw-bold fs-3 tracking-tight" href="index.html" style="letter-spacing: -1.5px; text-transform: uppercase;">Resenha<span class="text-primary">Sports</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link fw-bold px-3 text-uppercase" href="index.html" style="font-size: 0.9rem;">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-bold px-3 text-uppercase" href="produtos.html" style="font-size: 0.9rem;">Camisetas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-bold px-3 text-uppercase" href="carrinho.html" style="font-size: 0.9rem;">Carrinho</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active fw-bold px-3 text-uppercase text-primary" aria-current="page" href="#" style="font-size: 0.9rem;">Boleto</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<div class="container flex-grow-1 d-flex align-items-center justify-content-center mt-5 pt-5 pb-5">
-  <h1 class="visually-hidden">Boleto</h1>
-  <div class="row w-100 justify-content-center">
-    <div class="col-lg-5 col-md-8 offset-lg-0">
-      <div class="card border-0 shadow-lg p-2" style="border-radius: 24px; background: #ffffff;">
-        <div class="card-body p-4 p-md-5">
-          <h5 class="card-title fw-bold mb-2 text-center fs-2" style="color: #1a1d20;">Pagamento</h5>
-          <p class="text-muted text-center mb-5 fw-medium" style="font-size: 0.95rem;">Confirme seus dados para gerar o boleto bancário</p>
-          <form id="boletoForm">
-            <div class="mb-4">
-              <label for="fullName" class="form-label fw-bold text-secondary small text-uppercase" style="letter-spacing: 1px;">Nome Completo</label>
-              <input type="text" class="form-control form-control-lg border-2 bg-light shadow-none" id="fullName" placeholder="Digite seu nome completo" required style="border-radius: 12px; font-size: 0.95rem; border-color: #e9ecef;">
-            </div>
-            <div class="mb-5">
-              <label for="cpf" class="form-label fw-bold text-secondary small text-uppercase" style="letter-spacing: 1px;">CPF</label>
-              <input type="text" class="form-control form-control-lg border-2 bg-light shadow-none" id="cpf" placeholder="000.000.000-00" required style="border-radius: 12px; font-size: 0.95rem; border-color: #e9ecef;">
-            </div>
-            <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow rounded-pill border-0 text-uppercase" style="letter-spacing: 2px; font-size: 0.85rem; transition: all 0.3s ease;">Gerar Boleto agora</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-  <div id="boletoToast" class="toast align-items-center text-white bg-success border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" style="border-radius: 12px;">
-    <div class="d-flex p-2">
-      <div class="toast-body fw-bold">
-        ✅ Boleto gerado com sucesso!
-      </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-  </div>
-</div>
-
-<footer class="bg-dark text-white py-5 mt-auto" style="border-top: 5px solid #0d6efd;">
-  <div class="container text-center">
-    <span class="text-secondary small fw-bold text-uppercase" style="letter-spacing: 1px;">&copy; <script>document.write(new Date().getFullYear())</script> FootCoder. Todos os direitos reservados.</span>
-  </div>
-</footer>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-<!-- External JS -->
-<script src="./js/boleto.js"></script>
+<body>
+<nav class="navbar navbar-dark" style="background:rgba(8,18,15,.92)"><div class="container py-2"><div class="d-flex align-items-center gap-3 text-white"><div class="brand-mark">RS</div><div><strong style="font-family:'Barlow',sans-serif">Resenha Sports</strong><div class="small text-white-50">Pagamento seguro</div></div></div><a href="index.html" class="btn btn-outline-light">Voltar para a loja</a></div></nav>
+<div class="container py-5 payment-shell"><div class="payment-card bg-white"><div class="row g-0 align-items-stretch"><div class="col-lg-5 p-4 p-lg-5 text-white" style="background:linear-gradient(160deg,#08120f,#0d7a5f)"><p class="text-uppercase small mb-2">Boleto</p><h1 class="display-6" style="font-family:'Barlow',sans-serif">Geracao de boleto</h1><p class="text-white-50 mb-4">Confirme seus dados e gere o boleto em uma tela consistente com o restante da loja.</p><div class="rounded-4 p-4" style="background:rgba(255,255,255,.08)"><strong class="d-block mb-2">Importante</strong><div class="text-white-50">Apos a geracao, voce pode seguir para a confirmacao do pedido.</div></div></div><div class="col-lg-7 p-4 p-lg-5"><p class="text-secondary mb-2">Checkout</p><h2 class="h3 mb-3" style="font-family:'Barlow',sans-serif">Dados para o boleto</h2><form id="boletoForm"><div class="mb-3"><label class="form-label fw-semibold">Nome completo</label><input id="fullName" class="form-control form-control-lg" placeholder="Digite seu nome" required></div><div class="mb-4"><label class="form-label fw-semibold">CPF</label><input id="cpf" class="form-control form-control-lg" placeholder="000.000.000-00" required></div><button type="submit" class="btn btn-primary w-100">Gerar boleto</button></form></div></div></div></div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:11"><div id="boletoToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true"><div class="d-flex"><div class="toast-body">Boleto gerado com sucesso.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById("boletoForm").addEventListener("submit",function(e){e.preventDefault();new bootstrap.Toast(document.getElementById("boletoToast")).show();setTimeout(()=>{window.location.href="confirmacao.html"},1200)});
+</script>
 </body>
 </html>

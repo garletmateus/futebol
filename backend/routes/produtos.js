@@ -1,52 +1,145 @@
-const express = require('express');
+﻿const express = require("express");
 const router = express.Router();
-const db = require('../db');
+const db = require("../db");
 
-/* READ – listar produtos */
-router.get('/', (req, res) => {
-  db.query('SELECT * FROM produtos', (err, rows) => {
-    if (err) return res.status(500).json(err);
-    res.json(rows);
-  });
+function normalizarProduto(body) {
+  const tamanhos = Array.isArray(body.tamanhos)
+    ? body.tamanhos
+    : String(body.tamanhos || "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+
+  return {
+    nome: String(body.nome || "").trim(),
+    categoria: String(body.categoria || "").trim(),
+    preco: Number(body.preco),
+    img: String(body.img || body.imagem || "").trim(),
+    descricao: String(body.descricao || body.desc || "").trim(),
+    tamanhos
+  };
+}
+
+function mapearProduto(row) {
+  return {
+    id: row.id,
+    nome: row.nome,
+    categoria: row.categoria,
+    preco: Number(row.preco),
+    img: row.img,
+    desc: row.descricao,
+    tamanhos: Array.isArray(row.tamanhos) ? row.tamanhos : JSON.parse(row.tamanhos || "[]")
+  };
+}
+
+router.get("/", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT id, nome, categoria, preco, img, descricao, tamanhos
+      FROM produtos
+      ORDER BY id DESC
+    `);
+
+    res.json(rows.map(mapearProduto));
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao listar produtos", detalhe: error.message });
+  }
 });
 
-/* CREATE – cadastrar produto */
-router.post('/', (req, res) => {
-  const { nome, preco, imagem, descricao } = req.body;
+router.post("/", async (req, res) => {
+  try {
+    const produto = normalizarProduto(req.body);
 
-  db.query(
-    'INSERT INTO produtos (nome, preco, imagem, descricao) VALUES (?,?,?,?)',
-    [nome, preco, imagem, descricao],
-    (err) => {
-      if (err) return res.status(500).json(err);
-      res.json({ message: 'Produto cadastrado!' });
+    if (!produto.nome || !produto.categoria || !produto.preco || !produto.img || !produto.descricao || !produto.tamanhos.length) {
+      return res.status(400).json({ erro: "Dados do produto invalidos" });
     }
-  );
+
+    const [result] = await db.execute(
+      `
+        INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `,
+      [
+        produto.nome,
+        produto.categoria,
+        produto.preco,
+        produto.img,
+        produto.descricao,
+        JSON.stringify(produto.tamanhos)
+      ]
+    );
+
+    const [rows] = await db.execute(
+      `
+        SELECT id, nome, categoria, preco, img, descricao, tamanhos
+        FROM produtos
+        WHERE id = ?
+      `,
+      [result.insertId]
+    );
+
+    res.status(201).json(mapearProduto(rows[0]));
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao cadastrar produto", detalhe: error.message });
+  }
 });
 
-/* UPDATE – editar produto */
-router.put('/:id', (req, res) => {
-  const { nome, preco, imagem, descricao } = req.body;
-  const { id } = req.params;
+router.put("/:id", async (req, res) => {
+  try {
+    const produto = normalizarProduto(req.body);
 
-  db.query(
-    'UPDATE produtos SET nome=?, preco=?, imagem=?, descricao=? WHERE id=?',
-    [nome, preco, imagem, descricao, id],
-    (err) => {
-      if (err) return res.status(500).json(err);
-      res.json({ message: 'Produto atualizado!' });
+    if (!produto.nome || !produto.categoria || !produto.preco || !produto.img || !produto.descricao || !produto.tamanhos.length) {
+      return res.status(400).json({ erro: "Dados do produto invalidos" });
     }
-  );
+
+    const [result] = await db.execute(
+      `
+        UPDATE produtos
+        SET nome = ?, categoria = ?, preco = ?, img = ?, descricao = ?, tamanhos = ?
+        WHERE id = ?
+      `,
+      [
+        produto.nome,
+        produto.categoria,
+        produto.preco,
+        produto.img,
+        produto.descricao,
+        JSON.stringify(produto.tamanhos),
+        req.params.id
+      ]
+    );
+
+    if (!result.affectedRows) {
+      return res.status(404).json({ erro: "Produto nao encontrado" });
+    }
+
+    const [rows] = await db.execute(
+      `
+        SELECT id, nome, categoria, preco, img, descricao, tamanhos
+        FROM produtos
+        WHERE id = ?
+      `,
+      [req.params.id]
+    );
+
+    res.json(mapearProduto(rows[0]));
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao atualizar produto", detalhe: error.message });
+  }
 });
 
-/* DELETE – remover produto */
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
+router.delete("/:id", async (req, res) => {
+  try {
+    const [result] = await db.execute("DELETE FROM produtos WHERE id = ?", [req.params.id]);
 
-  db.query('DELETE FROM produtos WHERE id=?', [id], (err) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: 'Produto removido!' });
-  });
+    if (!result.affectedRows) {
+      return res.status(404).json({ erro: "Produto nao encontrado" });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao remover produto", detalhe: error.message });
+  }
 });
 
 module.exports = router;

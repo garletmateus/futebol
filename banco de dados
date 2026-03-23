@@ -1,17 +1,40 @@
-CREATE DATABASE IF NOT EXISTS resenha_sports
+﻿CREATE DATABASE IF NOT EXISTS resenha_sports
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_general_ci;
 
 USE resenha_sports;
 
-INSERT INTO produtos (nome, preco, imagem, descricao) VALUES
-('Corinthians', 120.00, 'Corinthians.jpg', 'Camisa inspirada no manto do Timão.'),
-('Flamengo', 100.00, 'Flamengo.jpg', 'Camisa rubro-negra tradicional.'),
-('Fluminense', 111.00, 'Fluminense.jpg', 'Camisa tricolor clássica.'),
-('São Paulo', 100.00, 'SaoPaulo.jpg', 'Camisa do Tricolor Paulista.'),
-('Atlético MG', 100.00, 'Atletico MG.jpg', 'Camisa inspirada no Galo.'),
-('Red Bull Bragantino', 130.00, 'RedBull.jpg', 'Camisa moderna e estilosa.'),
-('Vasco', 90.00, 'Vasco.jpg', 'Camisa cruzmaltina clássica.'),
-('Palmeiras', 110.00, 'Palmeiras.jpg', 'Camisa alviverde histórica.');
+CREATE TABLE IF NOT EXISTS produtos (
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(120) NOT NULL,
+  categoria VARCHAR(80) NOT NULL,
+  preco DECIMAL(10,2) NOT NULL,
+  img VARCHAR(255) NOT NULL,
+  descricao TEXT NOT NULL,
+  tamanhos JSON NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos)
+SELECT * FROM (
+  SELECT 'Corinthians', 'Brasileirao', 120.00, './image/Corinthians.jpg', 'Camisa do Timao', JSON_ARRAY('P','M','G','GG')
+  UNION ALL
+  SELECT 'Flamengo', 'Brasileirao', 100.00, './image/Flamengo.jpg', 'Camisa Rubro Negra', JSON_ARRAY('P','M','G','GG')
+  UNION ALL
+  SELECT 'Fluminense', 'Brasileirao', 111.00, './image/Fluminense.jpg', 'Camisa Tricolor', JSON_ARRAY('P','M','G','GG')
+  UNION ALL
+  SELECT 'Sao Paulo', 'Brasileirao', 100.00, './image/São Paulo.jpg', 'Camisa Paulista', JSON_ARRAY('P','M','G','GG')
+  UNION ALL
+  SELECT 'Atletico MG', 'Brasileirao', 100.00, './image/Atletico MG.jpg', 'Camisa do Galo', JSON_ARRAY('P','M','G','GG')
+  UNION ALL
+  SELECT 'Bragantino', 'Brasileirao', 130.00, './image/RedBull.jpg', 'Camisa Red Bull', JSON_ARRAY('P','M','G','GG')
+  UNION ALL
+  SELECT 'Vasco', 'Brasileirao', 90.00, './image/Vasco.jpg', 'Camisa Vasco', JSON_ARRAY('P','M','G','GG')
+  UNION ALL
+  SELECT 'Palmeiras', 'Brasileirao', 110.00, './image/Palmeiras.jpg', 'Camisa Palmeiras', JSON_ARRAY('P','M','G','GG')
+) AS seed
+WHERE NOT EXISTS (SELECT 1 FROM produtos LIMIT 1);
 
 SELECT * FROM produtos;

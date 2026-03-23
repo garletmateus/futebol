@@ -1,0 +1,19 @@
+﻿{
+  "name": "resenha-sports",
+  "version": "1.0.0",
+  "description": "Loja de camisas com frontend e backend Node + MySQL",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "test": "echo \"Sem testes configurados\""
+  },
+  "keywords": ["futebol", "loja", "mysql", "express"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mysql2": "^3.20.0"
+  }
+}
