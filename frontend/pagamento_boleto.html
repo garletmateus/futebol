@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pagamento Boleto | Resenha Sports</title>
+<title>Pagamento por Boleto | Resenha Sports</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,11 +14,23 @@
 </head>
 <body>
 <nav class="navbar navbar-dark" style="background:rgba(8,18,15,.92)"><div class="container py-2"><div class="d-flex align-items-center gap-3 text-white"><div class="brand-mark">RS</div><div><strong style="font-family:'Barlow',sans-serif">Resenha Sports</strong><div class="small text-white-50">Pagamento seguro</div></div></div><a href="index.html" class="btn btn-outline-light">Voltar para a loja</a></div></nav>
-<div class="container py-5 payment-shell"><div class="payment-card bg-white"><div class="row g-0 align-items-stretch"><div class="col-lg-5 p-4 p-lg-5 text-white" style="background:linear-gradient(160deg,#08120f,#0d7a5f)"><p class="text-uppercase small mb-2">Boleto</p><h1 class="display-6" style="font-family:'Barlow',sans-serif">Geracao de boleto</h1><p class="text-white-50 mb-4">Confirme seus dados e gere o boleto em uma tela consistente com o restante da loja.</p><div class="rounded-4 p-4" style="background:rgba(255,255,255,.08)"><strong class="d-block mb-2">Importante</strong><div class="text-white-50">Apos a geracao, voce pode seguir para a confirmacao do pedido.</div></div></div><div class="col-lg-7 p-4 p-lg-5"><p class="text-secondary mb-2">Checkout</p><h2 class="h3 mb-3" style="font-family:'Barlow',sans-serif">Dados para o boleto</h2><form id="boletoForm"><div class="mb-3"><label class="form-label fw-semibold">Nome completo</label><input id="fullName" class="form-control form-control-lg" placeholder="Digite seu nome" required></div><div class="mb-4"><label class="form-label fw-semibold">CPF</label><input id="cpf" class="form-control form-control-lg" placeholder="000.000.000-00" required></div><button type="submit" class="btn btn-primary w-100">Gerar boleto</button></form></div></div></div></div>
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index:11"><div id="boletoToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true"><div class="d-flex"><div class="toast-body">Boleto gerado com sucesso.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div></div></div>
+<div class="container py-5 payment-shell"><div class="payment-card bg-white"><div class="row g-0 align-items-stretch"><div class="col-lg-5 p-4 p-lg-5 text-white" style="background:linear-gradient(160deg,#08120f,#0d7a5f)"><p class="text-uppercase small mb-2">Boleto</p><h1 class="display-6" style="font-family:'Barlow',sans-serif">Geração de boleto</h1><p class="text-white-50 mb-4">Confirme seus dados e gere o boleto em uma tela consistente com o restante da loja.</p><div class="rounded-4 p-4" style="background:rgba(255,255,255,.08)"><strong class="d-block mb-2">Importante</strong><div class="text-white-50">Após a geração, você pode seguir para a confirmação do pedido.</div></div></div><div class="col-lg-7 p-4 p-lg-5"><p class="text-secondary mb-2">Checkout</p><h2 class="h3 mb-3" style="font-family:'Barlow',sans-serif">Dados para o boleto</h2><form id="boletoForm"><div class="mb-3"><label class="form-label fw-semibold">Nome completo</label><input id="fullName" class="form-control form-control-lg" placeholder="Digite seu nome" required></div><div class="mb-4"><label class="form-label fw-semibold">CPF</label><input id="cpf" class="form-control form-control-lg" placeholder="000.000.000-00" required></div><button type="submit" class="btn btn-primary w-100">Gerar boleto</button></form></div></div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-document.getElementById("boletoForm").addEventListener("submit",function(e){e.preventDefault();new bootstrap.Toast(document.getElementById("boletoToast")).show();setTimeout(()=>{window.location.href="confirmacao.html"},1200)});
+const PEDIDOS_API = '/api/pedidos';
+document.getElementById('boletoForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const pedido = JSON.parse(localStorage.getItem('resenha_pedido_atual') || '{}');
+  if (!pedido.id) { window.location.href = 'confirmacao.html'; return; }
+  const resposta = await fetch(`${PEDIDOS_API}/${pedido.id}/status`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ statusPagamento: 'Pago', statusEntrega: 'Separando' })
+  });
+  const atualizado = await resposta.json();
+  localStorage.setItem('resenha_pedido_atual', JSON.stringify(atualizado));
+  window.location.href = 'confirmacao.html';
+});
 </script>
 </body>
 </html>

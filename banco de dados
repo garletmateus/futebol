@@ -4,7 +4,11 @@ COLLATE utf8mb4_general_ci;
 
 USE resenha_sports;
 
-CREATE TABLE IF NOT EXISTS produtos (
+DROP TABLE IF EXISTS pedido_itens;
+DROP TABLE IF EXISTS pedidos;
+DROP TABLE IF EXISTS produtos;
+
+CREATE TABLE produtos (
   id INT NOT NULL AUTO_INCREMENT,
   nome VARCHAR(120) NOT NULL,
   categoria VARCHAR(80) NOT NULL,
@@ -17,24 +21,61 @@ CREATE TABLE IF NOT EXISTS produtos (
   PRIMARY KEY (id)
 );
 
-INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos)
-SELECT * FROM (
-  SELECT 'Corinthians', 'Brasileirao', 120.00, './image/Corinthians.jpg', 'Camisa do Timao', JSON_ARRAY('P','M','G','GG')
-  UNION ALL
-  SELECT 'Flamengo', 'Brasileirao', 100.00, './image/Flamengo.jpg', 'Camisa Rubro Negra', JSON_ARRAY('P','M','G','GG')
-  UNION ALL
-  SELECT 'Fluminense', 'Brasileirao', 111.00, './image/Fluminense.jpg', 'Camisa Tricolor', JSON_ARRAY('P','M','G','GG')
-  UNION ALL
-  SELECT 'Sao Paulo', 'Brasileirao', 100.00, './image/São Paulo.jpg', 'Camisa Paulista', JSON_ARRAY('P','M','G','GG')
-  UNION ALL
-  SELECT 'Atletico MG', 'Brasileirao', 100.00, './image/Atletico MG.jpg', 'Camisa do Galo', JSON_ARRAY('P','M','G','GG')
-  UNION ALL
-  SELECT 'Bragantino', 'Brasileirao', 130.00, './image/RedBull.jpg', 'Camisa Red Bull', JSON_ARRAY('P','M','G','GG')
-  UNION ALL
-  SELECT 'Vasco', 'Brasileirao', 90.00, './image/Vasco.jpg', 'Camisa Vasco', JSON_ARRAY('P','M','G','GG')
-  UNION ALL
-  SELECT 'Palmeiras', 'Brasileirao', 110.00, './image/Palmeiras.jpg', 'Camisa Palmeiras', JSON_ARRAY('P','M','G','GG')
-) AS seed
-WHERE NOT EXISTS (SELECT 1 FROM produtos LIMIT 1);
+CREATE TABLE pedidos (
+  id INT NOT NULL AUTO_INCREMENT,
+  cliente_nome VARCHAR(160) NOT NULL,
+  telefone VARCHAR(40) NOT NULL,
+  cep VARCHAR(20) NOT NULL,
+  rua VARCHAR(180) NOT NULL,
+  numero VARCHAR(30) NOT NULL,
+  bairro VARCHAR(120) NOT NULL,
+  cidade VARCHAR(120) NOT NULL,
+  complemento VARCHAR(160) DEFAULT '',
+  metodo_pagamento VARCHAR(40) NOT NULL,
+  status_pagamento VARCHAR(60) NOT NULL DEFAULT 'Aguardando pagamento',
+  status_entrega VARCHAR(60) NOT NULL DEFAULT 'Pedido recebido',
+  total DECIMAL(10,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE pedido_itens (
+  id INT NOT NULL AUTO_INCREMENT,
+  pedido_id INT NOT NULL,
+  produto_id INT NULL,
+  produto_nome VARCHAR(120) NOT NULL,
+  produto_categoria VARCHAR(80) NOT NULL,
+  produto_imagem VARCHAR(255) NOT NULL,
+  preco_unitario DECIMAL(10,2) NOT NULL,
+  tamanho VARCHAR(10) NOT NULL,
+  quantidade INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (id),
+  CONSTRAINT fk_pedido_itens_pedido FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_pedido_itens_produto FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos) VALUES
+('Atletico MG', 'Brasileirao', 100.00, './image/atletico mgg.webp', 'Camisa do Galo', JSON_ARRAY('P','M','G','GG')),
+('Bragantino', 'Brasileirao', 130.00, './image/red bull bragantino.webp', 'Camisa Red Bull', JSON_ARRAY('P','M','G','GG')),
+('Corinthians', 'Brasileirao', 120.00, './image/corinthianss.webp', 'Camisa do Timão', JSON_ARRAY('P','M','G','GG')),
+('Flamengo', 'Brasileirao', 100.00, './image/flamengoo.webp', 'Camisa rubro-negra', JSON_ARRAY('P','M','G','GG')),
+('Fluminense', 'Brasileirao', 111.00, './image/fluminensee.webp', 'Camisa tricolor', JSON_ARRAY('P','M','G','GG')),
+('Gremio', 'Brasileirao', 149.90, './image/gremioo.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
+('Internacional', 'Brasileirao', 150.00, './image/interr.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
+('Palmeiras', 'Brasileirao', 110.00, './image/palmeirass.webp', 'Camisa Palmeiras', JSON_ARRAY('P','M','G','GG')),
+('Santos', 'Brasileirao', 139.90, './image/santoss.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
+('Sao Paulo', 'Brasileirao', 100.00, './image/sao paulo.webp', 'Camisa paulista', JSON_ARRAY('P','M','G','GG')),
+('Vasco', 'Brasileirao', 90.00, './image/vascoo.webp', 'Camisa Vasco', JSON_ARRAY('P','M','G','GG')),
+('Atletico de Madrid', 'Europa', 209.90, './image/atletico de madri.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
+('Barcelona', 'Europa', 214.90, './image/barcelona.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
+('Manchester United', 'Europa', 229.90, './image/manchesster united.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
+('Real Madrid', 'Europa', 219.90, './image/real madri.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
+('Argentina', 'Selecoes', 179.90, './image/selecaoargentina.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG')),
+('Brasil', 'Selecoes', 189.90, './image/selecaobrasil.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG')),
+('Italia', 'Selecoes', 169.90, './image/selecaoitalia.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG')),
+('Portugal', 'Selecoes', 184.90, './image/selecaoportugal.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG'));
 
 SELECT * FROM produtos;
+SELECT * FROM pedidos;
+SELECT * FROM pedido_itens;

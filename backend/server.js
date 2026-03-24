@@ -2,6 +2,7 @@
 const cors = require("cors");
 const path = require("path");
 const produtosRouter = require("./routes/produtos");
+const pedidosRouter = require("./routes/pedidos");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/produtos", produtosRouter);
+app.use("/api/pedidos", pedidosRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(frontendDir, "index.html"));
