@@ -1,16 +1,12 @@
-const PRODUTOS_API = "/api/produtos";
+﻿const PRODUTOS_API = "/api/produtos";
 const PEDIDOS_API = "/api/pedidos";
-const produtosPadrao = [
-  { nome:"Corinthians", categoria:"Brasileirao", preco:120, img:"./image/corinthianss.webp", desc:"Camisa do Timão", tamanhos:["P","M","G","GG"] },
-  { nome:"Flamengo", categoria:"Brasileirao", preco:100, img:"./image/flamengoo.webp", desc:"Camisa rubro-negra", tamanhos:["P","M","G","GG"] },
-  { nome:"Fluminense", categoria:"Brasileirao", preco:111, img:"./image/fluminensee.webp", desc:"Camisa tricolor", tamanhos:["P","M","G","GG"] },
-  { nome:"Sao Paulo", categoria:"Brasileirao", preco:100, img:"./image/sao paulo.webp", desc:"Camisa paulista", tamanhos:["P","M","G","GG"] },
-  { nome:"Atletico MG", categoria:"Brasileirao", preco:100, img:"./image/atletico mgg.webp", desc:"Camisa do Galo", tamanhos:["P","M","G","GG"] },
-  { nome:"Bragantino", categoria:"Brasileirao", preco:130, img:"./image/red bull bragantino.webp", desc:"Camisa Red Bull", tamanhos:["P","M","G","GG"] },
-  { nome:"Vasco", categoria:"Brasileirao", preco:90, img:"./image/vascoo.webp", desc:"Camisa Vasco", tamanhos:["P","M","G","GG"] },
-  { nome:"Palmeiras", categoria:"Brasileirao", preco:110, img:"./image/palmeirass.webp", desc:"Camisa Palmeiras", tamanhos:["P","M","G","GG"] }
-];
-const labelsCategoria = { Todos:"Todas as categorias", Brasileirao:"Brasileirão", Selecoes:"Seleções", Europa:"Europa" };
+const labelsCategoria = {
+  Todos: "Todas as categorias",
+  Brasileirao: "Brasileirão",
+  Selecoes: "Seleções",
+  Europa: "Europa"
+};
+
 const lista = document.getElementById("lista-produtos");
 const categoriasEl = document.getElementById("categorias");
 const buscarEl = document.getElementById("buscar");
@@ -29,34 +25,66 @@ const mTamanho = document.getElementById("mTamanho");
 const mAdd = document.getElementById("mAdd");
 const modalProduto = new bootstrap.Modal(document.getElementById("modalProduto"));
 const modalPagamento = new bootstrap.Modal(document.getElementById("modalPagamento"));
+
 let produtos = [];
 let carrinho = JSON.parse(localStorage.getItem("resenha-carrinho") || "[]");
 let categoriaAtual = "Todos";
 let produtoAtual = null;
+let falhaAoCarregarProdutos = false;
 
-function labelCategoria(categoria) { return labelsCategoria[categoria] || categoria; }
-function mostrarAviso(msg) { document.getElementById("toastMensagem").innerText = msg; new bootstrap.Toast(document.getElementById("toastAviso")).show(); }
-function formatarPreco(valor) { return Number(valor).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-function sincronizarBusca() { buscarEl.value = buscarTopoEl.value; }
-function calcularTotalCarrinho() { return carrinho.reduce((total, item) => total + Number(item.preco), 0); }
+function labelCategoria(categoria) {
+  return labelsCategoria[categoria] || categoria;
+}
+
+function mostrarAviso(msg) {
+  document.getElementById("toastMensagem").innerText = msg;
+  new bootstrap.Toast(document.getElementById("toastAviso")).show();
+}
+
+function formatarPreco(valor) {
+  return Number(valor).toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function sincronizarBusca() {
+  buscarEl.value = buscarTopoEl.value;
+}
+
+function calcularTotalCarrinho() {
+  return carrinho.reduce((total, item) => total + Number(item.preco), 0);
+}
 
 async function carregarProdutosAPI() {
+  falhaAoCarregarProdutos = false;
+
   try {
-    const resposta = await fetch(PRODUTOS_API);
-    if (!resposta.ok) throw new Error("Falha ao carregar produtos");
+    const resposta = await fetch(PRODUTOS_API, { cache: "no-store" });
     const dados = await resposta.json();
-    produtos = Array.isArray(dados) && dados.length ? dados : [...produtosPadrao];
+
+    if (!resposta.ok) {
+      throw new Error(dados.detalhe || dados.erro || "Falha ao carregar produtos do banco.");
+    }
+
+    produtos = Array.isArray(dados) ? dados : [];
   } catch (error) {
     console.error(error);
-    produtos = [...produtosPadrao];
+    produtos = [];
+    falhaAoCarregarProdutos = true;
+    mostrarAviso(error.message || "Não foi possível carregar os produtos do banco.");
   }
 }
 
 function renderizarCategorias() {
   const categorias = ["Todos", ...new Set(produtos.map((produto) => produto.categoria))];
-  categoriaSelectEl.innerHTML = categorias.map((categoria) => `<option value="${categoria}">${labelCategoria(categoria)}</option>`).join("");
+  categoriaSelectEl.innerHTML = categorias
+    .map((categoria) => `<option value="${categoria}">${labelCategoria(categoria)}</option>`)
+    .join("");
   categoriaSelectEl.value = categoriaAtual;
-  categoriasEl.innerHTML = categorias.map((categoria) => `<button class="chip ${categoriaAtual === categoria ? "active" : ""}" data-categoria="${categoria}">${labelCategoria(categoria)}</button>`).join("");
+  categoriasEl.innerHTML = categorias
+    .map((categoria) => `<button class="chip ${categoriaAtual === categoria ? "active" : ""}" data-categoria="${categoria}">${labelCategoria(categoria)}</button>`)
+    .join("");
 }
 
 function obterBuscaAtual() {
@@ -66,16 +94,34 @@ function obterBuscaAtual() {
 function obterProdutosFiltrados() {
   const busca = obterBuscaAtual();
   let filtrados = [...produtos];
-  if (categoriaAtual !== "Todos") filtrados = filtrados.filter((produto) => produto.categoria === categoriaAtual);
-  if (busca) filtrados = filtrados.filter((produto) => produto.nome.toLowerCase().includes(busca) || produto.categoria.toLowerCase().includes(busca) || produto.desc.toLowerCase().includes(busca));
+
+  if (categoriaAtual !== "Todos") {
+    filtrados = filtrados.filter((produto) => produto.categoria === categoriaAtual);
+  }
+
+  if (busca) {
+    filtrados = filtrados.filter((produto) =>
+      produto.nome.toLowerCase().includes(busca) ||
+      produto.categoria.toLowerCase().includes(busca) ||
+      produto.desc.toLowerCase().includes(busca)
+    );
+  }
+
   if (ordenarEl.value === "menor-preco") filtrados.sort((a, b) => a.preco - b.preco);
   else if (ordenarEl.value === "maior-preco") filtrados.sort((a, b) => b.preco - a.preco);
   else if (ordenarEl.value === "nome") filtrados.sort((a, b) => a.nome.localeCompare(b.nome));
+
   return filtrados;
 }
 
 function renderizarProdutos() {
+  if (falhaAoCarregarProdutos) {
+    lista.innerHTML = `<div class="empty-state">Não foi possível carregar os produtos do banco de dados.</div>`;
+    return;
+  }
+
   const itens = obterProdutosFiltrados();
+
   if (!itens.length) {
     lista.innerHTML = `<div class="empty-state">Nenhum produto encontrado para esse filtro.</div>`;
     return;
@@ -140,7 +186,10 @@ function renderizarCarrinho() {
   cartTotal.innerText = formatarPreco(total);
 }
 
-function removerItem(index) { carrinho.splice(index, 1); atualizarCarrinho(); }
+function removerItem(index) {
+  carrinho.splice(index, 1);
+  atualizarCarrinho();
+}
 
 function abrirDetalhesProduto(produto) {
   produtoAtual = produto;
@@ -158,6 +207,7 @@ function abrirPagamento() {
     mostrarAviso("Adicione pelo menos um item ao carrinho antes de finalizar.");
     return;
   }
+
   modalPagamento.show();
 }
 
@@ -175,7 +225,15 @@ async function confirmarPagamento() {
     statusPagamento: "Aguardando pagamento",
     statusEntrega: "Pedido recebido",
     total: calcularTotalCarrinho(),
-    itens: carrinho.map((item) => ({ id: item.id, nome: item.nome, categoria: item.categoria, preco: item.preco, tamanho: item.tamanho, img: item.img, quantidade: 1 }))
+    itens: carrinho.map((item) => ({
+      id: item.id,
+      nome: item.nome,
+      categoria: item.categoria,
+      preco: item.preco,
+      tamanho: item.tamanho,
+      img: item.img,
+      quantidade: 1
+    }))
   };
 
   if (!pedido.clienteNome || !pedido.telefone || !pedido.cep || !pedido.rua || !pedido.numero || !pedido.bairro || !pedido.cidade) {
@@ -190,10 +248,13 @@ async function confirmarPagamento() {
       body: JSON.stringify(pedido)
     });
 
-    if (!resposta.ok) throw new Error("Não foi possível criar o pedido.");
+    const dadosResposta = await resposta.json();
 
-    const pedidoCriado = await resposta.json();
-    localStorage.setItem("resenha_pedido_atual", JSON.stringify(pedidoCriado));
+    if (!resposta.ok) {
+      throw new Error(dadosResposta.detalhe || dadosResposta.erro || "Não foi possível criar o pedido.");
+    }
+
+    localStorage.setItem("resenha_pedido_atual", JSON.stringify(dadosResposta));
     localStorage.removeItem("resenha-carrinho");
     carrinho = [];
     atualizarCarrinho();
@@ -203,11 +264,14 @@ async function confirmarPagamento() {
     else window.location.href = "pagamento_boleto.html";
   } catch (error) {
     console.error(error);
-    mostrarAviso("Não foi possível registrar o pedido agora.");
+    mostrarAviso(error.message || "Não foi possível registrar o pedido agora.");
   }
 }
 
-function renderizarTudo() { renderizarCategorias(); renderizarProdutos(); }
+function renderizarTudo() {
+  renderizarCategorias();
+  renderizarProdutos();
+}
 
 categoriasEl.addEventListener("click", (e) => {
   const botao = e.target.closest("[data-categoria]");
@@ -216,9 +280,21 @@ categoriasEl.addEventListener("click", (e) => {
   renderizarTudo();
 });
 
-categoriaSelectEl.addEventListener("change", () => { categoriaAtual = categoriaSelectEl.value; renderizarTudo(); });
-buscarEl.addEventListener("input", () => { buscarTopoEl.value = buscarEl.value; renderizarProdutos(); });
-buscarTopoEl.addEventListener("input", () => { sincronizarBusca(); renderizarProdutos(); });
+categoriaSelectEl.addEventListener("change", () => {
+  categoriaAtual = categoriaSelectEl.value;
+  renderizarTudo();
+});
+
+buscarEl.addEventListener("input", () => {
+  buscarTopoEl.value = buscarEl.value;
+  renderizarProdutos();
+});
+
+buscarTopoEl.addEventListener("input", () => {
+  sincronizarBusca();
+  renderizarProdutos();
+});
+
 ordenarEl.addEventListener("change", renderizarProdutos);
 
 document.querySelectorAll("[data-nav-category]").forEach((link) => link.addEventListener("click", (e) => {
@@ -238,11 +314,18 @@ document.addEventListener("click", (e) => {
     const produto = produtos.find((item) => String(item.id) === String(id));
     const select = document.querySelector(`.tamanho[data-id="${id}"]`);
     const tamanho = select.value;
+
+    if (!produto) {
+      mostrarAviso("Produto não encontrado no banco de dados.");
+      return;
+    }
+
     if (!tamanho) {
       select.style.borderColor = "red";
       mostrarAviso("Escolha um tamanho antes de adicionar ao carrinho.");
       return;
     }
+
     select.style.borderColor = "";
     carrinho.push({ ...produto, tamanho });
     atualizarCarrinho();
@@ -251,17 +334,19 @@ document.addEventListener("click", (e) => {
 
   if (verBtn) {
     const produto = produtos.find((item) => String(item.id) === String(verBtn.dataset.id));
-    abrirDetalhesProduto(produto);
+    if (produto) abrirDetalhesProduto(produto);
   }
 });
 
 mAdd.addEventListener("click", () => {
   if (!produtoAtual) return;
+
   const tamanho = mTamanho.value;
   if (!tamanho) {
     mostrarAviso("Escolha um tamanho para continuar.");
     return;
   }
+
   carrinho.push({ ...produtoAtual, tamanho });
   atualizarCarrinho();
   modalProduto.hide();
