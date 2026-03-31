@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const produtosRouter = require("./routes/produtos");
 const pedidosRouter = require("./routes/pedidos");
+const { ensureSchema } = require("./ensureSchema");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,16 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(frontendDir, "index.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+async function startServer() {
+  try {
+    await ensureSchema();
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando em http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Erro ao preparar o banco de dados:', error.message);
+    process.exit(1);
+  }
+}
+
+startServer();

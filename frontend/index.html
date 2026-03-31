@@ -1,394 +1,189 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resenha Sports</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-:root{--blue:#2230ad;--blue-dark:#182388;--green:#0d7a5f;--green-dark:#085542;--bg:#eef4f3;--text:#122019;--muted:#60756d;--line:#d8e4df;--shadow:0 20px 44px rgba(17,33,27,.10)}
-*{box-sizing:border-box}
-body{margin:0;font-family:"DM Sans",sans-serif;background:linear-gradient(180deg,#f7fbfa 0%,var(--bg) 100%);color:var(--text)}
-a{text-decoration:none}img{max-width:100%;display:block}
-.topbar,.navline{background:var(--blue);color:#fff}.page-shell{max-width:1820px}.topbar-main{display:grid;grid-template-columns:auto 1fr auto;gap:1.25rem;align-items:center;padding:1rem 0}.brand-block{display:flex;align-items:center;gap:.9rem}.crest{width:68px;height:68px;border-radius:22px;background:linear-gradient(180deg,#10209b,#09156c);display:grid;place-items:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.12),0 14px 30px rgba(0,0,0,.22)}.crest-inner{width:44px;height:52px;border-radius:14px 14px 18px 18px;background:linear-gradient(180deg,#0e49f2,#07174c);position:relative;border:2px solid rgba(243,176,61,.88)}.crest-inner::before{content:"";position:absolute;inset:7px 10px auto;height:22px;border-radius:10px;background:rgba(255,255,255,.14)}.brand-copy{font-family:"Barlow",sans-serif;line-height:.9}.brand-copy strong{display:block;font-size:2rem;font-weight:800;letter-spacing:-.03em}.brand-copy span{display:block;font-size:1.05rem;font-weight:700;opacity:.9}
-.search-box{position:relative;width:100%}.search-box input{width:100%;height:54px;border:none;border-radius:16px;padding:0 62px 0 18px;font-size:1rem;outline:none}.search-box button{position:absolute;right:8px;top:7px;width:40px;height:40px;border:none;border-radius:12px;background:#fff;color:var(--blue);font-size:1.4rem}.top-actions{display:flex;align-items:center;gap:1rem}.action-link{display:flex;flex-direction:column;align-items:center;gap:.15rem;color:#fff;font-size:.86rem;background:none;border:none}.action-link .icon{width:34px;height:34px;display:grid;place-items:center}.action-link svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.8}.cart-pill{position:relative}.cart-count{position:absolute;top:-2px;right:-2px;display:grid;place-items:center;width:20px;height:20px;border-radius:999px;background:#ff7a00;color:#fff;font-size:.76rem;font-weight:800}
-.mobile-actions{display:none;align-items:center;gap:.75rem;justify-self:end}.mobile-cart-btn,.mobile-menu-toggle{border:1px solid rgba(255,255,255,.34);border-radius:14px;width:48px;height:48px;background:transparent;color:#fff;align-items:center;justify-content:center;position:relative}.mobile-menu-toggle{display:none}.mobile-cart-btn{display:none}.mobile-cart-btn svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8}.mobile-menu-toggle span{display:block;width:20px;height:2px;background:#fff;position:relative}.mobile-menu-toggle span::before,.mobile-menu-toggle span::after{content:"";position:absolute;left:0;width:20px;height:2px;background:#fff}.mobile-menu-toggle span::before{top:-6px}.mobile-menu-toggle span::after{top:6px}
-.navline{border-top:1px solid rgba(255,255,255,.18)}.navbar-custom{padding:.65rem 0}.navbar-custom .navbar-toggler{border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:.55rem .8rem}.navbar-custom .navbar-toggler:focus{box-shadow:none}.navbar-custom .navbar-toggler-icon{filter:brightness(0) invert(1)}.nav-menu{display:flex;justify-content:center;gap:2rem;align-items:center}.nav-menu .nav-link{color:#fff;font-weight:600;letter-spacing:.02em;padding:.4rem 0}.nav-menu .nav-link:hover,.nav-menu .nav-link:focus{color:#d9e2ff}
-.hero{padding:0}.hero-wrap{position:relative;background:#fff}.hero-banner{width:100%;height:min(540px,48vw);min-height:280px;background:url('./image/banner-brasileirao.webp') center/contain no-repeat;background-color:#f3f5f6}.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:999px;border:1px solid rgba(0,0,0,.25);background:rgba(255,255,255,.58);display:grid;place-items:center;font-size:2rem;color:#222}.hero-arrow.left{left:24px}.hero-arrow.right{right:24px}
-.catalog-shell{margin-top:1.8rem}.surface-card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.filters-card{padding:1.4rem}.catalog-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:1rem}.catalog-head h2{margin:0;font-family:"Barlow",sans-serif;font-size:2rem}.catalog-head p{margin:0;color:var(--muted)}.filters-row{display:grid;grid-template-columns:1.4fr .9fr .9fr;gap:1rem}.filters-row input,.filters-row select,.modal-content .form-select,.modal-content .form-control{height:54px;border-radius:16px;border:1px solid var(--line);padding:0 1rem;background:#fff}.chip-group{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}.chip{border:none;border-radius:999px;padding:.75rem 1rem;background:#fff;border:1px solid var(--line);font-weight:700;color:var(--text)}.chip.active,.chip:hover{background:var(--green);border-color:var(--green);color:#fff}
-.product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.2rem;margin-top:1.2rem}.product-card{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}.product-card:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(17,33,27,.16)}.product-media{position:relative;background:#eef4f2;aspect-ratio:4/4.2}.product-media img{width:100%;height:100%;object-fit:cover}.badge-tag{position:absolute;left:14px;top:14px;background:#fff;color:var(--blue-dark);padding:.45rem .8rem;border-radius:999px;font-size:.78rem;font-weight:800}.product-body{padding:1rem 1rem 1.1rem}.product-name{font-family:"Barlow",sans-serif;font-size:1.35rem;margin:0 0 .35rem}.product-desc{color:var(--muted);min-height:44px;margin:0 0 .8rem}.product-meta{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.8rem}.product-price{font-weight:800;color:var(--green);font-size:1.15rem}.sizes{font-size:.82rem;color:var(--muted)}.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}.btn-shop{height:46px;border:none;border-radius:14px;font-weight:800}.btn-shop.primary{background:var(--green);color:#fff}.btn-shop.primary:hover{background:var(--green-dark)}.btn-shop.ghost{background:#f5f8f7;color:#14231d}.empty-state{grid-column:1/-1;background:#fff;border:1px solid var(--line);border-radius:24px;padding:3rem 1rem;text-align:center;color:var(--muted);box-shadow:var(--shadow)}
-.modal-content{border:none;border-radius:24px;overflow:hidden}.summary-bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem;padding:1rem 1.2rem;border-radius:18px;background:#f4f8f6}.cart-item{display:grid;grid-template-columns:72px 1fr auto;gap:1rem;align-items:center;padding:.8rem 0;border-bottom:1px solid #edf2ef}.cart-thumb{width:72px;height:72px;border-radius:16px;object-fit:cover}.toast{border-radius:18px}.footer{margin-top:3rem;padding:2rem 0 3rem;color:var(--muted);text-align:center}
-@media (max-width:1200px){.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:991px){.topbar-main{grid-template-columns:1fr auto;grid-template-areas:"brand mobile" "search search"}.brand-block{grid-area:brand}.mobile-actions{display:flex;grid-area:mobile}.mobile-menu-toggle,.mobile-cart-btn{display:flex}.search-box{grid-area:search}.top-actions{display:none}.filters-row{grid-template-columns:1fr}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalog-head{flex-direction:column;align-items:flex-start}.hero-arrow{display:none}.navbar-custom .navbar-collapse{padding:.8rem 0}.nav-menu{align-items:flex-start;gap:.3rem}.nav-menu .nav-link{padding:.65rem 0}}
-@media (max-width:640px){.brand-copy strong{font-size:1.4rem}.brand-copy span{font-size:.88rem}.crest{width:58px;height:58px;border-radius:18px}.product-grid{grid-template-columns:1fr}.product-actions{grid-template-columns:1fr}.cart-item{grid-template-columns:1fr}.cart-thumb{width:100%;height:180px}.hero-banner{height:230px}.summary-bar{flex-direction:column;align-items:flex-start}.page-shell{padding-left:1rem;padding-right:1rem}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resenha Sports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/index.css">
 </head>
+
 <body>
-<header>
-  <div class="topbar">
-    <div class="container page-shell">
-      <div class="topbar-main">
-        <div class="brand-block">
-          <div class="crest"><div class="crest-inner"></div></div>
-          <div class="brand-copy text-white"><strong>RESENHA</strong><span>SPORTS</span></div>
-        </div>
-        <div class="mobile-actions"><button class="mobile-cart-btn" type="button" data-bs-toggle="modal" data-bs-target="#cartModal" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"></circle><circle cx="18" cy="20" r="1.5"></circle><path d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h9.9a1 1 0 0 0 1-.8L21 7H7"></path></svg><span id="cart-count-mobile" class="cart-count">0</span></button><button class="mobile-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu" aria-controls="#mainMenu" aria-expanded="false" aria-label="Abrir menu"><span></span></button></div>
-        <div class="search-box">
-          <input type="text" id="buscarTopo" placeholder="O que você está buscando?">
-          <button type="button" aria-label="Buscar">⌕</button>
-        </div>
-        <div class="top-actions">
-          <a class="action-link" href="#">
-            <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H8l-4 4z"></path></svg></span>
-            <span>Atendimento</span>
-          </a>
-          <a class="action-link" href="login.html">
-            <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c1.8-4 5-6 8-6s6.2 2 8 6"></path></svg></span>
-            <span>Minha conta</span>
-          </a>
-          <button class="action-link cart-pill p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#cartModal">
-            <span class="icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"></circle><circle cx="18" cy="20" r="1.5"></circle><path d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h9.9a1 1 0 0 0 1-.8L21 7H7"></path></svg></span>
-            <span>Meu carrinho</span>
-            <span id="cart-count" class="cart-count">0</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="navline">
-    <div class="container page-shell">
-      <nav class="navbar navbar-expand-lg navbar-custom px-0">
-        <button class="navbar-toggler d-lg-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Abrir menu">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mainMenu">
-          <div class="nav-menu navbar-nav mx-auto w-100 justify-content-center">
-            <a class="nav-link" href="#">Início</a>
-            <a class="nav-link" href="#" data-nav-category="Brasileirao">Brasileirão</a>
-            <a class="nav-link" href="#" data-nav-category="Selecoes">Seleções</a>
-            <a class="nav-link" href="#" data-nav-category="Europa">Europa</a>
-            <a class="nav-link d-lg-none" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">Carrinho</a>
-            <a class="nav-link d-lg-none" href="login.html">Minha conta</a>
-            <a class="nav-link" href="login.html">Contato</a>
+  <header>
+    <div class="topbar">
+      <div class="container page-shell">
+        <div class="topbar-main">
+          <div class="brand-block">
+            <div class="crest">
+              <div class="crest-inner"></div>
+            </div>
+            <div class="brand-copy text-white"><strong>RESENHA</strong><span>SPORTS</span></div>
+          </div>
+          <button class="mobile-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu"
+            aria-controls="mainMenu" aria-expanded="false" aria-label="Abrir menu"><span></span></button>
+          <div class="search-box">
+            <input type="text" id="buscarTopo" placeholder="O que você está buscando?">
+            <button type="button" aria-label="Buscar">⌕</button>
+          </div>
+          <div class="top-actions">
+            <a class="action-link" href="#"><span class="icon"><svg viewBox="0 0 24 24">
+                  <path d="M4 5h16v10H8l-4 4z"></path>
+                </svg></span><span>Atendimento</span></a>
+            <a class="action-link" href="login.html"><span class="icon"><svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="4"></circle>
+                  <path d="M4 20c1.8-4 5-6 8-6s6.2 2 8 6"></path>
+                </svg></span><span>Minha conta</span></a>
+            <button class="action-link cart-pill p-0 border-0 bg-transparent" data-bs-toggle="modal"
+              data-bs-target="#cartModal"><span class="icon"><svg viewBox="0 0 24 24">
+                  <circle cx="9" cy="20" r="1.5"></circle>
+                  <circle cx="18" cy="20" r="1.5"></circle>
+                  <path d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h9.9a1 1 0 0 0 1-.8L21 7H7"></path>
+                </svg></span><span>Meu carrinho</span><span id="cart-count" class="cart-count">0</span></button>
           </div>
         </div>
-      </nav>
+      </div>
     </div>
-  </div>
-</header>
-<section class="hero">
-  <div class="hero-wrap">
-    <div class="hero-banner"></div>
-    <button class="hero-arrow left" type="button">‹</button>
-    <button class="hero-arrow right" type="button">›</button>
-  </div>
-</section>
-<main class="container page-shell catalog-shell">
-  <section class="surface-card filters-card">
-    <div class="catalog-head">
-      <div><p>Vitrine principal</p><h2>Camisas em destaque</h2></div>
-      <p></p>
+    <div class="navline">
+      <div class="container page-shell">
+        <nav class="navbar navbar-expand-lg navbar-custom px-0">
+          <div class="collapse navbar-collapse" id="mainMenu">
+            <div class="nav-menu navbar-nav mx-auto w-100 justify-content-center">
+              <a class="nav-link" href="#">Início</a>
+              <a class="nav-link" href="#" data-nav-category="Brasileirao">Brasileirão</a>
+              <a class="nav-link" href="#" data-nav-category="Selecoes">Seleções</a>
+              <a class="nav-link" href="#" data-nav-category="Europa">Europa</a>
+              <a class="nav-link" href="login.html">Contato</a>
+            </div>
+          </div>
+        </nav>
+      </div>
     </div>
-    <div class="filters-row">
-      <input type="text" id="buscar" placeholder="Buscar por time, descrição ou categoria...">
-      <select id="categoriaSelect"><option value="Todos">Todas as categorias</option></select>
-      <select id="ordenar"><option value="relevancia">Ordenar por relevância</option><option value="menor-preco">Menor preço</option><option value="maior-preco">Maior preço</option><option value="nome">Nome A-Z</option></select>
+  </header>
+  <section class="hero">
+    <div class="hero-wrap">
+      <div class="hero-banner"></div><button class="hero-arrow left" type="button">‹</button><button
+        class="hero-arrow right" type="button">›</button>
     </div>
-    <div id="categorias" class="chip-group"></div>
   </section>
-  <section id="lista-produtos" class="product-grid"></section>
-</main>
-<div class="modal fade" id="modalProduto" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><div class="modal-header bg-dark text-white"><div><h5 id="mTitulo" class="mb-0"></h5><small id="mCategoria" class="text-white-50"></small></div><button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button></div><div class="modal-body p-4"><div class="row g-4 align-items-center"><div class="col-md-6"><img id="mImg" class="w-100 rounded-4" alt="Produto selecionado"></div><div class="col-md-6"><p id="mDesc" class="text-secondary"></p><h4 class="text-success fw-bold mb-3">R$ <span id="mPreco"></span></h4><label for="mTamanho" class="form-label fw-semibold">Escolha o tamanho</label><select id="mTamanho" class="form-select mb-3"></select><button id="mAdd" class="btn btn-success w-100">Adicionar ao carrinho</button></div></div></div></div></div></div>
-<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><div class="modal-header bg-dark text-white"><h5 class="mb-0">Seu carrinho</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button></div><div class="modal-body p-4"><div id="cart-items"></div><div class="summary-bar"><div><div class="text-secondary">Total da compra</div><strong class="fs-4">R$ <span id="cart-total">0,00</span></strong></div><button class="btn btn-success" onclick="abrirPagamento()">Finalizar compra</button></div></div></div></div></div>
-<div class="modal fade" id="modalPagamento" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><div class="modal-header bg-success text-white"><h5 class="mb-0">Finalizar compra</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button></div><div class="modal-body p-4"><div class="row g-3"><div class="col-md-6"><label for="checkoutNome" class="form-label fw-semibold">Nome completo</label><input id="checkoutNome" class="form-control" placeholder="Seu nome"></div><div class="col-md-6"><label for="checkoutTelefone" class="form-label fw-semibold">Telefone</label><input id="checkoutTelefone" class="form-control" placeholder="(00) 00000-0000"></div><div class="col-md-4"><label for="checkoutCep" class="form-label fw-semibold">CEP</label><input id="checkoutCep" class="form-control" placeholder="00000-000"></div><div class="col-md-8"><label for="checkoutRua" class="form-label fw-semibold">Rua / Avenida</label><input id="checkoutRua" class="form-control" placeholder="Digite seu endereço"></div><div class="col-md-4"><label for="checkoutNumero" class="form-label fw-semibold">Número</label><input id="checkoutNumero" class="form-control" placeholder="123"></div><div class="col-md-4"><label for="checkoutBairro" class="form-label fw-semibold">Bairro</label><input id="checkoutBairro" class="form-control" placeholder="Seu bairro"></div><div class="col-md-4"><label for="checkoutCidade" class="form-label fw-semibold">Cidade</label><input id="checkoutCidade" class="form-control" placeholder="Sua cidade"></div><div class="col-12"><label for="checkoutComplemento" class="form-label fw-semibold">Complemento</label><input id="checkoutComplemento" class="form-control" placeholder="Apartamento, bloco, referência..."></div><div class="col-md-6"><label for="metodoPagamento" class="form-label fw-semibold">Método de pagamento</label><select id="metodoPagamento" class="form-select"><option value="Pix">Pix</option><option value="Cartão">Cartão</option><option value="Boleto">Boleto</option></select></div><div class="col-md-6 d-flex align-items-end"><button class="btn btn-success w-100" onclick="confirmarPagamento()">Confirmar pedido</button></div></div></div></div></div></div>
-<div id="toastAviso" class="toast align-items-center text-bg-danger border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true"><div class="d-flex"><div class="toast-body" id="toastMensagem">Escolha um tamanho antes de continuar.</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button></div></div>
-<footer class="footer">© <span id="ano2"></span> Resenha Sports • <a href="login.html">Área do lojista</a></footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-const PRODUTOS_API = "/api/produtos";
-const PEDIDOS_API = "/api/pedidos";
-const produtosPadrao = [
-  { nome:"Corinthians", categoria:"Brasileirao", preco:120, img:"./image/corinthianss.webp", desc:"Camisa do Timão", tamanhos:["P","M","G","GG"] },
-  { nome:"Flamengo", categoria:"Brasileirao", preco:100, img:"./image/flamengoo.webp", desc:"Camisa rubro-negra", tamanhos:["P","M","G","GG"] },
-  { nome:"Fluminense", categoria:"Brasileirao", preco:111, img:"./image/fluminensee.webp", desc:"Camisa tricolor", tamanhos:["P","M","G","GG"] },
-  { nome:"Sao Paulo", categoria:"Brasileirao", preco:100, img:"./image/sao paulo.webp", desc:"Camisa paulista", tamanhos:["P","M","G","GG"] },
-  { nome:"Atletico MG", categoria:"Brasileirao", preco:100, img:"./image/atletico mgg.webp", desc:"Camisa do Galo", tamanhos:["P","M","G","GG"] },
-  { nome:"Bragantino", categoria:"Brasileirao", preco:130, img:"./image/red bull bragantino.webp", desc:"Camisa Red Bull", tamanhos:["P","M","G","GG"] },
-  { nome:"Vasco", categoria:"Brasileirao", preco:90, img:"./image/vascoo.webp", desc:"Camisa Vasco", tamanhos:["P","M","G","GG"] },
-  { nome:"Palmeiras", categoria:"Brasileirao", preco:110, img:"./image/palmeirass.webp", desc:"Camisa Palmeiras", tamanhos:["P","M","G","GG"] }
-];
-const labelsCategoria = { Todos:"Todas as categorias", Brasileirao:"Brasileirão", Selecoes:"Seleções", Europa:"Europa" };
-const lista = document.getElementById("lista-produtos");
-const categoriasEl = document.getElementById("categorias");
-const buscarEl = document.getElementById("buscar");
-const buscarTopoEl = document.getElementById("buscarTopo");
-const categoriaSelectEl = document.getElementById("categoriaSelect");
-const ordenarEl = document.getElementById("ordenar");
-const contador = document.getElementById("cart-count"); const contadorMobile = document.getElementById("cart-count-mobile");
-const cartItems = document.getElementById("cart-items");
-const cartTotal = document.getElementById("cart-total");
-const mTitulo = document.getElementById("mTitulo");
-const mCategoria = document.getElementById("mCategoria");
-const mImg = document.getElementById("mImg");
-const mDesc = document.getElementById("mDesc");
-const mPreco = document.getElementById("mPreco");
-const mTamanho = document.getElementById("mTamanho");
-const mAdd = document.getElementById("mAdd");
-const modalProduto = new bootstrap.Modal(document.getElementById("modalProduto"));
-const modalPagamento = new bootstrap.Modal(document.getElementById("modalPagamento"));
-let produtos = [];
-let carrinho = JSON.parse(localStorage.getItem("resenha-carrinho") || "[]");
-let categoriaAtual = "Todos";
-let produtoAtual = null;
-
-function labelCategoria(categoria) { return labelsCategoria[categoria] || categoria; }
-function mostrarAviso(msg) { document.getElementById("toastMensagem").innerText = msg; new bootstrap.Toast(document.getElementById("toastAviso")).show(); }
-function formatarPreco(valor) { return Number(valor).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-function sincronizarBusca() { buscarEl.value = buscarTopoEl.value; }
-function calcularTotalCarrinho() { return carrinho.reduce((total, item) => total + Number(item.preco), 0); }
-
-async function carregarProdutosAPI() {
-  try {
-    const resposta = await fetch(PRODUTOS_API);
-    if (!resposta.ok) throw new Error("Falha ao carregar produtos");
-    const dados = await resposta.json();
-    produtos = Array.isArray(dados) && dados.length ? dados : [...produtosPadrao];
-  } catch (error) {
-    console.error(error);
-    produtos = [...produtosPadrao];
-  }
-}
-
-function renderizarCategorias() {
-  const categorias = ["Todos", ...new Set(produtos.map((produto) => produto.categoria))];
-  categoriaSelectEl.innerHTML = categorias.map((categoria) => `<option value="${categoria}">${labelCategoria(categoria)}</option>`).join("");
-  categoriaSelectEl.value = categoriaAtual;
-  categoriasEl.innerHTML = categorias.map((categoria) => `<button class="chip ${categoriaAtual === categoria ? "active" : ""}" data-categoria="${categoria}">${labelCategoria(categoria)}</button>`).join("");
-}
-
-function obterBuscaAtual() {
-  return (buscarEl.value || buscarTopoEl.value || "").trim().toLowerCase();
-}
-
-function obterProdutosFiltrados() {
-  const busca = obterBuscaAtual();
-  let filtrados = [...produtos];
-  if (categoriaAtual !== "Todos") filtrados = filtrados.filter((produto) => produto.categoria === categoriaAtual);
-  if (busca) filtrados = filtrados.filter((produto) => produto.nome.toLowerCase().includes(busca) || produto.categoria.toLowerCase().includes(busca) || produto.desc.toLowerCase().includes(busca));
-  if (ordenarEl.value === "menor-preco") filtrados.sort((a, b) => a.preco - b.preco);
-  else if (ordenarEl.value === "maior-preco") filtrados.sort((a, b) => b.preco - a.preco);
-  else if (ordenarEl.value === "nome") filtrados.sort((a, b) => a.nome.localeCompare(b.nome));
-  return filtrados;
-}
-
-function renderizarProdutos() {
-  const itens = obterProdutosFiltrados();
-  if (!itens.length) {
-    lista.innerHTML = `<div class="empty-state">Nenhum produto encontrado para esse filtro.</div>`;
-    return;
-  }
-
-  lista.innerHTML = itens.map((produto) => `
-    <article class="product-card">
-      <div class="product-media">
-        <img src="${produto.img}" alt="${produto.nome}">
-        <span class="badge-tag">${labelCategoria(produto.categoria)}</span>
-      </div>
-      <div class="product-body">
-        <h3 class="product-name">${produto.nome}</h3>
-        <p class="product-desc">${produto.desc}</p>
-        <div class="product-meta">
-          <div class="product-price">R$ ${formatarPreco(produto.preco)}</div>
-          <div class="sizes">${produto.tamanhos.join(" • ")}</div>
-        </div>
-        <select class="form-select tamanho mb-2" data-id="${produto.id}">
-          <option value="">Escolha o tamanho</option>
-          ${produto.tamanhos.map((tamanho) => `<option value="${tamanho}">${tamanho}</option>`).join("")}
-        </select>
-        <div class="product-actions">
-          <button class="btn-shop primary add" data-id="${produto.id}">Adicionar</button>
-          <button class="btn-shop ghost ver" data-id="${produto.id}">Ver mais</button>
-        </div>
-      </div>
-    </article>
-  `).join("");
-}
-
-function atualizarCarrinho() {
-  contador.innerText = carrinho.length; if (contadorMobile) contadorMobile.innerText = carrinho.length;
-  localStorage.setItem("resenha-carrinho", JSON.stringify(carrinho));
-  renderizarCarrinho();
-}
-
-function renderizarCarrinho() {
-  if (!carrinho.length) {
-    cartItems.innerHTML = `<div class="empty-state">Seu carrinho está vazio.</div>`;
-    cartTotal.innerText = formatarPreco(0);
-    return;
-  }
-
-  let total = 0;
-  cartItems.innerHTML = carrinho.map((item, index) => {
-    total += Number(item.preco);
-    return `
-      <div class="cart-item">
-        <img src="${item.img}" alt="${item.nome}" class="cart-thumb">
+  <main class="container page-shell catalog-shell">
+    <section class="surface-card filters-card">
+      <div class="catalog-head">
         <div>
-          <strong>${item.nome}</strong>
-          <div class="text-secondary">Categoria: ${labelCategoria(item.categoria)}</div>
-          <div class="text-secondary">Tamanho: ${item.tamanho}</div>
-          <div class="fw-bold mt-1">R$ ${formatarPreco(item.preco)}</div>
+          <p>Vitrine principal</p>
+          <h2>Camisas em destaque</h2>
         </div>
-        <button class="btn btn-outline-danger btn-sm" onclick="removerItem(${index})">Remover</button>
+        <p></p>
       </div>
-    `;
-  }).join("");
-
-  cartTotal.innerText = formatarPreco(total);
-}
-
-function removerItem(index) { carrinho.splice(index, 1); atualizarCarrinho(); }
-
-function abrirDetalhesProduto(produto) {
-  produtoAtual = produto;
-  mTitulo.innerText = produto.nome;
-  mCategoria.innerText = labelCategoria(produto.categoria);
-  mImg.src = produto.img;
-  mDesc.innerText = produto.desc;
-  mPreco.innerText = formatarPreco(produto.preco);
-  mTamanho.innerHTML = `<option value="">Escolha o tamanho</option>${produto.tamanhos.map((tamanho) => `<option value="${tamanho}">${tamanho}</option>`).join("")}`;
-  modalProduto.show();
-}
-
-function abrirPagamento() {
-  if (!carrinho.length) {
-    mostrarAviso("Adicione pelo menos um item ao carrinho antes de finalizar.");
-    return;
-  }
-  modalPagamento.show();
-}
-
-async function confirmarPagamento() {
-  const pedido = {
-    clienteNome: document.getElementById("checkoutNome").value.trim(),
-    telefone: document.getElementById("checkoutTelefone").value.trim(),
-    cep: document.getElementById("checkoutCep").value.trim(),
-    rua: document.getElementById("checkoutRua").value.trim(),
-    numero: document.getElementById("checkoutNumero").value.trim(),
-    bairro: document.getElementById("checkoutBairro").value.trim(),
-    cidade: document.getElementById("checkoutCidade").value.trim(),
-    complemento: document.getElementById("checkoutComplemento").value.trim(),
-    metodoPagamento: document.getElementById("metodoPagamento").value,
-    statusPagamento: "Aguardando pagamento",
-    statusEntrega: "Pedido recebido",
-    total: calcularTotalCarrinho(),
-    itens: carrinho.map((item) => ({ id: item.id, nome: item.nome, categoria: item.categoria, preco: item.preco, tamanho: item.tamanho, img: item.img, quantidade: 1 }))
-  };
-
-  if (!pedido.clienteNome || !pedido.telefone || !pedido.cep || !pedido.rua || !pedido.numero || !pedido.bairro || !pedido.cidade) {
-    mostrarAviso("Preencha os dados de entrega antes de continuar.");
-    return;
-  }
-
-  try {
-    const resposta = await fetch(PEDIDOS_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(pedido)
-    });
-
-    if (!resposta.ok) throw new Error("Não foi possível criar o pedido.");
-
-    const pedidoCriado = await resposta.json();
-    localStorage.setItem("resenha_pedido_atual", JSON.stringify(pedidoCriado));
-    localStorage.removeItem("resenha-carrinho");
-    carrinho = [];
-    atualizarCarrinho();
-
-    if (pedido.metodoPagamento === "Pix") window.location.href = "pagamento_pix.html";
-    else if (pedido.metodoPagamento === "Cartão") window.location.href = "pagamento_cartao_credito.html";
-    else window.location.href = "pagamento_boleto.html";
-  } catch (error) {
-    console.error(error);
-    mostrarAviso("Não foi possível registrar o pedido agora.");
-  }
-}
-
-function renderizarTudo() { renderizarCategorias(); renderizarProdutos(); }
-
-categoriasEl.addEventListener("click", (e) => {
-  const botao = e.target.closest("[data-categoria]");
-  if (!botao) return;
-  categoriaAtual = botao.dataset.categoria;
-  renderizarTudo();
-});
-
-categoriaSelectEl.addEventListener("change", () => { categoriaAtual = categoriaSelectEl.value; renderizarTudo(); });
-buscarEl.addEventListener("input", () => { buscarTopoEl.value = buscarEl.value; renderizarProdutos(); });
-buscarTopoEl.addEventListener("input", () => { sincronizarBusca(); renderizarProdutos(); });
-ordenarEl.addEventListener("change", renderizarProdutos);
-
-document.querySelectorAll("[data-nav-category]").forEach((link) => link.addEventListener("click", (e) => {
-  e.preventDefault();
-  categoriaAtual = link.dataset.navCategory;
-  renderizarTudo();
-  bootstrap.Collapse.getOrCreateInstance(document.getElementById("mainMenu")).hide();
-  window.scrollTo({ top: document.querySelector(".catalog-shell").offsetTop - 120, behavior: "smooth" });
-}));
-
-document.addEventListener("click", (e) => {
-  const addBtn = e.target.closest(".add");
-  const verBtn = e.target.closest(".ver");
-
-  if (addBtn) {
-    const id = addBtn.dataset.id;
-    const produto = produtos.find((item) => String(item.id) === String(id));
-    const select = document.querySelector(`.tamanho[data-id="${id}"]`);
-    const tamanho = select.value;
-    if (!tamanho) {
-      select.style.borderColor = "red";
-      mostrarAviso("Escolha um tamanho antes de adicionar ao carrinho.");
-      return;
-    }
-    select.style.borderColor = "";
-    carrinho.push({ ...produto, tamanho });
-    atualizarCarrinho();
-    mostrarAviso("Produto adicionado ao carrinho.");
-  }
-
-  if (verBtn) {
-    const produto = produtos.find((item) => String(item.id) === String(verBtn.dataset.id));
-    abrirDetalhesProduto(produto);
-  }
-});
-
-mAdd.addEventListener("click", () => {
-  if (!produtoAtual) return;
-  const tamanho = mTamanho.value;
-  if (!tamanho) {
-    mostrarAviso("Escolha um tamanho para continuar.");
-    return;
-  }
-  carrinho.push({ ...produtoAtual, tamanho });
-  atualizarCarrinho();
-  modalProduto.hide();
-  mostrarAviso("Produto adicionado ao carrinho.");
-});
-
-document.getElementById("cartModal").addEventListener("show.bs.modal", renderizarCarrinho);
-document.getElementById("ano2").innerText = new Date().getFullYear();
-
-async function iniciarPagina() {
-  await carregarProdutosAPI();
-  renderizarTudo();
-  atualizarCarrinho();
-}
-
-iniciarPagina();
-</script>
+      <div class="filters-row"><input type="text" id="buscar"
+          placeholder="Buscar por time, descrição ou categoria..."><select id="categoriaSelect">
+          <option value="Todos">Todas as categorias</option>
+        </select><select id="ordenar">
+          <option value="relevancia">Ordenar por relevância</option>
+          <option value="menor-preco">Menor preço</option>
+          <option value="maior-preco">Maior preço</option>
+          <option value="nome">Nome A-Z</option>
+        </select></div>
+      <div id="categorias" class="chip-group"></div>
+    </section>
+    <section id="lista-produtos" class="product-grid"></section>
+  </main>
+  <div class="modal fade" id="modalProduto" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <div>
+            <h5 id="mTitulo" class="mb-0"></h5><small id="mCategoria" class="text-white-50"></small>
+          </div><button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-4 align-items-center">
+            <div class="col-md-6"><img id="mImg" class="w-100 rounded-4" alt="Produto selecionado"></div>
+            <div class="col-md-6">
+              <p id="mDesc" class="text-secondary"></p>
+              <h4 class="text-success fw-bold mb-3">R$ <span id="mPreco"></span></h4><label for="mTamanho"
+                class="form-label fw-semibold">Escolha o tamanho</label><select id="mTamanho"
+                class="form-select mb-3"></select><button id="mAdd" class="btn btn-success w-100">Adicionar ao
+                carrinho</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="mb-0">Seu carrinho</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"
+            aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="cart-items"></div>
+          <div class="summary-bar">
+            <div>
+              <div class="text-secondary">Total da compra</div><strong class="fs-4">R$ <span
+                  id="cart-total">0,00</span></strong>
+            </div><button class="btn btn-success" onclick="abrirPagamento()">Finalizar compra</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="modalPagamento" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="mb-0">Finalizar compra</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"
+            aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-3">
+            <div class="col-md-6"><label for="checkoutNome" class="form-label fw-semibold">Nome completo</label><input
+                id="checkoutNome" class="form-control" placeholder="Seu nome"></div>
+            <div class="col-md-6"><label for="checkoutTelefone" class="form-label fw-semibold">Telefone</label><input
+                id="checkoutTelefone" class="form-control" placeholder="(00) 00000-0000"></div>
+            <div class="col-md-4"><label for="checkoutCep" class="form-label fw-semibold">CEP</label><input
+                id="checkoutCep" class="form-control" placeholder="00000-000"></div>
+            <div class="col-md-8"><label for="checkoutRua" class="form-label fw-semibold">Rua / Avenida</label><input
+                id="checkoutRua" class="form-control" placeholder="Digite seu endereço"></div>
+            <div class="col-md-4"><label for="checkoutNumero" class="form-label fw-semibold">Número</label><input
+                id="checkoutNumero" class="form-control" placeholder="123"></div>
+            <div class="col-md-4"><label for="checkoutBairro" class="form-label fw-semibold">Bairro</label><input
+                id="checkoutBairro" class="form-control" placeholder="Seu bairro"></div>
+            <div class="col-md-4"><label for="checkoutCidade" class="form-label fw-semibold">Cidade</label><input
+                id="checkoutCidade" class="form-control" placeholder="Sua cidade"></div>
+            <div class="col-12"><label for="checkoutComplemento"
+                class="form-label fw-semibold">Complemento</label><input id="checkoutComplemento" class="form-control"
+                placeholder="Apartamento, bloco, referência..."></div>
+            <div class="col-md-6"><label for="metodoPagamento" class="form-label fw-semibold">Método de
+                pagamento</label><select id="metodoPagamento" class="form-select">
+                <option value="Pix">Pix</option>
+                <option value="Cartão">Cartão</option>
+                <option value="Boleto">Boleto</option>
+              </select></div>
+            <div class="col-md-6 d-flex align-items-end"><button class="btn btn-success w-100"
+                onclick="confirmarPagamento()">Confirmar pedido</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="toastAviso" class="toast align-items-center text-bg-danger border-0 position-fixed bottom-0 end-0 m-3"
+    role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body" id="toastMensagem">Escolha um tamanho antes de continuar.</div><button type="button"
+        class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+    </div>
+  </div>
+  <footer class="footer">© <span id="ano2"></span> Resenha Sports • <a href="login.html">Área do lojista</a></footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./js/index.js"></script>
 </body>
-</html>
 
+</html>

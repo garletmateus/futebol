@@ -36,6 +36,12 @@ function mapearPedido(row, itens) {
   };
 }
 
+async function resolverProdutoIdValido(conexao, produtoId) {
+  if (!produtoId) return null;
+  const [rows] = await conexao.execute("SELECT id FROM produtos WHERE id = ? LIMIT 1", [produtoId]);
+  return rows.length ? produtoId : null;
+}
+
 async function buscarItensPedido(pedidoId) {
   const [rows] = await db.query(
     `SELECT
@@ -135,6 +141,7 @@ router.post("/", async (req, res) => {
     );
 
     for (const item of pedido.itens) {
+      const produtoIdValido = await resolverProdutoIdValido(conexao, item.id || null);
       await conexao.execute(
         `INSERT INTO pedido_itens (
           pedido_id, produto_id, produto_nome, produto_categoria, produto_imagem,
@@ -142,7 +149,7 @@ router.post("/", async (req, res) => {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           pedidoResult.insertId,
-          item.id || null,
+          produtoIdValido,
           String(item.nome || "").trim(),
           String(item.categoria || "").trim(),
           String(item.img || "").trim(),
@@ -160,8 +167,8 @@ router.post("/", async (req, res) => {
     const itensPedido = await buscarItensPedido(pedidoResult.insertId);
     res.status(201).json(mapearPedido(pedidoRows[0], itensPedido));
   } catch (error) {
-    await conexao.rollback();
-    conexao.release();
+    try { await conexao.rollback(); } catch (_) {}
+    try { conexao.release(); } catch (_) {}
     res.status(500).json({ erro: "Erro ao criar pedido", detalhe: error.message });
   }
 });
