@@ -45,6 +45,7 @@ body{background:#eef3f1;font-family:"DM Sans",sans-serif}
       <div class="col-md-6"><label class="form-label fw-semibold">Nome</label><input id="nome" class="form-control" required></div>
       <div class="col-md-3"><label class="form-label fw-semibold">Categoria</label><input id="categoria" class="form-control" required></div>
       <div class="col-md-3"><label class="form-label fw-semibold">Preço</label><input id="preco" type="number" step="0.01" class="form-control" required></div>
+      <div class="col-md-3"><label class="form-label fw-semibold">Estoque</label><input id="estoque" type="number" min="0" class="form-control" required></div>
       <div class="col-12"><label class="form-label fw-semibold">Imagem</label><input id="img" class="form-control" placeholder="./image/corinthianss.webp" required></div>
       <div class="col-12"><label class="form-label fw-semibold">Descrição</label><textarea id="desc" class="form-control" rows="3" required></textarea></div>
       <div class="col-12"><label class="form-label fw-semibold">Tamanhos</label><input id="tamanhos" class="form-control" placeholder="P, M, G, GG" required></div>
@@ -63,6 +64,7 @@ body{background:#eef3f1;font-family:"DM Sans",sans-serif}
             <th>Produto</th>
             <th>Categoria</th>
             <th>Preço</th>
+            <th>Estoque</th>
             <th>Tamanhos</th>
             <th class="text-end">Ações</th>
           </tr>
@@ -125,6 +127,7 @@ function coletarProduto() {
     nome: document.getElementById("nome").value.trim(),
     categoria: document.getElementById("categoria").value.trim(),
     preco: Number(document.getElementById("preco").value),
+    estoque: Math.max(0, Number(document.getElementById("estoque").value || 0)),
     img: document.getElementById("img").value.trim(),
     desc: document.getElementById("desc").value.trim(),
     tamanhos: document.getElementById("tamanhos").value.split(",").map((item) => item.trim()).filter(Boolean)
@@ -149,6 +152,7 @@ async function carregarProdutos() {
       </td>
       <td>${produto.categoria}</td>
       <td>R$ ${formatarPreco(produto.preco)}</td>
+      <td>${Number(produto.estoque || 0) > 0 ? `${produto.estoque} disponíveis` : "Esgotado"}</td>
       <td>${produto.tamanhos.join(", ")}</td>
       <td class="text-end">
         <button class="btn btn-sm btn-outline-primary" onclick="editarProduto(${produto.id})">Editar</button>
@@ -165,6 +169,7 @@ function editarProduto(id) {
   document.getElementById("nome").value = produto.nome;
   document.getElementById("categoria").value = produto.categoria;
   document.getElementById("preco").value = produto.preco;
+  document.getElementById("estoque").value = Number(produto.estoque || 0);
   document.getElementById("img").value = produto.img;
   document.getElementById("desc").value = produto.desc;
   document.getElementById("tamanhos").value = produto.tamanhos.join(", ");

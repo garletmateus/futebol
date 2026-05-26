@@ -16,6 +16,7 @@ CREATE TABLE produtos (
   img VARCHAR(255) NOT NULL,
   descricao TEXT NOT NULL,
   tamanhos JSON NOT NULL,
+  estoque INT NOT NULL DEFAULT 10,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
@@ -55,26 +56,26 @@ CREATE TABLE pedido_itens (
   CONSTRAINT fk_pedido_itens_produto FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos) VALUES
-('Atletico MG', 'Brasileirao', 100.00, './image/atletico mgg.webp', 'Camisa do Galo', JSON_ARRAY('P','M','G','GG')),
-('Bragantino', 'Brasileirao', 130.00, './image/red bull bragantino.webp', 'Camisa Red Bull', JSON_ARRAY('P','M','G','GG')),
-('Corinthians', 'Brasileirao', 120.00, './image/corinthianss.webp', 'Camisa do Timão', JSON_ARRAY('P','M','G','GG')),
-('Flamengo', 'Brasileirao', 100.00, './image/flamengoo.webp', 'Camisa rubro-negra', JSON_ARRAY('P','M','G','GG')),
-('Fluminense', 'Brasileirao', 111.00, './image/fluminensee.webp', 'Camisa tricolor', JSON_ARRAY('P','M','G','GG')),
-('Gremio', 'Brasileirao', 149.90, './image/gremioo.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
-('Internacional', 'Brasileirao', 150.00, './image/interr.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
-('Palmeiras', 'Brasileirao', 110.00, './image/palmeirass.webp', 'Camisa Palmeiras', JSON_ARRAY('P','M','G','GG')),
-('Santos', 'Brasileirao', 139.90, './image/santoss.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
-('Sao Paulo', 'Brasileirao', 100.00, './image/sao paulo.webp', 'Camisa paulista', JSON_ARRAY('P','M','G','GG')),
-('Vasco', 'Brasileirao', 90.00, './image/vascoo.webp', 'Camisa Vasco', JSON_ARRAY('P','M','G','GG')),
-('Atletico de Madrid', 'Europa', 209.90, './image/atletico de madri.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
-('Barcelona', 'Europa', 214.90, './image/barcelona.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
-('Manchester United', 'Europa', 229.90, './image/manchesster united.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
-('Real Madrid', 'Europa', 219.90, './image/real madri.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG')),
-('Argentina', 'Selecoes', 179.90, './image/selecaoargentina.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG')),
-('Brasil', 'Selecoes', 189.90, './image/selecaobrasil.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG')),
-('Italia', 'Selecoes', 169.90, './image/selecaoitalia.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG')),
-('Portugal', 'Selecoes', 184.90, './image/selecaoportugal.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG'));
+INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos, estoque) VALUES
+('Atletico MG', 'Brasileirao', 100.00, './image/atletico mgg.webp', 'Camisa do Galo', JSON_ARRAY('P','M','G','GG'), 0),
+('Bragantino', 'Brasileirao', 130.00, './image/red bull bragantino.webp', 'Camisa Red Bull', JSON_ARRAY('P','M','G','GG'), 6),
+('Corinthians', 'Brasileirao', 120.00, './image/corinthianss.webp', 'Camisa do Timão', JSON_ARRAY('P','M','G','GG'), 8),
+('Flamengo', 'Brasileirao', 100.00, './image/flamengoo.webp', 'Camisa rubro-negra', JSON_ARRAY('P','M','G','GG'), 0),
+('Fluminense', 'Brasileirao', 111.00, './image/fluminensee.webp', 'Camisa tricolor', JSON_ARRAY('P','M','G','GG'), 5),
+('Gremio', 'Brasileirao', 149.90, './image/gremioo.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG'), 9),
+('Internacional', 'Brasileirao', 150.00, './image/interr.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG'), 7),
+('Palmeiras', 'Brasileirao', 110.00, './image/palmeirass.webp', 'Camisa Palmeiras', JSON_ARRAY('P','M','G','GG'), 7),
+('Santos', 'Brasileirao', 139.90, './image/santoss.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG'), 4),
+('Sao Paulo', 'Brasileirao', 100.00, './image/sao paulo.webp', 'Camisa paulista', JSON_ARRAY('P','M','G','GG'), 3),
+('Vasco', 'Brasileirao', 90.00, './image/vascoo.webp', 'Camisa Vasco', JSON_ARRAY('P','M','G','GG'), 4),
+('Atletico de Madrid', 'Europa', 209.90, './image/atletico de madri.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG'), 5),
+('Barcelona', 'Europa', 214.90, './image/barcelona.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG'), 8),
+('Manchester United', 'Europa', 229.90, './image/manchesster united.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG'), 6),
+('Real Madrid', 'Europa', 219.90, './image/real madri.webp', 'Camisa oficial com descrição padrão para a vitrine da loja.', JSON_ARRAY('P','M','G','GG'), 10),
+('Argentina', 'Selecoes', 179.90, './image/selecaoargentina.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG'), 7),
+('Brasil', 'Selecoes', 189.90, './image/selecaobrasil.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG'), 9),
+('Italia', 'Selecoes', 169.90, './image/selecaoitalia.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG'), 5),
+('Portugal', 'Selecoes', 184.90, './image/selecaoportugal.webp', 'Camisa oficial de seleção com descrição padrão para a vitrine.', JSON_ARRAY('P','M','G','GG'), 8);
 
 SELECT * FROM produtos;
 SELECT * FROM pedidos;

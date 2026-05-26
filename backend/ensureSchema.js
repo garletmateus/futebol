@@ -1,6 +1,11 @@
 ﻿const db = require('./db');
 
 async function ensureSchema() {
+  const [produtoColumns] = await db.query("SHOW COLUMNS FROM produtos LIKE 'estoque'");
+  if (!produtoColumns.length) {
+    await db.query("ALTER TABLE produtos ADD COLUMN estoque INT NOT NULL DEFAULT 10 AFTER tamanhos");
+  }
+
   await db.query(`
     CREATE TABLE IF NOT EXISTS pedidos (
       id INT NOT NULL AUTO_INCREMENT,

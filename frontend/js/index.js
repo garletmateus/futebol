@@ -21,7 +21,10 @@ const mCategoria = document.getElementById("mCategoria");
 const mImg = document.getElementById("mImg");
 const mDesc = document.getElementById("mDesc");
 const mPreco = document.getElementById("mPreco");
+const mEstoque = document.getElementById("mEstoque");
+const mEstoqueBox = document.getElementById("mEstoqueBox");
 const mTamanho = document.getElementById("mTamanho");
+const mQuantidade = document.getElementById("mQuantidade");
 const mAdd = document.getElementById("mAdd");
 const modalProduto = new bootstrap.Modal(document.getElementById("modalProduto"));
 const modalPagamento = new bootstrap.Modal(document.getElementById("modalPagamento"));
@@ -48,12 +51,56 @@ function formatarPreco(valor) {
   });
 }
 
+function obterEstoque(produto) {
+  return Number(produto.estoque || 0);
+}
+
+function produtoDisponivel(produto) {
+  return obterEstoque(produto) > 0;
+}
+
+function textoEstoque(produto) {
+  const estoque = obterEstoque(produto);
+  if (estoque <= 0) return "Produto esgotado";
+  return estoque === 1 ? "1 peça disponível" : `${estoque} peças disponíveis`;
+}
+
 function sincronizarBusca() {
   buscarEl.value = buscarTopoEl.value;
 }
 
 function calcularTotalCarrinho() {
-  return carrinho.reduce((total, item) => total + Number(item.preco), 0);
+  return carrinho.reduce((total, item) => total + Number(item.preco) * Number(item.quantidade || 1), 0);
+}
+
+function adicionarAoCarrinho(produto, tamanho, quantidade = 1) {
+  const qtd = Math.max(1, Number(quantidade || 1));
+  const estoque = obterEstoque(produto);
+
+  if (qtd > estoque) {
+    mostrarAviso(`Só temos ${estoque} peça${estoque === 1 ? "" : "s"} disponível${estoque === 1 ? "" : "is"} desse produto.`);
+    return false;
+  }
+
+  const itemExistente = carrinho.find((item) =>
+    String(item.id) === String(produto.id) && item.tamanho === tamanho
+  );
+  const quantidadeAtual = Number(itemExistente?.quantidade || 0);
+
+  if (quantidadeAtual + qtd > estoque) {
+    mostrarAviso(`Você já tem ${quantidadeAtual} no carrinho. O estoque desse produto é ${estoque}.`);
+    return false;
+  }
+
+  if (itemExistente) {
+    itemExistente.quantidade = quantidadeAtual + qtd;
+  } else {
+    carrinho.push({ ...produto, tamanho, quantidade: qtd });
+  }
+
+  atualizarCarrinho();
+  mostrarAviso(qtd === 1 ? "Produto adicionado ao carrinho." : "Produtos adicionados ao carrinho.");
+  return true;
 }
 
 async function carregarProdutosAPI() {
@@ -140,12 +187,12 @@ function renderizarProdutos() {
           <div class="product-price">R$ ${formatarPreco(produto.preco)}</div>
           <div class="sizes">${produto.tamanhos.join(" • ")}</div>
         </div>
-        <select class="form-select tamanho mb-2" data-id="${produto.id}">
+        <select class="form-select tamanho mb-2" data-id="${produto.id}" ${produtoDisponivel(produto) ? "" : "disabled"}>
           <option value="">Escolha o tamanho</option>
           ${produto.tamanhos.map((tamanho) => `<option value="${tamanho}">${tamanho}</option>`).join("")}
         </select>
         <div class="product-actions">
-          <button class="btn-shop primary add" data-id="${produto.id}">Adicionar</button>
+          <button class="btn-shop primary add" data-id="${produto.id}" ${produtoDisponivel(produto) ? "" : "disabled"}>${produtoDisponivel(produto) ? "Adicionar" : "Esgotado"}</button>
           <button class="btn-shop ghost ver" data-id="${produto.id}">Ver mais</button>
         </div>
       </div>
@@ -154,7 +201,7 @@ function renderizarProdutos() {
 }
 
 function atualizarCarrinho() {
-  contador.innerText = carrinho.length;
+  contador.innerText = carrinho.reduce((total, item) => total + Number(item.quantidade || 1), 0);
   localStorage.setItem("resenha-carrinho", JSON.stringify(carrinho));
   renderizarCarrinho();
 }
@@ -168,7 +215,9 @@ function renderizarCarrinho() {
 
   let total = 0;
   cartItems.innerHTML = carrinho.map((item, index) => {
-    total += Number(item.preco);
+    const quantidade = Number(item.quantidade || 1);
+    const subtotal = Number(item.preco) * quantidade;
+    total += subtotal;
     return `
       <div class="cart-item">
         <img src="${item.img}" alt="${item.nome}" class="cart-thumb">
@@ -176,7 +225,8 @@ function renderizarCarrinho() {
           <strong>${item.nome}</strong>
           <div class="text-secondary">Categoria: ${labelCategoria(item.categoria)}</div>
           <div class="text-secondary">Tamanho: ${item.tamanho}</div>
-          <div class="fw-bold mt-1">R$ ${formatarPreco(item.preco)}</div>
+          <div class="text-secondary">Quantidade: ${quantidade}</div>
+          <div class="fw-bold mt-1">R$ ${formatarPreco(subtotal)}</div>
         </div>
         <button class="btn btn-outline-danger btn-sm" onclick="removerItem(${index})">Remover</button>
       </div>
@@ -198,7 +248,15 @@ function abrirDetalhesProduto(produto) {
   mImg.src = produto.img;
   mDesc.innerText = produto.desc;
   mPreco.innerText = formatarPreco(produto.preco);
+  mEstoque.innerText = textoEstoque(produto);
+  mEstoqueBox.className = `stock-box mb-3 ${produtoDisponivel(produto) ? "" : "out"}`;
   mTamanho.innerHTML = `<option value="">Escolha o tamanho</option>${produto.tamanhos.map((tamanho) => `<option value="${tamanho}">${tamanho}</option>`).join("")}`;
+  mTamanho.disabled = !produtoDisponivel(produto);
+  mQuantidade.value = 1;
+  mQuantidade.max = obterEstoque(produto);
+  mQuantidade.disabled = !produtoDisponivel(produto);
+  mAdd.disabled = !produtoDisponivel(produto);
+  mAdd.innerText = produtoDisponivel(produto) ? "Adicionar ao carrinho" : "Produto esgotado";
   modalProduto.show();
 }
 
@@ -232,7 +290,7 @@ async function confirmarPagamento() {
       preco: item.preco,
       tamanho: item.tamanho,
       img: item.img,
-      quantidade: 1
+      quantidade: Number(item.quantidade || 1)
     }))
   };
 
@@ -320,6 +378,11 @@ document.addEventListener("click", (e) => {
       return;
     }
 
+    if (!produtoDisponivel(produto)) {
+      mostrarAviso("Este produto está esgotado.");
+      return;
+    }
+
     if (!tamanho) {
       select.style.borderColor = "red";
       mostrarAviso("Escolha um tamanho antes de adicionar ao carrinho.");
@@ -327,9 +390,7 @@ document.addEventListener("click", (e) => {
     }
 
     select.style.borderColor = "";
-    carrinho.push({ ...produto, tamanho });
-    atualizarCarrinho();
-    mostrarAviso("Produto adicionado ao carrinho.");
+    adicionarAoCarrinho(produto, tamanho, 1);
   }
 
   if (verBtn) {
@@ -341,16 +402,21 @@ document.addEventListener("click", (e) => {
 mAdd.addEventListener("click", () => {
   if (!produtoAtual) return;
 
+  if (!produtoDisponivel(produtoAtual)) {
+    mostrarAviso("Este produto está esgotado.");
+    return;
+  }
+
   const tamanho = mTamanho.value;
   if (!tamanho) {
     mostrarAviso("Escolha um tamanho para continuar.");
     return;
   }
 
-  carrinho.push({ ...produtoAtual, tamanho });
-  atualizarCarrinho();
-  modalProduto.hide();
-  mostrarAviso("Produto adicionado ao carrinho.");
+  const quantidade = Number(mQuantidade.value || 1);
+  if (adicionarAoCarrinho(produtoAtual, tamanho, quantidade)) {
+    modalProduto.hide();
+  }
 });
 
 document.getElementById("cartModal").addEventListener("show.bs.modal", renderizarCarrinho);
