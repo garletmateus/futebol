@@ -20,12 +20,19 @@ function normalizarProduto(body) {
         .split(",")
         .map((item) => item.trim())
         .filter(Boolean);
+  const imagens = Array.isArray(body.imagens)
+    ? body.imagens
+    : String(body.imagens || "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
 
   return {
     nome: String(body.nome || "").trim(),
     categoria: String(body.categoria || "").trim(),
     preco: Number(body.preco),
     img: String(body.img || body.imagem || "").trim(),
+    imagens,
     descricao: String(body.descricao || body.desc || "").trim(),
     tamanhos,
     estoque: Math.max(0, Number(body.estoque || 0))
@@ -33,12 +40,15 @@ function normalizarProduto(body) {
 }
 
 function mapearProduto(row) {
+  const imagens = Array.isArray(row.imagens) ? row.imagens : JSON.parse(row.imagens || "[]");
+
   return {
     id: row.id,
     nome: row.nome,
     categoria: row.categoria,
     preco: Number(row.preco),
     img: normalizarImagem(row.img),
+    imagens: [row.img, ...imagens].filter(Boolean).map(normalizarImagem),
     desc: row.descricao,
     tamanhos: Array.isArray(row.tamanhos) ? row.tamanhos : JSON.parse(row.tamanhos || "[]"),
     estoque: Number(row.estoque || 0)
@@ -48,7 +58,7 @@ function mapearProduto(row) {
 router.get("/", async (_req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT id, nome, categoria, preco, img, descricao, tamanhos, estoque
+      SELECT id, nome, categoria, preco, img, imagens, descricao, tamanhos, estoque
       FROM produtos
       ORDER BY id DESC
     `);
@@ -68,12 +78,12 @@ router.post("/", async (req, res) => {
     }
 
     const [result] = await db.execute(
-      `INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos, estoque) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [produto.nome, produto.categoria, produto.preco, produto.img, produto.descricao, JSON.stringify(produto.tamanhos), produto.estoque]
+      `INSERT INTO produtos (nome, categoria, preco, img, imagens, descricao, tamanhos, estoque) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [produto.nome, produto.categoria, produto.preco, produto.img, JSON.stringify(produto.imagens), produto.descricao, JSON.stringify(produto.tamanhos), produto.estoque]
     );
 
     const [rows] = await db.execute(
-      `SELECT id, nome, categoria, preco, img, descricao, tamanhos, estoque FROM produtos WHERE id = ?`,
+      `SELECT id, nome, categoria, preco, img, imagens, descricao, tamanhos, estoque FROM produtos WHERE id = ?`,
       [result.insertId]
     );
 
@@ -92,16 +102,16 @@ router.put("/:id", async (req, res) => {
     }
 
     const [result] = await db.execute(
-      `UPDATE produtos SET nome = ?, categoria = ?, preco = ?, img = ?, descricao = ?, tamanhos = ?, estoque = ? WHERE id = ?`,
-      [produto.nome, produto.categoria, produto.preco, produto.img, produto.descricao, JSON.stringify(produto.tamanhos), produto.estoque, req.params.id]
+      `UPDATE produtos SET nome = ?, categoria = ?, preco = ?, img = ?, imagens = ?, descricao = ?, tamanhos = ?, estoque = ? WHERE id = ?`,
+      [produto.nome, produto.categoria, produto.preco, produto.img, JSON.stringify(produto.imagens), produto.descricao, JSON.stringify(produto.tamanhos), produto.estoque, req.params.id]
     );
 
-    if (!result.affectedRows) {
+    if (!result.affectedRows && !result.changedRows) {
       return res.status(404).json({ erro: "Produto não encontrado" });
     }
 
     const [rows] = await db.execute(
-      `SELECT id, nome, categoria, preco, img, descricao, tamanhos, estoque FROM produtos WHERE id = ?`,
+      `SELECT id, nome, categoria, preco, img, imagens, descricao, tamanhos, estoque FROM produtos WHERE id = ?`,
       [req.params.id]
     );
 

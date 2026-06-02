@@ -16,15 +16,21 @@ const ordenarEl = document.getElementById("ordenar");
 const contador = document.getElementById("cart-count");
 const cartItems = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
+const mBreadcrumb = document.getElementById("mBreadcrumb");
 const mTitulo = document.getElementById("mTitulo");
+const mNomeCompleto = document.getElementById("mNomeCompleto");
 const mCategoria = document.getElementById("mCategoria");
 const mImg = document.getElementById("mImg");
+const mThumbs = document.getElementById("mThumbs");
 const mDesc = document.getElementById("mDesc");
+const mDescricaoCompleta = document.getElementById("mDescricaoCompleta");
 const mPreco = document.getElementById("mPreco");
 const mEstoque = document.getElementById("mEstoque");
 const mEstoqueBox = document.getElementById("mEstoqueBox");
 const mTamanho = document.getElementById("mTamanho");
+const mTabelaTamanhos = document.getElementById("mTabelaTamanhos");
 const mQuantidade = document.getElementById("mQuantidade");
+const mErroProduto = document.getElementById("mErroProduto");
 const mAdd = document.getElementById("mAdd");
 const modalProduto = new bootstrap.Modal(document.getElementById("modalProduto"));
 const modalPagamento = new bootstrap.Modal(document.getElementById("modalPagamento"));
@@ -42,6 +48,31 @@ function labelCategoria(categoria) {
 function mostrarAviso(msg) {
   document.getElementById("toastMensagem").innerText = msg;
   new bootstrap.Toast(document.getElementById("toastAviso")).show();
+}
+
+function limparErroProduto() {
+  mErroProduto.classList.add("d-none");
+  mErroProduto.innerText = "";
+  mTamanho.classList.remove("is-invalid");
+  mQuantidade.classList.remove("is-invalid");
+}
+
+function mostrarErroProduto(msg, campos = []) {
+  const modalAberto = document.getElementById("modalProduto").classList.contains("show");
+
+  if (!modalAberto) {
+    mostrarAviso(msg);
+    return;
+  }
+
+  mErroProduto.innerText = msg;
+  mErroProduto.classList.remove("d-none");
+
+  if (campos.includes("tamanho")) mTamanho.classList.add("is-invalid");
+  if (campos.includes("quantidade")) mQuantidade.classList.add("is-invalid");
+
+  mErroProduto.scrollIntoView({ behavior: "smooth", block: "center" });
+  mostrarAviso(msg);
 }
 
 function formatarPreco(valor) {
@@ -65,6 +96,27 @@ function textoEstoque(produto) {
   return estoque === 1 ? "1 peça disponível" : `${estoque} peças disponíveis`;
 }
 
+function medidasPorTamanho(tamanho) {
+  const tabela = {
+    P: ["52 cm", "69 cm"],
+    M: ["55 cm", "71 cm"],
+    G: ["58 cm", "73 cm"],
+    GG: ["61 cm", "75 cm"],
+    XG: ["64 cm", "78 cm"]
+  };
+
+  return tabela[tamanho] || ["Consultar", "Consultar"];
+}
+
+function descricaoCompletaProduto(produto) {
+  return `${produto.desc} Produto feito para quem gosta de camisa de futebol com bom caimento, visual bonito e uso confortável no dia a dia. A peça combina com treino, resenha com os amigos, jogo no estádio ou para completar a coleção. Confira o tamanho antes de comprar e escolha a quantidade desejada conforme o estoque disponível.`;
+}
+
+function obterImagensProduto(produto) {
+  const imagens = Array.isArray(produto.imagens) && produto.imagens.length ? produto.imagens : [produto.img];
+  return [...new Set(imagens.filter(Boolean))];
+}
+
 function sincronizarBusca() {
   buscarEl.value = buscarTopoEl.value;
 }
@@ -78,7 +130,7 @@ function adicionarAoCarrinho(produto, tamanho, quantidade = 1) {
   const estoque = obterEstoque(produto);
 
   if (qtd > estoque) {
-    mostrarAviso(`Só temos ${estoque} peça${estoque === 1 ? "" : "s"} disponível${estoque === 1 ? "" : "is"} desse produto.`);
+    mostrarErroProduto(`Só temos ${estoque} peça${estoque === 1 ? "" : "s"} disponível${estoque === 1 ? "" : "is"} desse produto. Diminua a quantidade para continuar.`, ["quantidade"]);
     return false;
   }
 
@@ -88,7 +140,7 @@ function adicionarAoCarrinho(produto, tamanho, quantidade = 1) {
   const quantidadeAtual = Number(itemExistente?.quantidade || 0);
 
   if (quantidadeAtual + qtd > estoque) {
-    mostrarAviso(`Você já tem ${quantidadeAtual} no carrinho. O estoque desse produto é ${estoque}.`);
+    mostrarErroProduto(`Você já tem ${quantidadeAtual} no carrinho. O estoque desse produto é ${estoque}.`, ["quantidade"]);
     return false;
   }
 
@@ -176,7 +228,7 @@ function renderizarProdutos() {
 
   lista.innerHTML = itens.map((produto) => `
     <article class="product-card">
-      <div class="product-media">
+      <div class="product-media ver-produto" data-id="${produto.id}">
         <img src="${produto.img}" alt="${produto.nome}">
         <span class="badge-tag">${labelCategoria(produto.categoria)}</span>
       </div>
@@ -243,14 +295,30 @@ function removerItem(index) {
 
 function abrirDetalhesProduto(produto) {
   produtoAtual = produto;
+  limparErroProduto();
+  mBreadcrumb.innerText = `Início / Camisas / ${labelCategoria(produto.categoria)}`;
   mTitulo.innerText = produto.nome;
+  mNomeCompleto.innerText = `${produto.nome} - Camisa ${labelCategoria(produto.categoria)}`;
   mCategoria.innerText = labelCategoria(produto.categoria);
   mImg.src = produto.img;
+  mImg.alt = produto.nome;
+  const imagensProduto = obterImagensProduto(produto);
+  mImg.src = imagensProduto[0] || produto.img;
+  mThumbs.innerHTML = imagensProduto.map((img, index) => `
+    <button class="detail-thumb ${index === 0 ? "active" : ""}" type="button" data-img="${img}">
+      <img src="${img}" alt="${produto.nome}">
+    </button>
+  `).join("");
   mDesc.innerText = produto.desc;
+  mDescricaoCompleta.innerText = descricaoCompletaProduto(produto);
   mPreco.innerText = formatarPreco(produto.preco);
   mEstoque.innerText = textoEstoque(produto);
   mEstoqueBox.className = `stock-box mb-3 ${produtoDisponivel(produto) ? "" : "out"}`;
   mTamanho.innerHTML = `<option value="">Escolha o tamanho</option>${produto.tamanhos.map((tamanho) => `<option value="${tamanho}">${tamanho}</option>`).join("")}`;
+  mTabelaTamanhos.innerHTML = produto.tamanhos.map((tamanho) => {
+    const [largura, altura] = medidasPorTamanho(tamanho);
+    return `<tr><td>${tamanho}</td><td>${largura}</td><td>${altura}</td></tr>`;
+  }).join("");
   mTamanho.disabled = !produtoDisponivel(produto);
   mQuantidade.value = 1;
   mQuantidade.max = obterEstoque(produto);
@@ -366,6 +434,7 @@ document.querySelectorAll("[data-nav-category]").forEach((link) => link.addEvent
 document.addEventListener("click", (e) => {
   const addBtn = e.target.closest(".add");
   const verBtn = e.target.closest(".ver");
+  const produtoMedia = e.target.closest(".ver-produto");
 
   if (addBtn) {
     const id = addBtn.dataset.id;
@@ -397,27 +466,49 @@ document.addEventListener("click", (e) => {
     const produto = produtos.find((item) => String(item.id) === String(verBtn.dataset.id));
     if (produto) abrirDetalhesProduto(produto);
   }
+
+  if (produtoMedia) {
+    const produto = produtos.find((item) => String(item.id) === String(produtoMedia.dataset.id));
+    if (produto) abrirDetalhesProduto(produto);
+  }
+});
+
+mThumbs.addEventListener("click", (e) => {
+  const thumb = e.target.closest(".detail-thumb");
+  if (!thumb) return;
+  mImg.src = thumb.dataset.img;
+  mThumbs.querySelectorAll(".detail-thumb").forEach((botao) => botao.classList.remove("active"));
+  thumb.classList.add("active");
 });
 
 mAdd.addEventListener("click", () => {
   if (!produtoAtual) return;
 
   if (!produtoDisponivel(produtoAtual)) {
-    mostrarAviso("Este produto está esgotado.");
+    mostrarErroProduto("Este produto está esgotado.", ["quantidade"]);
     return;
   }
 
   const tamanho = mTamanho.value;
   if (!tamanho) {
-    mostrarAviso("Escolha um tamanho para continuar.");
+    mostrarErroProduto("Escolha um tamanho antes de adicionar ao carrinho.", ["tamanho"]);
     return;
   }
 
   const quantidade = Number(mQuantidade.value || 1);
+  if (!Number.isInteger(quantidade) || quantidade < 1) {
+    mostrarErroProduto("Informe uma quantidade válida, começando em 1.", ["quantidade"]);
+    return;
+  }
+
   if (adicionarAoCarrinho(produtoAtual, tamanho, quantidade)) {
+    limparErroProduto();
     modalProduto.hide();
   }
 });
+
+mTamanho.addEventListener("change", limparErroProduto);
+mQuantidade.addEventListener("input", limparErroProduto);
 
 document.getElementById("cartModal").addEventListener("show.bs.modal", renderizarCarrinho);
 document.getElementById("ano2").innerText = new Date().getFullYear();

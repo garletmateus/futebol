@@ -6,6 +6,11 @@ async function ensureSchema() {
     await db.query("ALTER TABLE produtos ADD COLUMN estoque INT NOT NULL DEFAULT 10 AFTER tamanhos");
   }
 
+  const [produtoImagensColumns] = await db.query("SHOW COLUMNS FROM produtos LIKE 'imagens'");
+  if (!produtoImagensColumns.length) {
+    await db.query("ALTER TABLE produtos ADD COLUMN imagens JSON NULL AFTER img");
+  }
+
   await db.query(`
     CREATE TABLE IF NOT EXISTS pedidos (
       id INT NOT NULL AUTO_INCREMENT,

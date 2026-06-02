@@ -11,7 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap"
     rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./css/index.css?v=2">
+  <link rel="stylesheet" href="./css/index.css?v=4">
 </head>
 
 <body>
@@ -91,36 +91,65 @@
     </section>
     <section id="lista-produtos" class="product-grid"></section>
   </main>
-  <div class="modal fade" id="modalProduto" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal fade product-detail-modal" id="modalProduto" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
-        <div class="modal-header bg-dark text-white">
+        <div class="modal-header product-detail-header">
           <div>
-            <h5 id="mTitulo" class="mb-0"></h5><small id="mCategoria" class="text-white-50"></small>
-          </div><button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            <small id="mBreadcrumb" class="detail-breadcrumb">Início / Camisas</small>
+            <h5 id="mTitulo" class="mb-0"></h5>
+          </div>
+          <button class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
-        <div class="modal-body p-4">
-          <div class="row g-4 align-items-center">
-            <div class="col-md-6"><img id="mImg" class="w-100 rounded-4" alt="Produto selecionado"></div>
-            <div class="col-md-6">
-              <p id="mDesc" class="text-secondary"></p>
-              <h4 class="text-success fw-bold mb-3">R$ <span id="mPreco"></span></h4>
+        <div class="modal-body product-detail-body">
+          <div class="product-detail-grid">
+            <aside id="mThumbs" class="detail-thumbs"></aside>
+            <section class="detail-photo">
+              <img id="mImg" alt="Produto selecionado">
+            </section>
+            <section class="detail-buy">
+              <small id="mCategoria" class="detail-category"></small>
+              <h1 id="mNomeCompleto"></h1>
+              <div class="detail-price">R$ <span id="mPreco"></span></div>
+              <p id="mDesc" class="detail-short"></p>
               <div id="mEstoqueBox" class="stock-box mb-3">
                 <span>Disponibilidade</span>
                 <strong id="mEstoque">Carregando estoque...</strong>
               </div>
-              <label for="mTamanho"
-                class="form-label fw-semibold">Escolha o tamanho</label><select id="mTamanho"
-                class="form-select mb-3"></select>
-              <label for="mQuantidade" class="form-label fw-semibold">Quantidade</label>
-              <input id="mQuantidade" type="number" min="1" value="1" class="form-control mb-3">
-              <button id="mAdd" class="btn btn-success w-100">Adicionar ao
-                carrinho</button>
-            </div>
+              <div class="detail-controls">
+                <div>
+                  <label for="mTamanho" class="form-label fw-semibold">Tamanho</label>
+                  <select id="mTamanho" class="form-select"></select>
+                </div>
+                <div>
+                  <label for="mQuantidade" class="form-label fw-semibold">Quantidade</label>
+                  <input id="mQuantidade" type="number" min="1" value="1" class="form-control">
+                </div>
+              </div>
+              <div id="mErroProduto" class="detail-alert d-none" role="alert"></div>
+              <button id="mAdd" class="btn btn-success w-100 mt-3">Adicionar ao carrinho</button>
+              <div class="detail-benefits">
+                <div><strong>Compra protegida</strong><span>Seus dados cuidados durante toda a compra.</span></div>
+                <div><strong>Troca e devolução</strong><span>Se não gostar, você pode trocar ou devolver.</span></div>
+              </div>
+            </section>
           </div>
+          <section class="detail-description">
+            <h2>Descrição do produto</h2>
+            <p id="mDescricaoCompleta"></p>
+            <h3>Descrição dos tamanhos</h3>
+            <div class="table-responsive">
+              <table class="size-table">
+                <thead>
+                  <tr><th>Tamanho</th><th>Largura</th><th>Altura</th></tr>
+                </thead>
+                <tbody id="mTabelaTamanhos"></tbody>
+              </table>
+            </div>
+          </section>
         </div>
       </div>
-    </div>  
+    </div>
   </div>
   <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -190,7 +219,7 @@
   </div>
   <footer class="footer">© <span id="ano2"></span> Resenha Sports • <a href="login.html">Área do lojista</a></footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./js/index.js?v=2"></script>
+  <script src="./js/index.js?v=4"></script>
 </body>
 
 </html>
