@@ -13,9 +13,14 @@ const buscarEl = document.getElementById("buscar");
 const buscarTopoEl = document.getElementById("buscarTopo");
 const categoriaSelectEl = document.getElementById("categoriaSelect");
 const ordenarEl = document.getElementById("ordenar");
+const heroBanner = document.querySelector(".hero-banner");
+const heroPrev = document.querySelector(".hero-arrow.left");
+const heroNext = document.querySelector(".hero-arrow.right");
 const contador = document.getElementById("cart-count");
 const cartItems = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
+const themeToggle = document.getElementById("themeToggle");
+const themeLabel = document.getElementById("themeLabel");
 const mBreadcrumb = document.getElementById("mBreadcrumb");
 const mTitulo = document.getElementById("mTitulo");
 const mNomeCompleto = document.getElementById("mNomeCompleto");
@@ -40,6 +45,50 @@ let carrinho = JSON.parse(localStorage.getItem("resenha-carrinho") || "[]");
 let categoriaAtual = "Todos";
 let produtoAtual = null;
 let falhaAoCarregarProdutos = false;
+let bannersCarregados = ["./image/banner-brasileirao.webp"];
+let bannerAtual = 0;
+
+function aplicarTema(tema) {
+  const escuro = tema === "dark";
+  document.body.classList.toggle("dark-mode", escuro);
+  themeToggle?.classList.toggle("active", escuro);
+  if (themeLabel) themeLabel.innerText = escuro ? "Modo claro" : "Modo escuro";
+  localStorage.setItem("resenha-tema", escuro ? "dark" : "light");
+}
+
+function testarImagem(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(src);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+async function carregarBanners() {
+  if (!heroBanner) return;
+
+  const nomes = ["ban", "banner 2", "banner2"];
+  const extensoes = ["webp", "jpg", "jpeg", "png"];
+  const candidatos = [
+    "./image/banner-brasileirao.webp",
+    ...nomes.flatMap((nome) => extensoes.map((ext) => `./image/${nome}.${ext}`))
+  ];
+
+  const encontrados = (await Promise.all(candidatos.map(testarImagem))).filter(Boolean);
+  bannersCarregados = [...new Set(encontrados)];
+  mostrarBanner(0);
+
+  if (bannersCarregados.length > 1) {
+    setInterval(() => mostrarBanner(bannerAtual + 1), 5000);
+  }
+}
+
+function mostrarBanner(index) {
+  if (!heroBanner || !bannersCarregados.length) return;
+  bannerAtual = (index + bannersCarregados.length) % bannersCarregados.length;
+  heroBanner.style.backgroundImage = `url("${bannersCarregados[bannerAtual]}")`;
+}
 
 function labelCategoria(categoria) {
   return labelsCategoria[categoria] || categoria;
@@ -423,6 +472,13 @@ buscarTopoEl.addEventListener("input", () => {
 
 ordenarEl.addEventListener("change", renderizarProdutos);
 
+heroPrev?.addEventListener("click", () => mostrarBanner(bannerAtual - 1));
+heroNext?.addEventListener("click", () => mostrarBanner(bannerAtual + 1));
+
+themeToggle?.addEventListener("click", () => {
+  aplicarTema(document.body.classList.contains("dark-mode") ? "light" : "dark");
+});
+
 document.querySelectorAll("[data-nav-category]").forEach((link) => link.addEventListener("click", (e) => {
   e.preventDefault();
   categoriaAtual = link.dataset.navCategory;
@@ -514,6 +570,8 @@ document.getElementById("cartModal").addEventListener("show.bs.modal", renderiza
 document.getElementById("ano2").innerText = new Date().getFullYear();
 
 async function iniciarPagina() {
+  aplicarTema(localStorage.getItem("resenha-tema") || "light");
+  carregarBanners();
   await carregarProdutosAPI();
   renderizarTudo();
   atualizarCarrinho();
