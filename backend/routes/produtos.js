@@ -27,7 +27,8 @@ function normalizarProduto(body) {
     preco: Number(body.preco),
     img: String(body.img || body.imagem || "").trim(),
     descricao: String(body.descricao || body.desc || "").trim(),
-    tamanhos
+    tamanhos,
+    estoque: Math.max(0, Number(body.estoque || 0))
   };
 }
 
@@ -39,14 +40,15 @@ function mapearProduto(row) {
     preco: Number(row.preco),
     img: normalizarImagem(row.img),
     desc: row.descricao,
-    tamanhos: Array.isArray(row.tamanhos) ? row.tamanhos : JSON.parse(row.tamanhos || "[]")
+    tamanhos: Array.isArray(row.tamanhos) ? row.tamanhos : JSON.parse(row.tamanhos || "[]"),
+    estoque: Number(row.estoque || 0)
   };
 }
 
 router.get("/", async (_req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT id, nome, categoria, preco, img, descricao, tamanhos
+      SELECT id, nome, categoria, preco, img, descricao, tamanhos, estoque
       FROM produtos
       ORDER BY id DESC
     `);
@@ -66,12 +68,12 @@ router.post("/", async (req, res) => {
     }
 
     const [result] = await db.execute(
-      `INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos) VALUES (?, ?, ?, ?, ?, ?)`,
-      [produto.nome, produto.categoria, produto.preco, produto.img, produto.descricao, JSON.stringify(produto.tamanhos)]
+      `INSERT INTO produtos (nome, categoria, preco, img, descricao, tamanhos, estoque) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [produto.nome, produto.categoria, produto.preco, produto.img, produto.descricao, JSON.stringify(produto.tamanhos), produto.estoque]
     );
 
     const [rows] = await db.execute(
-      `SELECT id, nome, categoria, preco, img, descricao, tamanhos FROM produtos WHERE id = ?`,
+      `SELECT id, nome, categoria, preco, img, descricao, tamanhos, estoque FROM produtos WHERE id = ?`,
       [result.insertId]
     );
 
@@ -90,8 +92,8 @@ router.put("/:id", async (req, res) => {
     }
 
     const [result] = await db.execute(
-      `UPDATE produtos SET nome = ?, categoria = ?, preco = ?, img = ?, descricao = ?, tamanhos = ? WHERE id = ?`,
-      [produto.nome, produto.categoria, produto.preco, produto.img, produto.descricao, JSON.stringify(produto.tamanhos), req.params.id]
+      `UPDATE produtos SET nome = ?, categoria = ?, preco = ?, img = ?, descricao = ?, tamanhos = ?, estoque = ? WHERE id = ?`,
+      [produto.nome, produto.categoria, produto.preco, produto.img, produto.descricao, JSON.stringify(produto.tamanhos), produto.estoque, req.params.id]
     );
 
     if (!result.affectedRows) {
@@ -99,7 +101,7 @@ router.put("/:id", async (req, res) => {
     }
 
     const [rows] = await db.execute(
-      `SELECT id, nome, categoria, preco, img, descricao, tamanhos FROM produtos WHERE id = ?`,
+      `SELECT id, nome, categoria, preco, img, descricao, tamanhos, estoque FROM produtos WHERE id = ?`,
       [req.params.id]
     );
 

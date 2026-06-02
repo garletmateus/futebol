@@ -161,7 +161,18 @@
             <div class="col-md-6"><img id="mImg" class="w-100 rounded-4" alt="Produto selecionado"></div>
             <div class="col-md-6">
               <p id="mDesc" class="text-secondary"></p>
-              <h4 class="text-success fw-bold mb-3">R$ <span id="mPreco"></span></h4><label for="mTamanho" class="form-label fw-semibold">Escolha o tamanho</label><select id="mTamanho" class="form-select mb-3"></select><button id="mAdd" class="btn btn-success w-100">Adicionar ao carrinho</button>
+              <h4 class="text-success fw-bold mb-3">R$ <span id="mPreco"></span></h4>
+              <div id="mEstoqueBox" class="stock-box mb-3">
+                <span>Disponibilidade</span>
+                <strong id="mEstoque">Carregando estoque...</strong>
+              </div>
+              <label for="mTamanho"
+                class="form-label fw-semibold">Escolha o tamanho</label><select id="mTamanho"
+                class="form-select mb-3"></select>
+              <label for="mQuantidade" class="form-label fw-semibold">Quantidade</label>
+              <input id="mQuantidade" type="number" min="1" value="1" class="form-control mb-3">
+              <button id="mAdd" class="btn btn-success w-100">Adicionar ao
+                carrinho</button>
             </div>
           </div>
         </div>
