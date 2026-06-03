@@ -7,7 +7,12 @@
     --text: #122019;
     --muted: #60756d;
     --line: #d8e4df;
-    --shadow: 0 20px 44px rgba(17, 33, 27, .10)
+    --shadow: 0 20px 44px rgba(17, 33, 27, .10);
+    
+    /* Cores da Nova Vitrine de Inspiração */
+    --product-blue: #182388;
+    --product-blue-hover: #101861;
+    --product-bg-gray: #f6f7fb;
 }
 
 * {
@@ -278,8 +283,8 @@ img {
 
 .hero-banner {
     width: 100%;
-    height: min(540px, 48vw);
-    min-height: 280px;
+    height: min(740px, 100vw);
+    min-height: 780px;
     background: url('../image/banner-brasileirao.webp') center/contain no-repeat;
     background-color: #f3f5f6
 }
@@ -382,37 +387,61 @@ img {
     color: #fff
 }
 
+/* ==========================================================================
+   NOVA VITRINE DE PRODUTOS (ESTILO COMPRAR AZUL COM HOVER FLUTUANTE)
+   ========================================================================== */
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.2rem;
+    gap: 1.5rem;
     margin-top: 1.2rem
 }
 
 .product-card {
+    position: relative;
     background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 24px;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    padding: 16px;
     overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: transform .2s ease, box-shadow .2s ease
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Efeito de elevação suave ao passar o mouse */
 .product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 50px rgba(17, 33, 27, .16)
+    border-color: #eef0f5;
+    box-shadow: 0 12px 30px rgba(24, 35, 136, 0.06);
 }
 
+/* Fundo cinza e arredondado para a foto do produto */
 .product-media {
     position: relative;
-    background: #eef4f2;
-    aspect-ratio: 4/4.2
+    background-color: var(--product-bg-gray);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
 }
 
+/* Tratamento da imagem da camisa */
 .product-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover
+    max-height: 92%;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+/* Zoom sutil na camisa no hover */
+.product-card:hover .product-media img {
+    transform: scale(1.04);
 }
 
 .badge-tag {
@@ -421,128 +450,121 @@ img {
     top: 14px;
     background: #fff;
     color: var(--blue-dark);
-    padding: .45rem .8rem;
+    padding: .4rem .75rem;
     border-radius: 999px;
-    font-size: .78rem;
-    font-weight: 800
+    font-size: .75rem;
+    font-weight: 800;
+    z-index: 2;
 }
 
-.stock-tag {
-    position: absolute;
-    right: 14px;
-    top: 14px;
-    background: #fff;
-    color: var(--green);
-    padding: .45rem .8rem;
-    border-radius: 999px;
-    font-size: .78rem;
-    font-weight: 800
-}
-
-.stock-tag.out {
-    color: #c74747
+/* Esconde tags nativas desnecessárias na listagem principal */
+.stock-tag,
+.stock-line,
+.stock-box,
+.product-desc,
+.sizes {
+    display: none !important;
 }
 
 .product-body {
-    padding: 1rem 1rem 1.1rem
+    padding: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .product-name {
-    font-family: "Barlow", sans-serif;
-    font-size: 1.35rem;
-    margin: 0 0 .35rem
+    font-family: "DM Sans", sans-serif;
+    font-size: 13.5px;
+    color: #444;
+    font-weight: 400;
+    line-height: 1.4;
+    margin: 6px 0 !important;
+    min-height: 38px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.product-desc {
-    color: var(--muted);
-    min-height: 44px;
-    margin: 0 0 .8rem
-}
-
-.stock-line {
-    font-weight: 800;
-    color: var(--green);
-    margin-bottom: .65rem
-}
-
-.stock-line.out {
-    color: #c74747
-}
-
-.stock-box {
-    padding: .85rem 1rem;
-    border-radius: 16px;
-    background: #e7f4ef;
-    border: 1px solid #c7e5d9;
-    color: var(--green);
-    font-weight: 800
-}
-
-.stock-box.out {
-    background: #fff1f1;
-    border-color: #f0caca;
-    color: #c74747
-}
-
-.stock-box span {
-    display: block;
-    font-size: .78rem;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: var(--muted);
-    font-weight: 700
-}
-
-.product-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: .8rem
-}
-
+/* Preço Grande em Azul Escuro */
 .product-price {
+    font-family: 'Barlow', sans-serif;
+    color: var(--product-blue);
+    font-size: 21px;
     font-weight: 800;
-    color: var(--green);
-    font-size: 1.15rem
+    margin-bottom: 2px;
 }
 
-.sizes {
-    font-size: .82rem;
-    color: var(--muted)
+/* Elemento customizado para parcelamento idêntico à inspiração */
+.product-installments {
+    font-size: 11.5px;
+    color: #000000;
+    font-weight: 700;
+    margin-bottom: 14px;
 }
 
+/* CONTAINER DAS AÇÕES (Escondido por padrão) */
 .product-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .7rem
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+/* Mágica do Hover: Faz os botões aparecerem subindo suavemente */
+.product-card:hover .product-actions {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .btn-shop {
-    height: 46px;
+    height: 38px;
     border: none;
-    border-radius: 14px;
-    font-weight: 800
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
+/* Botão Comprar (Azul Preenchido) */
 .btn-shop.primary {
-    background: var(--green);
-    color: #fff
+    background: var(--product-blue);
+    color: #fff;
+    flex: 1.2;
 }
 
 .btn-shop.primary:hover {
-    background: var(--green-dark)
+    background: var(--product-blue-hover);
 }
 
-.btn-shop.primary:disabled {
-    opacity: .55;
-    cursor: not-allowed
-}
-
+/* Botão Espiar (Vazado com borda azul) */
 .btn-shop.ghost {
-    background: #f5f8f7;
-    color: #14231d
+    background: transparent;
+    color: var(--product-blue);
+    border: 1px solid var(--product-blue);
+    flex: 1;
 }
+
+.btn-shop.ghost:hover {
+    background: rgba(24, 35, 136, 0.05);
+}
+
+/* ==========================================================================
+   MODAIS E DEMAIS COMPONENTES DO SITE
+   ========================================================================== */
 
 .empty-state {
     grid-column: 1/-1;
@@ -559,10 +581,6 @@ img {
     border: none;
     border-radius: 24px;
     overflow: hidden
-}
-
-.product-media {
-    cursor: pointer
 }
 
 .product-detail-modal .modal-content {
@@ -781,6 +799,10 @@ img {
     text-align: center
 }
 
+/* ==========================================================================
+   MEDIA QUERIES (RESPONSIVIDADE COORDENADA)
+   ========================================================================== */
+
 @media (max-width:1200px) {
     .product-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr))
@@ -891,8 +913,12 @@ img {
         grid-template-columns: 1fr
     }
 
+    /* Em telas muito pequenas o botão fica fixo visível para facilitar o toque */
     .product-actions {
-        grid-template-columns: 1fr
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+        margin-top: 8px;
     }
 
     .cart-item {
@@ -905,7 +931,7 @@ img {
     }
 
     .hero-banner {
-        height: 230px
+        height: 430px
     }
 
     .summary-bar {
@@ -918,6 +944,10 @@ img {
         padding-right: 1rem
     }
 }
+
+/* ==========================================================================
+   CONFIGURAÇÕES EXTRA DOS MODAIS INTERNOS
+   ========================================================================== */
 
 .modal-backdrop {
     z-index: 9998 !important;
@@ -972,6 +1002,7 @@ body.modal-open {
     overflow: hidden !important;
 }
 
+/* Modo Escuro */
 body.dark-mode {
     --bg: #111827;
     --text: #edf2f7;
@@ -990,9 +1021,12 @@ body.dark-mode .product-card {
 }
 
 body.dark-mode .hero-wrap,
-body.dark-mode .hero-banner,
-body.dark-mode .product-media {
+body.dark-mode .hero-banner {
     background-color: #0f172a;
+}
+
+body.dark-mode .product-media {
+    background-color: #1e293b !important;
 }
 
 body.dark-mode .catalog-head p,
@@ -1015,6 +1049,10 @@ body.dark-mode .badge-tag,
 body.dark-mode .btn-shop.ghost {
     background: #223047;
     color: #edf2f7;
+}
+
+body.dark-mode .btn-shop.ghost {
+    border-color: #edf2f7 !important;
 }
 
 body.dark-mode .product-price {
