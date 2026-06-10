@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -7,17 +8,78 @@
   <title>Resenha Sports</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./css/index.css?v=7">
+  <link rel="stylesheet" href="./css/index.css?v=15">
   
   <style>
     /* Ajuste para garantir que o carrossel fique bonito e não distorça as fotos das camisas */
     .carousel-item img {
       max-height: 1000px;
       object-fit: cover;
+    }
+    
+    /* Estilização para deixar as imagens dos 3 cards responsivas e bonitas */
+    .category-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      transition: transform 0.3s ease;
+    }
+    .category-card img:hover {
+      transform: scale(1.03);
+    }
+
+    /* REMOVE COMPLETAMENTE O ESPAÇO EM BRANCO ACIMA DOS PRODUTOS NO CSS INTERNO */
+    body, 
+    .catalog-shell, 
+    main.container, 
+    #lista-produtos,
+    section {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+    
+    .my-5, .mt-4, .mb-4 {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    /* ESTILO EXCLUSIVO DO CARROSSEL DE MARCAS - AJUSTADO PARA SER PEQUENO */
+    .brands-section {
+      /* background-color: #f0f0f0;  <-- Descomente esta linha se quiser o fundo cinza claro */
+      padding: 10px 0; /* Padding menor */
+      border-top: none;
+      border-bottom: none;
+    }
+    .brand-carousel-container {
+      display: flex;
+      justify-content: center; /* Centraliza o grupo de logos */
+      align-items: center;
+      gap: 10px; /* Gap menor entre os logos */
+    }
+    .brand-logo-small {
+      height: 50px; /* ALTURA MÁXIMA PEQUENA PARA OS LOGOS */
+      width: auto;
+      object-fit: contain;
+      filter: grayscale(100%); /* Mantém cinza elegante */
+      opacity: 0.6;
+      transition: all 0.3s ease;
+      display: block; /* Garante alinhamento */
+      margin-left: auto; /* Centraliza na coluna */
+      margin-right: auto;
+    }
+    .brand-logo-small:hover {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+    /* Setas escuras centrais */
+    .brands-section .carousel-control-prev,
+    .brands-section .carousel-control-next {
+      filter: invert(1); /* Torna as setinhas pretas */
+      opacity: 0.7;
     }
   </style>
 </head>
@@ -80,7 +142,7 @@
     </div>
   </header>
 
-  <section class="hero container my-4">
+  <section class="hero container-fluid p-0 m-0">
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner rounded-3 shadow">
         
@@ -109,27 +171,72 @@
     </div>
   </section>
 
-  <main class="container page-shell catalog-shell">
-    <section class="surface-card filters-card">
-      <div class="catalog-head">
-        <div>
-          <p>Vitrine principal</p>
-          <h2>Camisas em destaque</h2>
+  <section class="brands-section container-fluid my-3">
+    <div class="container position-relative">
+      <div id="carouselBrands" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          
+          <div class="carousel-item active">
+            <div class="row align-items-center justify-content-center px-5 gap-0">
+              <div class="col-2"><img src="image/adidas.webp" alt="Adidas" class="brand-logo-small"></div>
+              <div class="col-2"><img src="image/nike.webp" alt="Nike" class="brand-logo-small"></div>
+              <div class="col-2"><img src="image/puma.webp" alt="Puma" class="brand-logo-small"></div>
+              <div class="col-2"><img src="image/umbro.webp" alt="Umbro" class="brand-logo-small"></div>
+              <div class="col-2"><img src="image/new.webp" alt="New Balance" class="brand-logo-small"></div>
+            </div>
+          </div>
+          
+          <div class="carousel-item">
+            <div class="row align-items-center justify-content-center px-5 gap-0">
+              <div class="col-2"><img src="image/new.webp" alt="New Balance" class="brand-logo-small"></div>
+              <div class="col-2"><img src="image/umbro.webp" alt="Umbro" class="brand-logo-small"></div>
+              <div class="col-2"><img src="image/puma.webp" alt="Puma" class="brand-logo-small"></div>
+              <div class="col-2"><img src="image/nike.webp" alt="Nike" class="brand-logo-small"></div>
+              <div class="col-2"><img src="image/adidas.webp" alt="Adidas" class="brand-logo-small"></div>
+            </div>
+          </div>
+
         </div>
-        <p></p>
+        
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselBrands" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselBrands" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Próximo</span>
+        </button>
       </div>
-      <div class="filters-row"><input type="text" id="buscar"
-          placeholder="Buscar por time, descrição ou categoria..."><select id="categoriaSelect">
-          <option value="Todos">Todas as categorias</option>
-        </select><select id="ordenar">
-          <option value="relevancia">Ordenar por relevância</option>
-          <option value="menor-preco">Menor preço</option>
-          <option value="maior-preco">Maior preço</option>
-          <option value="nome">Nome A-Z</option>
-        </select></div>
-      <div id="categorias" class="chip-group"></div>
-    </section>
-    <section id="lista-produtos" class="product-grid"></section>
+    </div>
+  </section>
+
+  <section class="container p-0 m-0 mx-auto mb-4">
+    <div class="row g-4 justify-content-center m-0 p-0">
+      
+      <div class="col-12 col-md-4 category-card p-2">
+        <img src="image/09.webp" alt="Nacionais" class="shadow-sm">
+      </div>
+      
+      <div class="col-12 col-md-4 category-card p-2">
+        <img src="image/08.webp" alt="Europeus" class="shadow-sm">
+      </div>
+      
+      <div class="col-12 col-md-4 category-card p-2">
+        <img src="image/manina.webp" alt="Femininas" class="shadow-sm">
+      </div>
+
+    </div>
+  </section>
+
+  <main class="container page-shell catalog-shell p-0 m-0 mx-auto">
+    <div class="d-none">
+      <input type="text" id="buscar" value="">
+      <select id="categoriaSelect"><option value="Todos">Todos</option></select>
+      <select id="ordenar"><option value="relevancia">Relevância</option></select>
+      <div id="categorias"></div>
+    </div>
+
+    <section id="lista-produtos" class="product-grid p-0 m-0"></section>
   </main>
   
   <div class="modal fade product-detail-modal" id="modalProduto" tabindex="-1" aria-hidden="true">
@@ -268,3 +375,5 @@
 </body>
 
 </html>
+
+```

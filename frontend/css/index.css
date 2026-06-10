@@ -388,7 +388,133 @@ img {
 }
 
 /* ==========================================================================
-   NOVA VITRINE DE PRODUTOS (ESTILO COMPRAR AZUL COM HOVER FLUTUANTE)
+   ESTILIZAÇÃO DOS NOVOS BANNERS DE CATEGORIA (FOTO 1)
+   ========================================================================== */
+
+.banner-card {
+    position: relative;
+    height: 320px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #0b1e36 0%, #000000 100%);
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border: none;
+}
+
+.banner-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.3s ease;
+}
+
+.banner-card:hover img {
+    transform: scale(1.05);
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.banner-content {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.banner-title {
+    color: #ffffff;
+    font-family: 'Barlow', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+.banner-btn {
+    display: inline-block;
+    margin-top: 6px;
+    background-color: #0dcaf0; 
+    color: #000000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 4px 16px;
+    border-radius: 50px;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DOS FILTROS E CHIPS MODERNIZADOS (FOTO 2)
+   ========================================================================== */
+
+.filters-row-modern {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.custom-input, 
+.custom-select {
+    height: 54px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    padding: 0 1rem;
+    background: #fff;
+    color: var(--text);
+    outline: none;
+    font-size: 1rem;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.custom-input:focus, 
+.custom-select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(34, 48, 173, 0.15);
+}
+
+.chip-group-modern {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    margin-top: 1.2rem;
+}
+
+.chip-btn {
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: .75rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chip-btn:hover {
+    background-color: #f4f8f6;
+    border-color: var(--muted);
+}
+
+.chip-btn.active-chip {
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+    color: #fff;
+}
+
+/* ==========================================================================
+   NOVA VITRINE DE PRODUTOS
    ========================================================================== */
 
 .product-grid {
@@ -411,13 +537,11 @@ img {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Efeito de elevação suave ao passar o mouse */
 .product-card:hover {
     border-color: #eef0f5;
     box-shadow: 0 12px 30px rgba(24, 35, 136, 0.06);
 }
 
-/* Fundo cinza e arredondado para a foto do produto */
 .product-media {
     position: relative;
     background-color: var(--product-bg-gray);
@@ -431,7 +555,6 @@ img {
     cursor: pointer;
 }
 
-/* Tratamento da imagem da camisa */
 .product-media img {
     max-height: 92%;
     width: auto;
@@ -439,7 +562,6 @@ img {
     transition: transform 0.4s ease;
 }
 
-/* Zoom sutil na camisa no hover */
 .product-card:hover .product-media img {
     transform: scale(1.04);
 }
@@ -457,7 +579,6 @@ img {
     z-index: 2;
 }
 
-/* Esconde tags nativas desnecessárias na listagem principal */
 .stock-tag,
 .stock-line,
 .stock-box,
@@ -488,7 +609,6 @@ img {
     overflow: hidden;
 }
 
-/* Preço Grande em Azul Escuro */
 .product-price {
     font-family: 'Barlow', sans-serif;
     color: var(--product-blue);
@@ -497,7 +617,6 @@ img {
     margin-bottom: 2px;
 }
 
-/* Elemento customizado para parcelamento idêntico à inspiração */
 .product-installments {
     font-size: 11.5px;
     color: #000000;
@@ -505,7 +624,6 @@ img {
     margin-bottom: 14px;
 }
 
-/* CONTAINER DAS AÇÕES (Escondido por padrão) */
 .product-actions {
     display: flex;
     gap: 8px;
@@ -517,7 +635,6 @@ img {
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
 
-/* Mágica do Hover: Faz os botões aparecerem subindo suavemente */
 .product-card:hover .product-actions {
     opacity: 1;
     visibility: visible;
@@ -539,7 +656,6 @@ img {
     transition: background-color 0.2s;
 }
 
-/* Botão Comprar (Azul Preenchido) */
 .btn-shop.primary {
     background: var(--product-blue);
     color: #fff;
@@ -550,7 +666,6 @@ img {
     background: var(--product-blue-hover);
 }
 
-/* Botão Espiar (Vazado com borda azul) */
 .btn-shop.ghost {
     background: transparent;
     color: var(--product-blue);
@@ -561,10 +676,6 @@ img {
 .btn-shop.ghost:hover {
     background: rgba(24, 35, 136, 0.05);
 }
-
-/* ==========================================================================
-   MODAIS E DEMAIS COMPONENTES DO SITE
-   ========================================================================== */
 
 .empty-state {
     grid-column: 1/-1;
@@ -833,7 +944,8 @@ img {
         display: none
     }
 
-    .filters-row {
+    .filters-row,
+    .filters-row-modern {
         grid-template-columns: 1fr
     }
 
@@ -913,7 +1025,6 @@ img {
         grid-template-columns: 1fr
     }
 
-    /* Em telas muito pequenas o botão fica fixo visível para facilitar o toque */
     .product-actions {
         opacity: 1 !important;
         visibility: visible !important;
@@ -1002,7 +1113,10 @@ body.modal-open {
     overflow: hidden !important;
 }
 
-/* Modo Escuro */
+/* ==========================================================================
+   SUPORTE AO MODO ESCURO (DARK MODE) PARA OS NOVOS COMPONENTES
+   ========================================================================== */
+
 body.dark-mode {
     --bg: #111827;
     --text: #edf2f7;
@@ -1018,6 +1132,24 @@ body.dark-mode .filters-card,
 body.dark-mode .product-card {
     background: #172033;
     border-color: #2c3848;
+}
+
+body.dark-mode .custom-input,
+body.dark-mode .custom-select,
+body.dark-mode .chip-btn {
+    background: #0f172a;
+    border-color: var(--line);
+    color: var(--text);
+}
+
+body.dark-mode .chip-btn:hover {
+    background-color: #1e293b;
+}
+
+body.dark-mode .chip-btn.active-chip {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
 }
 
 body.dark-mode .hero-wrap,
