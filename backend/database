@@ -1,0 +1,140 @@
+-- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
+--
+-- Host: localhost    Database: resenha_sports
+-- ------------------------------------------------------
+-- Server version	8.0.44
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `pedido_itens`
+--
+
+DROP TABLE IF EXISTS `pedido_itens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pedido_itens` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `pedido_id` int NOT NULL,
+  `produto_id` int DEFAULT NULL,
+  `produto_nome` varchar(120) COLLATE utf8mb4_general_ci NOT NULL,
+  `produto_categoria` varchar(80) COLLATE utf8mb4_general_ci NOT NULL,
+  `produto_imagem` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `preco_unitario` decimal(10,2) NOT NULL,
+  `tamanho` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `quantidade` int NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `fk_pedido_itens_pedido` (`pedido_id`),
+  KEY `fk_pedido_itens_produto` (`produto_id`),
+  CONSTRAINT `fk_pedido_itens_pedido` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_pedido_itens_produto` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pedido_itens`
+--
+
+LOCK TABLES `pedido_itens` WRITE;
+/*!40000 ALTER TABLE `pedido_itens` DISABLE KEYS */;
+INSERT INTO `pedido_itens` VALUES (1,1,17,'Brasil','Selecoes','/image/selecaobrasil.webp',189.90,'G',1),(2,1,16,'Argentina','Selecoes','/image/selecaoargentina.webp',179.90,'M',1),(3,1,6,'Gremio','Brasileirao','/image/gremioo.webp',149.90,'P',1),(4,1,8,'Palmeiras','Brasileirao','/image/palmeirass.webp',110.00,'G',1),(5,2,17,'Brasil','Selecoes','/image/selecaobrasil.webp',189.90,'GG',1),(6,3,8,'Palmeiras','Brasileirao','/image/palmeirass.webp',110.00,'M',1),(7,4,6,'Gremio','Brasileirao','/image/gremioo.webp',149.90,'G',1),(8,5,6,'Gremio','Brasileirao','/image/gremioo.webp',149.90,'G',1),(9,6,18,'Italia','Selecoes','/image/selecaoitalia.webp',169.90,'P',1),(10,6,17,'Brasil','Selecoes','/image/selecaobrasil.webp',189.90,'G',1),(11,6,19,'Portugal','Selecoes','/image/selecaoportugal.webp',184.90,'M',1),(12,6,16,'Argentina','Selecoes','/image/selecaoargentina.webp',179.90,'P',1),(13,6,19,'Portugal','Selecoes','/image/selecaoportugal.webp',184.90,'G',7),(14,6,18,'Italia','Selecoes','/image/selecaoitalia.webp',169.90,'M',1),(15,6,4,'Flamengo','Brasileirao','/image/flamengo01.webp',100.00,'G',3),(16,7,8,'Palmeiras','Brasileirao','/image/palmeiras01.webp',110.00,'M',1),(17,8,8,'Palmeiras','Brasileirao','/image/palmeiras01.webp',110.00,'P',3);
+/*!40000 ALTER TABLE `pedido_itens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pedidos`
+--
+
+DROP TABLE IF EXISTS `pedidos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pedidos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cliente_nome` varchar(160) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefone` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
+  `cep` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `rua` varchar(180) COLLATE utf8mb4_general_ci NOT NULL,
+  `numero` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `bairro` varchar(120) COLLATE utf8mb4_general_ci NOT NULL,
+  `cidade` varchar(120) COLLATE utf8mb4_general_ci NOT NULL,
+  `complemento` varchar(160) COLLATE utf8mb4_general_ci DEFAULT '',
+  `metodo_pagamento` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
+  `status_pagamento` varchar(60) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Aguardando pagamento',
+  `status_entrega` varchar(60) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Pedido recebido',
+  `total` decimal(10,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pedidos`
+--
+
+LOCK TABLES `pedidos` WRITE;
+/*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
+INSERT INTO `pedidos` VALUES (1,'JOSE HENRIQUE VIT','46999094793','85640000','rua rondinha','134','centro','Ampere','casa','Pix','Pago','Separando',629.70,'2026-05-19 22:52:16','2026-05-19 22:52:45'),(2,'\\zx','qw','85640000','q','qw','\\zx','Ampere','\\zx','Cartão','Pago','Separando',189.90,'2026-05-19 22:55:54','2026-05-19 22:56:05'),(3,'wqd','sad','sad','sada','adsa','asda','asda','das','Pix','Pago','Separando',110.00,'2026-05-19 23:14:10','2026-05-19 23:14:31'),(4,'JOSE HENRIQUE VIT','46999094793','85640000','rua rondinha','134','centro','Ampere','casa','Pix','Aguardando pagamento','Pedido recebido',149.90,'2026-05-19 23:16:42','2026-05-19 23:16:42'),(5,'JOSE HENRIQUE VIi','46999094793','85640000','rua rondinha','134','centro','Ampere','casa','Pix','Aguardando pagamento','Pedido recebido',149.90,'2026-05-19 23:17:41','2026-05-19 23:17:41'),(6,'JOSE HENRIQUE VIT','46999094793','85640000','rua rondinha','134','centro','Ampere','casa','Pix','Pago','Separando',2488.80,'2026-06-10 01:22:57','2026-06-10 01:23:01'),(7,'JOSE HENRIQUE VIT','46999094793','85640000','rua rondinha','134','centro','Ampere','casa','Pix','Pago','Separando',110.00,'2026-06-10 21:03:31','2026-06-10 21:04:04'),(8,'lara','hf2839823482-','23r723097r23','36523969','234','minha casa','Ampere','casa','Pix','Pago','Enviado',330.00,'2026-06-14 20:46:07','2026-06-14 20:47:39');
+/*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `produtos`
+--
+
+DROP TABLE IF EXISTS `produtos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `produtos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(120) COLLATE utf8mb4_general_ci NOT NULL,
+  `categoria` varchar(80) COLLATE utf8mb4_general_ci NOT NULL,
+  `preco` decimal(10,2) NOT NULL,
+  `img` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `imagens` json DEFAULT NULL,
+  `descricao` text COLLATE utf8mb4_general_ci NOT NULL,
+  `tamanhos` json NOT NULL,
+  `estoque` int NOT NULL DEFAULT '10',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `produtos`
+--
+
+LOCK TABLES `produtos` WRITE;
+/*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
+INSERT INTO `produtos` VALUES (1,'Atletico MG','Brasileirao',100.00,'/image/atletico01.webp','[\"/image/atletico02.webp\", \"/image/atletico03.webp\"]','Camisa do Galo','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-10 01:10:35'),(2,'Cruzeiro','Brasileirao',130.00,'/image/cruzeiro01.webp','[\"/image/cruzeiro02.webp\", \"/image/cruzeiro03.webp\"]','Camisa Red Bull','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 22:36:25'),(3,'Corinthians','Brasileirao',120.00,'./image/corinthianss.webp',NULL,'Camisa do Timao','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-03-31 23:06:31'),(4,'Flamengo','Brasileirao',100.00,'/image/flamengo01.webp','[\"/image/flamengo02.webp\", \"/image/flamengo03.webp\"]','Camisa Rubro Negra','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-10 01:13:43'),(5,'Fluminense','Brasileirao',111.00,'/image/fluminense01.webp','[\"/image/fluminense02.webp\", \"/image/fluminense03.webp\"]','Camisa Tricolor','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 22:07:27'),(6,'Gremio','Brasileirao',149.90,'/image/gremio01.webp','[\"/image/gremio02.webp\", \"/image/gremio03.webp\"]','Camisa oficial com descricao padrao para a vitrine da loja.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-14 20:44:06'),(7,'Internacional','Brasileirao',150.00,'/image/internacional01.webp','[\"/image/internacional02.webp\", \"/image/internacional03.webp\"]','Camisa oficial com descricao padrao para a vitrine da loja.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 22:11:04'),(8,'Palmeiras','Brasileirao',110.00,'/image/palmeiras01.webp','[\"/image/palmeiras02.webp\", \"/image/palmeiras03.webp\"]','Camisa Palmeiras','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-10 00:56:34'),(9,'Botafogo','Brasileirao',139.90,'/image/botafogo01.webp','[\"/image/botafogo02.webp\", \"/image/botafogo03.webp\"]','Camisa Botafogo - Home','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 23:06:40'),(10,'Sao Paulo','Brasileirao',100.00,'/image/sãopaulo01.webp','[\"/image/sãopaulo02.webp\", \"/image/sãopaulo03.webp\"]','Camisa Paulista','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 22:37:51'),(11,'Vasco','Brasileirao',90.00,'/image/vasco01.webp','[\"/image/vasco02.webp\", \"/image/vasco03.webp\"]','Camisa Vasco','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 22:37:03'),(12,'Atletico de Madrid','Europa',209.90,'./image/atletico de madri.webp',NULL,'Camisa oficial com descricao padrao para a vitrine da loja.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-03-31 23:06:31'),(13,'Barcelona','Europa',230.99,'/image/barcelona01.webp','[\"/image/barcelona02.webp\", \"/image/barcelona03.webp\"]','Camisa Barcelona - 2015/2016 Home','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 22:58:34'),(14,'Manchester United','Europa',229.90,'./image/manchesster united.webp',NULL,'Camisa oficial com descricao padrao para a vitrine da loja.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-03-31 23:06:31'),(15,'Real Madrid','Europa',219.90,'/image/realmadri01.webp','[\"/image/realmadri02.webp\", \"/image/realmadri03.webp\"]','Camisa oficial com descricao padrao para a vitrine da loja.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 23:02:40'),(16,'Argentina','Selecoes',179.90,'/image/argentina01.webp','[\"/image/argentina02.webp\", \"/image/argentina03.webp\"]','Camisa oficial de selecao com descricao padrao para a vitrine.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 23:04:45'),(17,'Brasil','Selecoes',189.90,'/image/brasil01.webp','[\"/image/brasil02.webp\", \"/image/brasil03.webp\"]','Camisa oficial de selecao com descricao padrao para a vitrine.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 23:04:19'),(18,'Italia','Selecoes',169.90,'/image/italia01.webp','[\"/image/italia02.webp\", \"/image/italia03.webp\"]','Camisa oficial de selecao com descricao padrao para a vitrine.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 23:03:09'),(19,'Portugal','Selecoes',184.90,'/image/portugal01.webp','[\"/image/portugal02.webp\", \"/image/portugal03.webp\"]','Camisa oficial de selecao com descricao padrao para a vitrine.','[\"P\", \"M\", \"G\", \"GG\"]',10,'2026-03-31 23:06:31','2026-06-16 23:03:43');
+/*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping events for database 'resenha_sports'
+--
+
+--
+-- Dumping routines for database 'resenha_sports'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-06-16 20:19:53
