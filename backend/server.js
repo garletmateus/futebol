@@ -1,8 +1,10 @@
 ﻿const express = require("express");
 const cors = require("cors");
 const path = require("path");
+require("dotenv").config();
 const produtosRouter = require("./routes/produtos");
 const pedidosRouter = require("./routes/pedidos");
+const pagamentosRouter = require("./routes/pagamentos");
 const { ensureSchema } = require("./ensureSchema");
 
 const app = express();
@@ -19,6 +21,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/produtos", produtosRouter);
 app.use("/api/pedidos", pedidosRouter);
+app.use("/api/pagamentos", pagamentosRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(frontendDir, "index.html"));

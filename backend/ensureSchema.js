@@ -37,6 +37,16 @@ async function ensureSchema() {
     await db.query('ALTER TABLE pedidos DROP COLUMN itens_json');
   }
 
+  const [preferenceColumns] = await db.query("SHOW COLUMNS FROM pedidos LIKE 'mercado_pago_preference_id'");
+  if (!preferenceColumns.length) {
+    await db.query("ALTER TABLE pedidos ADD COLUMN mercado_pago_preference_id VARCHAR(120) NULL AFTER total");
+  }
+
+  const [paymentColumns] = await db.query("SHOW COLUMNS FROM pedidos LIKE 'mercado_pago_payment_id'");
+  if (!paymentColumns.length) {
+    await db.query("ALTER TABLE pedidos ADD COLUMN mercado_pago_payment_id VARCHAR(120) NULL AFTER mercado_pago_preference_id");
+  }
+
   await db.query(`
     CREATE TABLE IF NOT EXISTS pedido_itens (
       id INT NOT NULL AUTO_INCREMENT,

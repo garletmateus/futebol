@@ -112,9 +112,24 @@ router.post("/", async (req, res) => {
       itens
     };
 
-    if (!pedido.clienteNome || !pedido.telefone || !pedido.cep || !pedido.rua || !pedido.numero || !pedido.bairro || !pedido.cidade || !pedido.metodoPagamento || !pedido.total || !pedido.itens.length) {
+    const camposInvalidos = [];
+    if (!pedido.clienteNome) camposInvalidos.push("nome");
+    if (!pedido.telefone) camposInvalidos.push("telefone");
+    if (!pedido.cep) camposInvalidos.push("cep");
+    if (!pedido.rua) camposInvalidos.push("rua");
+    if (!pedido.numero) camposInvalidos.push("numero");
+    if (!pedido.bairro) camposInvalidos.push("bairro");
+    if (!pedido.cidade) camposInvalidos.push("cidade");
+    if (!pedido.metodoPagamento) camposInvalidos.push("metodoPagamento");
+    if (!pedido.total || pedido.total <= 0) camposInvalidos.push("total");
+    if (!pedido.itens.length) camposInvalidos.push("itens");
+
+    if (camposInvalidos.length) {
       conexao.release();
-      return res.status(400).json({ erro: "Dados do pedido inválidos" });
+      return res.status(400).json({
+        erro: "Dados do pedido inválidos",
+        detalhe: `Campos inválidos: ${camposInvalidos.join(", ")}`
+      });
     }
 
     await conexao.beginTransaction();

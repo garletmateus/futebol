@@ -1,5 +1,6 @@
 ﻿const PRODUTOS_API = "/api/produtos";
 const PEDIDOS_API = "/api/pedidos";
+const PAGAMENTOS_API = "/api/pagamentos";
 const labelsCategoria = {
   Todos: "Todas as categorias",
   Brasileirao: "Brasileirão",
@@ -386,6 +387,30 @@ function abrirPagamento() {
   modalPagamento.show();
 }
 
+async function abrirCheckoutMercadoPago(pedidoCriado, itens) {
+  const resposta = await fetch(`${PAGAMENTOS_API}/mercadopago`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      pedidoId: pedidoCriado.id,
+      itens
+    })
+  });
+
+  const dadosPagamento = await resposta.json();
+
+  if (!resposta.ok) {
+    throw new Error(dadosPagamento.detalhe || dadosPagamento.erro || "Não foi possível iniciar o Mercado Pago.");
+  }
+
+  const checkoutUrl = dadosPagamento.sandboxInitPoint || dadosPagamento.initPoint;
+  if (!checkoutUrl) {
+    throw new Error("Mercado Pago não retornou o link de pagamento.");
+  }
+
+  window.location.href = checkoutUrl;
+}
+
 async function confirmarPagamento() {
   const pedido = {
     clienteNome: document.getElementById("checkoutNome").value.trim(),
@@ -411,8 +436,23 @@ async function confirmarPagamento() {
     }))
   };
 
+  if (!pedido.itens.length) {
+    mostrarAviso("Adicione pelo menos um item ao carrinho antes de finalizar.");
+    return;
+  }
+
+  if (!pedido.total || pedido.total <= 0) {
+    mostrarAviso("O total do carrinho está inválido. Remova o item e adicione novamente.");
+    return;
+  }
+
   if (!pedido.clienteNome || !pedido.telefone || !pedido.cep || !pedido.rua || !pedido.numero || !pedido.bairro || !pedido.cidade) {
-    mostrarAviso("Preencha os dados de entrega antes de continuar.");
+    mostrarAviso("Preencha nome, telefone, CEP, rua, número, bairro e cidade.");
+    return;
+  }
+
+  if (!pedido.metodoPagamento) {
+    mostrarAviso("Escolha uma forma de pagamento.");
     return;
   }
 
@@ -427,6 +467,12 @@ async function confirmarPagamento() {
 
     if (!resposta.ok) {
       throw new Error(dadosResposta.detalhe || dadosResposta.erro || "Não foi possível criar o pedido.");
+    }
+
+    if (pedido.metodoPagamento === "Mercado Pago") {
+      localStorage.setItem("resenha_pedido_atual", JSON.stringify(dadosResposta));
+      await abrirCheckoutMercadoPago(dadosResposta, pedido.itens);
+      return;
     }
 
     localStorage.setItem("resenha_pedido_atual", JSON.stringify(dadosResposta));
