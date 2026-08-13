@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 require("dotenv").config();
 
 const { Pool } = require("pg");
@@ -13,33 +12,19 @@ if (!databaseUrl.searchParams.has("sslmode")) {
     databaseUrl.searchParams.set("sslmode", "require");
 }
 
+if (!databaseUrl.searchParams.has("uselibpqcompat")) {
+    databaseUrl.searchParams.set("uselibpqcompat", "true");
+}
+
 const pool = new Pool({
     connectionString: databaseUrl.toString(),
-    ssl: {
-        rejectUnauthorized: false
-    }
-=======
-﻿const { Pool } = require("pg");
-require("dotenv").config();
-
-const pool = new Pool({
-  host: process.env.HOST,
-  port: Number(process.env.PORT),
-  database: process.env.DATABASE,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+    ssl: true,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000
 });
 
-pool.on("connect", () => {
-  console.log("✅ Conectado ao PostgreSQL/Supabase!");
-});
-
-pool.on("error", (err) => {
-  console.error("❌ Erro PostgreSQL:", err.message);
->>>>>>> 38204cfa6cff29ea79e3381ab5f24473d5e265df
+pool.on("error", (error) => {
+    console.error("Erro inesperado no PostgreSQL:", error.message);
 });
 
 module.exports = pool;
