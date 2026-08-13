@@ -24,6 +24,7 @@ app.get("/api/health", (req, res) => {
         status: "ok",
         message: "Servidor Resenha Sports funcionando!"
     });
+<<<<<<< HEAD
 });
 
 app.get("/health", (req, res) => {
@@ -31,6 +32,8 @@ app.get("/health", (req, res) => {
         status: "ok",
         message: "Servidor Resenha Sports funcionando!"
     });
+=======
+>>>>>>> 38204cfa6cff29ea79e3381ab5f24473d5e265df
 });
 
 app.use("/api/produtos", produtosRouter);
@@ -78,8 +81,12 @@ async function startServer() {
     }
 }
 
+<<<<<<< HEAD
 if (require.main === module) {
     startServer();
 }
 
 module.exports = app;
+=======
+startServer();
+>>>>>>> 38204cfa6cff29ea79e3381ab5f24473d5e265df
