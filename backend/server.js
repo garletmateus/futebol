@@ -26,9 +26,19 @@ app.get("/api/health", (req, res) => {
     });
 });
 
+app.get("/health", (req, res) => {
+    res.json({
+        status: "ok",
+        message: "Servidor Resenha Sports funcionando!"
+    });
+});
+
 app.use("/api/produtos", produtosRouter);
 app.use("/api/pedidos", pedidosRouter);
 app.use("/api/pagamentos", pagamentosRouter);
+app.use("/produtos", produtosRouter);
+app.use("/pedidos", pedidosRouter);
+app.use("/pagamentos", pagamentosRouter);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(frontendDir, "index.html"));
@@ -68,4 +78,8 @@ async function startServer() {
     }
 }
 
-startServer();
+if (require.main === module) {
+    startServer();
+}
+
+module.exports = app;
