@@ -11,42 +11,66 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const frontendDir = path.resolve(__dirname, "frontend");
 
-// Middlewares
+// =========================
+// MIDDLEWARES
+// =========================
 app.use(cors());
 app.use(express.json());
 
-// Frontend
+// =========================
+// FRONTEND
+// =========================
 app.use(express.static(frontendDir));
 
-// API - Health
+// =========================
+// API - HEALTH
+// =========================
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// API - Produtos
+// =========================
+// API - PRODUTOS
+// =========================
 app.use("/api/produtos", produtosRouter);
 
-// API - Pedidos
+// =========================
+// API - PEDIDOS
+// =========================
 app.use("/api/pedidos", pedidosRouter);
 
-// Página inicial
+// =========================
+// PÁGINA INICIAL
+// =========================
 app.get("/", (req, res) => {
   res.sendFile(path.join(frontendDir, "index.html"));
 });
 
-// Inicialização
-async function startServer() {
-  try {
-    await ensureSchema();
+// =========================
+// INICIALIZAÇÃO LOCAL
+// =========================
+if (process.env.VERCEL !== "1") {
+  async function startServer() {
+    try {
+      await ensureSchema();
 
-    app.listen(PORT, () => {
-      console.log(`Servidor rodando na porta ${PORT}`);
-    });
-  } catch (error) {
-    console.error("Erro ao preparar o banco de dados:", error.message);
-    process.exit(1);
+      app.listen(PORT, () => {
+        console.log(`Servidor rodando na porta ${PORT}`);
+      });
+    } catch (error) {
+      console.error(
+        "Erro ao preparar o banco de dados:",
+        error.message
+      );
+
+      process.exit(1);
+    }
   }
+
+  startServer();
 }
 
-// IMPORTANTE: iniciar o servidor
-startServer();
+// =========================
+// VERCEL
+// =========================
+module.exports = app;
