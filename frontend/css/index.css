@@ -1362,3 +1362,74 @@ body.dark-mode .product-price {
         grid-template-columns: 1fr;
     }
 }
+/* =========================================================
+   CORREÇÕES FINAIS DO MODO ESCURO
+   ========================================================= */
+
+body.dark-mode .product-name {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .product-installments {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .catalog-head h2 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .catalog-head p {
+    color: #a8b3c2 !important;
+}
+
+body.dark-mode .empty-state {
+    background: #172033 !important;
+    border-color: #2c3848 !important;
+    color: #a8b3c2 !important;
+}
+
+body.dark-mode .product-card {
+    color: #edf2f7;
+}
+
+body.dark-mode .product-card .form-select {
+    background-color: #0f172a !important;
+    color: #edf2f7 !important;
+    border-color: #2c3848 !important;
+}
+
+body.dark-mode .product-card .form-select option {
+    background-color: #0f172a;
+    color: #edf2f7;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: #edf2f7;
+}
+
+body.dark-mode .product-card a {
+    color: #edf2f7;
+}
+
+body.dark-mode .search-box input {
+    background: #ffffff;
+    color: #122019;
+}
+
+body.dark-mode input::placeholder {
+    color: #94a3b8;
+}
+
+body.dark-mode select {
+    color: #edf2f7;
+}
+
+body.dark-mode .product-card select {
+    background-color: #0f172a;
+    color: #edf2f7;
+}
