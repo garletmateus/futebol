@@ -1,5 +1,4 @@
-﻿```js
-const PRODUTOS_API = "/api/produtos";
+﻿const PRODUTOS_API = "/api/produtos";
 const PEDIDOS_API = "/api/pedidos";
 const PAGAMENTOS_API = "/api/pagamentos";
 
@@ -13,20 +12,28 @@ const labelsCategoria = {
   Europa: "Europa"
 };
 
+// ============================================================
+// ELEMENTOS
+// ============================================================
+
 const lista = document.getElementById("lista-produtos");
 const categoriasEl = document.getElementById("categorias");
 const buscarEl = document.getElementById("buscar");
 const buscarTopoEl = document.getElementById("buscarTopo");
 const categoriaSelectEl = document.getElementById("categoriaSelect");
 const ordenarEl = document.getElementById("ordenar");
+
 const heroBanner = document.querySelector(".hero-banner");
 const heroPrev = document.querySelector(".hero-arrow.left");
 const heroNext = document.querySelector(".hero-arrow.right");
+
 const contador = document.getElementById("cart-count");
 const cartItems = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
+
 const themeToggle = document.getElementById("themeToggle");
 const themeLabel = document.getElementById("themeLabel");
+
 const mBreadcrumb = document.getElementById("mBreadcrumb");
 const mTitulo = document.getElementById("mTitulo");
 const mNomeCompleto = document.getElementById("mNomeCompleto");
@@ -44,15 +51,23 @@ const mQuantidade = document.getElementById("mQuantidade");
 const mErroProduto = document.getElementById("mErroProduto");
 const mAdd = document.getElementById("mAdd");
 
-const modalProduto = new bootstrap.Modal(
-  document.getElementById("modalProduto")
-);
+const modalProdutoEl = document.getElementById("modalProduto");
+const modalPagamentoEl = document.getElementById("modalPagamento");
 
-const modalPagamento = new bootstrap.Modal(
-  document.getElementById("modalPagamento")
-);
+const modalProduto = modalProdutoEl
+  ? new bootstrap.Modal(modalProdutoEl)
+  : null;
+
+const modalPagamento = modalPagamentoEl
+  ? new bootstrap.Modal(modalPagamentoEl)
+  : null;
+
+// ============================================================
+// ESTADO
+// ============================================================
 
 let produtos = [];
+
 let carrinho = JSON.parse(
   localStorage.getItem("resenha-carrinho") || "[]"
 );
@@ -67,7 +82,6 @@ let bannersCarregados = [
 
 let bannerAtual = 0;
 
-
 // ============================================================
 // TEMA
 // ============================================================
@@ -76,6 +90,7 @@ function aplicarTema(tema) {
   const escuro = tema === "dark";
 
   document.body.classList.toggle("dark-mode", escuro);
+
   themeToggle?.classList.toggle("active", escuro);
 
   if (themeLabel) {
@@ -90,44 +105,51 @@ function aplicarTema(tema) {
   );
 }
 
-
 // ============================================================
 // IMAGENS
 // ============================================================
 
 function testarImagem(src) {
   return new Promise((resolve) => {
+    if (!src) {
+      resolve(null);
+      return;
+    }
+
     const img = new Image();
 
     img.onload = () => resolve(src);
-    img.onerror = () => resolve(null);
+
+    img.onerror = () => {
+      console.warn("Imagem não encontrada:", src);
+      resolve(null);
+    };
 
     img.src = src;
   });
 }
 
-
-/*
-  Converte uma imagem do banco para URL do Supabase.
-
-  Exemplo:
-
-  /image/vasco01.webp
-
-  vira:
-
-  https://yznprlbydruwtdgqwykh.supabase.co/
-  storage/v1/object/public/image/vasco01.webp
-*/
 function normalizarImagemSupabase(src) {
-  if (!src) return "";
+  if (!src) {
+    return "";
+  }
 
   const valor = String(src).trim();
 
+  /*
+   * Se o banco já possui uma URL completa,
+   * mantém exatamente essa URL.
+   */
   if (/^https?:\/\//i.test(valor)) {
     return valor;
   }
 
+  /*
+   * Se vier algo como:
+   * /image/vasco01.webp
+   *
+   * pega somente o nome do arquivo.
+   */
   const nomeArquivo = valor
     .replace(/\\/g, "/")
     .split("/")
@@ -137,33 +159,37 @@ function normalizarImagemSupabase(src) {
     return "";
   }
 
-  return SUPABASE_STORAGE + encodeURIComponent(nomeArquivo);
+  return (
+    SUPABASE_STORAGE +
+    encodeURIComponent(nomeArquivo)
+  );
 }
 
-
-/*
-  Descobre automaticamente as imagens 01, 02 e 03.
-
-  Se o banco possui:
-
-  /image/vasco01.webp
-
-  o sistema procura:
-
-  vasco01.webp
-  vasco02.webp
-  vasco03.webp
-
-  Só adiciona as imagens que realmente existem.
-*/
 async function obterImagensAutomaticas(produto) {
-  const imagemPrincipal = normalizarImagemSupabase(produto.img);
+  const imagemPrincipal = normalizarImagemSupabase(
+    produto.img
+  );
 
   if (!imagemPrincipal) {
     return [];
   }
 
-  const nomeArquivo = imagemPrincipal.split("/").pop();
+  /*
+   * Já é uma URL válida.
+   */
+  const nomeArquivo = decodeURIComponent(
+    imagemPrincipal.split("/").pop()
+  );
+
+  /*
+   * Exemplo:
+   * vasco01.webp
+   *
+   * procura:
+   * vasco01.webp
+   * vasco02.webp
+   * vasco03.webp
+   */
 
   const match = nomeArquivo.match(
     /^(.*?)(01)(\.[^.]+)$/i
@@ -193,13 +219,6 @@ async function obterImagensAutomaticas(produto) {
   return encontrados.filter(Boolean);
 }
 
-
-/*
-  Retorna as imagens do produto.
-
-  Se futuramente o banco tiver um campo "imagens",
-  ele também será respeitado.
-*/
 async function obterImagensProduto(produto) {
   if (
     Array.isArray(produto.imagens) &&
@@ -213,13 +232,14 @@ async function obterImagensProduto(produto) {
   return await obterImagensAutomaticas(produto);
 }
 
-
 // ============================================================
 // BANNERS
 // ============================================================
 
 async function carregarBanners() {
-  if (!heroBanner) return;
+  if (!heroBanner) {
+    return;
+  }
 
   const nomes = [
     "ban",
@@ -240,7 +260,8 @@ async function carregarBanners() {
     ...nomes.flatMap(
       (nome) =>
         extensoes.map(
-          (ext) => `./image/${nome}.${ext}`
+          (ext) =>
+            `./image/${nome}.${ext}`
         )
     )
   ];
@@ -255,16 +276,20 @@ async function carregarBanners() {
     ...new Set(encontrados)
   ];
 
+  if (!bannersCarregados.length) {
+    bannersCarregados = [
+      "./image/banner-brasileirao.webp"
+    ];
+  }
+
   mostrarBanner(0);
 
   if (bannersCarregados.length > 1) {
-    setInterval(
-      () => mostrarBanner(bannerAtual + 1),
-      5000
-    );
+    setInterval(() => {
+      mostrarBanner(bannerAtual + 1);
+    }, 5000);
   }
 }
-
 
 function mostrarBanner(index) {
   if (
@@ -282,7 +307,6 @@ function mostrarBanner(index) {
     `url("${bannersCarregados[bannerAtual]}")`;
 }
 
-
 // ============================================================
 // UTILITÁRIOS
 // ============================================================
@@ -290,39 +314,51 @@ function mostrarBanner(index) {
 function labelCategoria(categoria) {
   return (
     labelsCategoria[categoria] ||
-    categoria
+    categoria ||
+    ""
   );
 }
 
-
 function mostrarAviso(msg) {
-  document.getElementById(
-    "toastMensagem"
-  ).innerText = msg;
+  const toastMensagem =
+    document.getElementById("toastMensagem");
 
-  new bootstrap.Toast(
-    document.getElementById("toastAviso")
-  ).show();
+  const toastAviso =
+    document.getElementById("toastAviso");
+
+  if (!toastMensagem || !toastAviso) {
+    console.warn(msg);
+    return;
+  }
+
+  toastMensagem.innerText = msg;
+
+  new bootstrap.Toast(toastAviso).show();
 }
 
-
 function limparErroProduto() {
+  if (!mErroProduto) return;
+
   mErroProduto.classList.add("d-none");
   mErroProduto.innerText = "";
 
-  mTamanho.classList.remove("is-invalid");
-  mQuantidade.classList.remove("is-invalid");
+  mTamanho?.classList.remove("is-invalid");
+  mQuantidade?.classList.remove("is-invalid");
 }
-
 
 function mostrarErroProduto(
   msg,
   campos = []
 ) {
+  if (!mErroProduto) {
+    mostrarAviso(msg);
+    return;
+  }
+
   const modalAberto =
     document
       .getElementById("modalProduto")
-      .classList.contains("show");
+      ?.classList.contains("show");
 
   if (!modalAberto) {
     mostrarAviso(msg);
@@ -330,14 +366,25 @@ function mostrarErroProduto(
   }
 
   mErroProduto.innerText = msg;
-  mErroProduto.classList.remove("d-none");
 
-  if (campos.includes("tamanho")) {
-    mTamanho.classList.add("is-invalid");
+  mErroProduto.classList.remove(
+    "d-none"
+  );
+
+  if (
+    campos.includes("tamanho")
+  ) {
+    mTamanho?.classList.add(
+      "is-invalid"
+    );
   }
 
-  if (campos.includes("quantidade")) {
-    mQuantidade.classList.add("is-invalid");
+  if (
+    campos.includes("quantidade")
+  ) {
+    mQuantidade?.classList.add(
+      "is-invalid"
+    );
   }
 
   mErroProduto.scrollIntoView({
@@ -347,7 +394,6 @@ function mostrarErroProduto(
 
   mostrarAviso(msg);
 }
-
 
 function formatarPreco(valor) {
   return Number(valor).toLocaleString(
@@ -359,18 +405,15 @@ function formatarPreco(valor) {
   );
 }
 
-
 function obterEstoque(produto) {
   return Number(
-    produto.estoque || 0
+    produto?.estoque || 0
   );
 }
-
 
 function produtoDisponivel(produto) {
   return obterEstoque(produto) > 0;
 }
-
 
 function textoEstoque(produto) {
   const estoque =
@@ -385,7 +428,6 @@ function textoEstoque(produto) {
     : `${estoque} peças disponíveis`;
 }
 
-
 function medidasPorTamanho(tamanho) {
   const tabela = {
     P: ["52 cm", "69 cm"],
@@ -396,16 +438,16 @@ function medidasPorTamanho(tamanho) {
   };
 
   return (
-    tabela[tamanho] ||
-    ["Consultar", "Consultar"]
+    tabela[tamanho] || [
+      "Consultar",
+      "Consultar"
+    ]
   );
 }
 
-
 function descricaoCompletaProduto(produto) {
-  return `${produto.desc} Produto feito para quem gosta de camisa de futebol com bom caimento, visual bonito e uso confortável no dia a dia. A peça combina com treino, resenha com os amigos, jogo no estádio ou para completar a coleção. Confira o tamanho antes de comprar e escolha a quantidade desejada conforme o estoque disponível.`;
+  return `${produto.desc || ""} Produto feito para quem gosta de camisa de futebol com bom caimento, visual bonito e uso confortável no dia a dia. A peça combina com treino, resenha com os amigos, jogo no estádio ou para completar a coleção. Confira o tamanho antes de comprar e escolha a quantidade desejada conforme o estoque disponível.`;
 }
-
 
 // ============================================================
 // CARRINHO
@@ -416,11 +458,10 @@ function calcularTotalCarrinho() {
     (total, item) =>
       total +
       Number(item.preco) *
-      Number(item.quantidade || 1),
+        Number(item.quantidade || 1),
     0
   );
 }
-
 
 function adicionarAoCarrinho(
   produto,
@@ -495,15 +536,16 @@ function adicionarAoCarrinho(
   return true;
 }
 
-
 function atualizarCarrinho() {
-  contador.innerText =
-    carrinho.reduce(
-      (total, item) =>
-        total +
-        Number(item.quantidade || 1),
-      0
-    );
+  if (contador) {
+    contador.innerText =
+      carrinho.reduce(
+        (total, item) =>
+          total +
+          Number(item.quantidade || 1),
+        0
+      );
+  }
 
   localStorage.setItem(
     "resenha-carrinho",
@@ -513,8 +555,11 @@ function atualizarCarrinho() {
   renderizarCarrinho();
 }
 
-
 function renderizarCarrinho() {
+  if (!cartItems || !cartTotal) {
+    return;
+  }
+
   if (!carrinho.length) {
     cartItems.innerHTML =
       `<div class="empty-state">Seu carrinho está vazio.</div>`;
@@ -545,7 +590,9 @@ function renderizarCarrinho() {
           <div class="cart-item">
 
             <img
-              src="${normalizarImagemSupabase(item.img)}"
+              src="${normalizarImagemSupabase(
+                item.img
+              )}"
               alt="${item.nome}"
               class="cart-thumb"
             >
@@ -555,7 +602,9 @@ function renderizarCarrinho() {
 
               <div class="text-secondary">
                 Categoria:
-                ${labelCategoria(item.categoria)}
+                ${labelCategoria(
+                  item.categoria
+                )}
               </div>
 
               <div class="text-secondary">
@@ -567,7 +616,9 @@ function renderizarCarrinho() {
               </div>
 
               <div class="fw-bold mt-1">
-                R$ ${formatarPreco(subtotal)}
+                R$ ${formatarPreco(
+                  subtotal
+                )}
               </div>
             </div>
 
@@ -587,67 +638,228 @@ function renderizarCarrinho() {
     formatarPreco(total);
 }
 
-
 function removerItem(index) {
   carrinho.splice(index, 1);
   atualizarCarrinho();
 }
 
-
 // ============================================================
-// PRODUTOS
+// PRODUTOS — API
 // ============================================================
 
 async function carregarProdutosAPI() {
   falhaAoCarregarProdutos = false;
 
   try {
-    const resposta =
-      await fetch(
-        PRODUTOS_API,
-        {
-          cache: "no-store"
+    console.log(
+      "===================================="
+    );
+
+    console.log(
+      "🔄 CARREGANDO PRODUTOS"
+    );
+
+    console.log(
+      "📡 API:",
+      PRODUTOS_API
+    );
+
+    const resposta = await fetch(
+      PRODUTOS_API,
+      {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          Accept: "application/json"
         }
-      );
+      }
+    );
 
-    const dados =
-      await resposta.json();
+    console.log(
+      "📡 Status:",
+      resposta.status
+    );
 
-    if (!resposta.ok) {
+    console.log(
+      "📡 URL final:",
+      resposta.url
+    );
+
+    /*
+     * Primeiro lê como TEXTO.
+     *
+     * Isso evita o erro:
+     *
+     * Unexpected token ...
+     *
+     * quando a Vercel retorna uma página
+     * de erro em HTML em vez de JSON.
+     */
+    const texto =
+      await resposta.text();
+
+    console.log(
+      "📦 Resposta da API:",
+      texto.substring(0, 500)
+    );
+
+    let dados;
+
+    try {
+      dados = JSON.parse(texto);
+    } catch (erroJSON) {
       throw new Error(
-        dados.detalhe ||
-        dados.erro ||
-        "Falha ao carregar produtos do banco."
+        `A API não retornou JSON. Status HTTP: ${resposta.status}. Resposta: ${texto.substring(
+          0,
+          200
+        )}`
       );
     }
 
-    produtos =
-      Array.isArray(dados)
-        ? dados
-        : [];
+    if (!resposta.ok) {
+      throw new Error(
+        dados?.detalhe ||
+          dados?.erro ||
+          `Erro HTTP ${resposta.status} ao carregar produtos.`
+      );
+    }
+
+    if (!Array.isArray(dados)) {
+      throw new Error(
+        "A API respondeu, mas não retornou uma lista de produtos."
+      );
+    }
+
+    /*
+     * Normaliza os dados vindos do PostgreSQL/Supabase.
+     */
+    produtos = dados.map(
+      (produto) => {
+        let tamanhos =
+          produto.tamanhos;
+
+        /*
+         * PostgreSQL/Supabase pode retornar
+         * JSON como array ou como string.
+         */
+        if (
+          typeof tamanhos ===
+          "string"
+        ) {
+          try {
+            tamanhos =
+              JSON.parse(tamanhos);
+          } catch {
+            tamanhos = [
+              "P",
+              "M",
+              "G",
+              "GG"
+            ];
+          }
+        }
+
+        if (
+          !Array.isArray(
+            tamanhos
+          )
+        ) {
+          tamanhos = [
+            "P",
+            "M",
+            "G",
+            "GG"
+          ];
+        }
+
+        return {
+          ...produto,
+
+          id: Number(
+            produto.id
+          ),
+
+          preco: Number(
+            produto.preco || 0
+          ),
+
+          estoque: Number(
+            produto.estoque || 0
+          ),
+
+          tamanhos,
+
+          /*
+           * IMPORTANTE:
+           * se a API já retornar a URL do Supabase,
+           * ela será mantida.
+           */
+          img:
+            normalizarImagemSupabase(
+              produto.img
+            )
+        };
+      }
+    );
+
+    console.log(
+      `✅ ${produtos.length} produtos carregados.`
+    );
+
+    if (produtos.length > 0) {
+      console.log(
+        "🛍️ Primeiro produto:",
+        produtos[0]
+      );
+
+      console.log(
+        "🖼️ URL da primeira imagem:",
+        produtos[0].img
+      );
+    }
+
+    console.log(
+      "===================================="
+    );
 
   } catch (error) {
-    console.error(error);
+    console.error(
+      "❌ ERRO AO CARREGAR PRODUTOS:",
+      error
+    );
 
     produtos = [];
+
     falhaAoCarregarProdutos = true;
 
     mostrarAviso(
       error.message ||
-      "Não foi possível carregar os produtos do banco."
+        "Não foi possível carregar os produtos do banco."
     );
   }
 }
 
+// ============================================================
+// CATEGORIAS
+// ============================================================
 
 function renderizarCategorias() {
+  if (
+    !categoriaSelectEl ||
+    !categoriasEl
+  ) {
+    return;
+  }
+
   const categorias = [
     "Todos",
     ...new Set(
-      produtos.map(
-        (produto) =>
-          produto.categoria
-      )
+      produtos
+        .map(
+          (produto) =>
+            produto.categoria
+        )
+        .filter(Boolean)
     )
   ];
 
@@ -656,19 +868,34 @@ function renderizarCategorias() {
       .map(
         (categoria) =>
           `<option value="${categoria}">
-            ${labelCategoria(categoria)}
+            ${labelCategoria(
+              categoria
+            )}
           </option>`
       )
       .join("");
 
-  categoriaSelectEl.value =
-    categoriaAtual;
+  if (
+    categorias.includes(
+      categoriaAtual
+    )
+  ) {
+    categoriaSelectEl.value =
+      categoriaAtual;
+  } else {
+    categoriaAtual =
+      "Todos";
+
+    categoriaSelectEl.value =
+      "Todos";
+  }
 
   categoriasEl.innerHTML =
     categorias
       .map(
         (categoria) =>
           `<button
+            type="button"
             class="chip ${
               categoriaAtual ===
               categoria
@@ -677,36 +904,49 @@ function renderizarCategorias() {
             }"
             data-categoria="${categoria}"
           >
-            ${labelCategoria(categoria)}
+            ${labelCategoria(
+              categoria
+            )}
           </button>`
       )
       .join("");
 }
 
+// ============================================================
+// BUSCA
+// ============================================================
 
 function sincronizarBusca() {
-  buscarEl.value =
-    buscarTopoEl.value;
+  if (
+    buscarEl &&
+    buscarTopoEl
+  ) {
+    buscarEl.value =
+      buscarTopoEl.value;
+  }
 }
-
 
 function obterBuscaAtual() {
   return (
-    buscarEl.value ||
-    buscarTopoEl.value ||
+    buscarEl?.value ||
+    buscarTopoEl?.value ||
     ""
   )
     .trim()
     .toLowerCase();
 }
 
+// ============================================================
+// FILTROS
+// ============================================================
 
 function obterProdutosFiltrados() {
   const busca =
     obterBuscaAtual();
 
-  let filtrados =
-    [...produtos];
+  let filtrados = [
+    ...produtos
+  ];
 
   if (
     categoriaAtual !==
@@ -723,54 +963,87 @@ function obterProdutosFiltrados() {
   if (busca) {
     filtrados =
       filtrados.filter(
-        (produto) =>
-          produto.nome
-            .toLowerCase()
-            .includes(busca) ||
+        (produto) => {
+          const nome =
+            String(
+              produto.nome || ""
+            ).toLowerCase();
 
-          produto.categoria
-            .toLowerCase()
-            .includes(busca) ||
+          const categoria =
+            String(
+              produto.categoria ||
+                ""
+            ).toLowerCase();
 
-          produto.desc
-            .toLowerCase()
-            .includes(busca)
+          const descricao =
+            String(
+              produto.desc || ""
+            ).toLowerCase();
+
+          return (
+            nome.includes(
+              busca
+            ) ||
+            categoria.includes(
+              busca
+            ) ||
+            descricao.includes(
+              busca
+            )
+          );
+        }
       );
   }
 
   if (
-    ordenarEl.value ===
+    ordenarEl?.value ===
     "menor-preco"
   ) {
     filtrados.sort(
       (a, b) =>
-        a.preco - b.preco
+        Number(a.preco) -
+        Number(b.preco)
     );
   } else if (
-    ordenarEl.value ===
+    ordenarEl?.value ===
     "maior-preco"
   ) {
     filtrados.sort(
       (a, b) =>
-        b.preco - a.preco
+        Number(b.preco) -
+        Number(a.preco)
     );
   } else if (
-    ordenarEl.value ===
+    ordenarEl?.value ===
     "nome"
   ) {
     filtrados.sort(
       (a, b) =>
-        a.nome.localeCompare(
-          b.nome
-        )
+        String(a.nome || "")
+          .localeCompare(
+            String(
+              b.nome || ""
+            )
+          )
     );
   }
 
   return filtrados;
 }
 
+// ============================================================
+// RENDERIZAR PRODUTOS
+// ============================================================
 
 function renderizarProdutos() {
+  if (!lista) {
+    console.error(
+      "❌ Elemento #lista-produtos não encontrado no HTML."
+    );
+
+    return;
+  }
+
   if (
     falhaAoCarregarProdutos
   ) {
@@ -798,129 +1071,119 @@ function renderizarProdutos() {
 
   lista.innerHTML =
     itens
-      .map((produto) => {
-        const preco =
-          Number(produto.preco);
+      .map(
+        (produto) => {
+          const preco =
+            Number(
+              produto.preco || 0
+            );
 
-        const precoAntigo =
-          preco / 0.86;
+          const precoAntigo =
+            preco / 0.86;
 
-        const imagem =
-          normalizarImagemSupabase(
-            produto.img
-          );
+          const imagem =
+            normalizarImagemSupabase(
+              produto.img
+            );
 
-        return `
-          <article class="product-card">
+          const tamanhos =
+            Array.isArray(
+              produto.tamanhos
+            )
+              ? produto.tamanhos
+              : [
+                  "P",
+                  "M",
+                  "G",
+                  "GG"
+                ];
 
-            <div
-              class="product-media ver-produto"
-              data-id="${produto.id}"
-            >
+          return `
+            <article class="product-card">
 
-              <img
-                src="${imagem}"
-                alt="${produto.nome}"
+              <div
+                class="product-media ver-produto"
+                data-id="${produto.id}"
               >
 
-              <span class="badge-tag">
-                ${labelCategoria(
-                  produto.categoria
-                )}
-              </span>
+                <img
+                  src="${imagem}"
+                  alt="${produto.nome}"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='${imagem}'"
+                >
 
-            </div>
-
-            <div class="product-body">
-
-              <div class="product-highlight">
-                Personalize
-              </div>
-
-              <h3 class="product-name">
-                ${produto.nome}
-              </h3>
-
-              <p class="product-desc">
-                ${produto.desc}
-              </p>
-
-              <div class="price-box">
-
-                <div class="pix-price">
-                  R$ ${formatarPreco(preco)}
-                  no Pix
-                </div>
-
-                <div class="old-price-row">
-
-                  <span class="old-price">
-                    R$ ${formatarPreco(
-                      precoAntigo
-                    )}
-                  </span>
-
-                  <span class="discount">
-                    14% off
-                  </span>
-
-                </div>
-
-              </div>
-
-              <div class="product-rating">
-
-                <div class="stars">
-                  ★★★★★
-                </div>
-
-                <span class="rating-value">
-                  5.00
+                <span class="badge-tag">
+                  ${labelCategoria(
+                    produto.categoria
+                  )}
                 </span>
 
               </div>
 
-              <div class="product-meta">
+              <div class="product-body">
 
-                <div class="sizes">
-                  ${produto.tamanhos.join(
-                    " • "
-                  )}
+                <div class="product-highlight">
+                  Personalize
                 </div>
 
-              </div>
+                <h3 class="product-name">
+                  ${produto.nome}
+                </h3>
 
-              <select
-                class="form-select tamanho mb-2"
-                data-id="${produto.id}"
-                ${
-                  produtoDisponivel(
-                    produto
-                  )
-                    ? ""
-                    : "disabled"
-                }
-              >
+                <p class="product-desc">
+                  ${produto.desc || ""}
+                </p>
 
-                <option value="">
-                  Escolha o tamanho
-                </option>
+                <div class="price-box">
 
-                ${produto.tamanhos
-                  .map(
-                    (tamanho) =>
-                      `<option value="${tamanho}">
-                        ${tamanho}
-                      </option>`
-                  )
-                  .join("")}
+                  <div class="pix-price">
+                    R$ ${formatarPreco(
+                      preco
+                    )}
+                    no Pix
+                  </div>
 
-              </select>
+                  <div class="old-price-row">
 
-              <div class="product-actions">
+                    <span class="old-price">
+                      R$ ${formatarPreco(
+                        precoAntigo
+                      )}
+                    </span>
 
-                <button
-                  class="btn-shop primary add"
+                    <span class="discount">
+                      14% off
+                    </span>
+
+                  </div>
+
+                </div>
+
+                <div class="product-rating">
+
+                  <div class="stars">
+                    ★★★★★
+                  </div>
+
+                  <span class="rating-value">
+                    5.00
+                  </span>
+
+                </div>
+
+                <div class="product-meta">
+
+                  <div class="sizes">
+                    ${tamanhos.join(
+                      " • "
+                    )}
+                  </div>
+
+                </div>
+
+                <select
+                  class="form-select tamanho mb-2"
                   data-id="${produto.id}"
                   ${
                     produtoDisponivel(
@@ -930,32 +1193,63 @@ function renderizarProdutos() {
                       : "disabled"
                   }
                 >
-                  ${
-                    produtoDisponivel(
-                      produto
-                    )
-                      ? "Adicionar"
-                      : "Esgotado"
-                  }
-                </button>
 
-                <button
-                  class="btn-shop ghost ver"
-                  data-id="${produto.id}"
-                >
-                  Ver mais
-                </button>
+                  <option value="">
+                    Escolha o tamanho
+                  </option>
+
+                  ${tamanhos
+                    .map(
+                      (tamanho) =>
+                        `<option value="${tamanho}">
+                          ${tamanho}
+                        </option>`
+                    )
+                    .join("")}
+
+                </select>
+
+                <div class="product-actions">
+
+                  <button
+                    type="button"
+                    class="btn-shop primary add"
+                    data-id="${produto.id}"
+                    ${
+                      produtoDisponivel(
+                        produto
+                      )
+                        ? ""
+                        : "disabled"
+                    }
+                  >
+                    ${
+                      produtoDisponivel(
+                        produto
+                      )
+                        ? "Adicionar"
+                        : "Esgotado"
+                    }
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn-shop ghost ver"
+                    data-id="${produto.id}"
+                  >
+                    Ver mais
+                  </button>
+
+                </div>
 
               </div>
 
-            </div>
-
-          </article>
-        `;
-      })
+            </article>
+          `;
+        }
+      )
       .join("");
 }
-
 
 // ============================================================
 // DETALHES DO PRODUTO
@@ -964,175 +1258,223 @@ function renderizarProdutos() {
 async function abrirDetalhesProduto(
   produto
 ) {
-  produtoAtual = produto;
+  if (!produto) {
+    return;
+  }
+
+  if (!modalProduto) {
+    console.error(
+      "Modal do produto não encontrado."
+    );
+
+    return;
+  }
+
+  produtoAtual =
+    produto;
 
   limparErroProduto();
 
-  mBreadcrumb.innerText =
-    `Início / Camisas / ${labelCategoria(
-      produto.categoria
-    )}`;
+  if (mBreadcrumb) {
+    mBreadcrumb.innerText =
+      `Início / Camisas / ${labelCategoria(
+        produto.categoria
+      )}`;
+  }
 
-  mTitulo.innerText =
-    produto.nome;
+  if (mTitulo) {
+    mTitulo.innerText =
+      produto.nome;
+  }
 
-  mNomeCompleto.innerText =
-    `${produto.nome} - Camisa ${labelCategoria(
-      produto.categoria
-    )}`;
+  if (mNomeCompleto) {
+    mNomeCompleto.innerText =
+      `${produto.nome} - Camisa ${labelCategoria(
+        produto.categoria
+      )}`;
+  }
 
-  mCategoria.innerText =
-    labelCategoria(
-      produto.categoria
-    );
+  if (mCategoria) {
+    mCategoria.innerText =
+      labelCategoria(
+        produto.categoria
+      );
+  }
 
-  /*
-    Primeiro mostra a imagem principal.
-  */
   const imagemPrincipal =
     normalizarImagemSupabase(
       produto.img
     );
 
-  mImg.src =
-    imagemPrincipal;
+  if (mImg) {
+    mImg.src =
+      imagemPrincipal;
 
-  mImg.alt =
-    produto.nome;
+    mImg.alt =
+      produto.nome;
+  }
 
-  /*
-    Agora procura automaticamente:
-    01
-    02
-    03
-  */
   const imagensProduto =
     await obterImagensProduto(
       produto
     );
 
-  mImg.src =
-    imagensProduto[0] ||
-    imagemPrincipal;
+  if (mImg) {
+    mImg.src =
+      imagensProduto[0] ||
+      imagemPrincipal;
+  }
 
-  /*
-    Cria as miniaturas.
-  */
-  mThumbs.innerHTML =
-    imagensProduto
-      .map(
-        (img, index) => `
-          <button
-            class="detail-thumb ${
-              index === 0
-                ? "active"
-                : ""
-            }"
-            type="button"
-            data-img="${img}"
-          >
-
-            <img
-              src="${img}"
-              alt="${produto.nome}"
+  if (mThumbs) {
+    mThumbs.innerHTML =
+      imagensProduto
+        .map(
+          (img, index) => `
+            <button
+              class="detail-thumb ${
+                index === 0
+                  ? "active"
+                  : ""
+              }"
+              type="button"
+              data-img="${img}"
             >
 
-          </button>
-        `
-      )
-      .join("");
+              <img
+                src="${img}"
+                alt="${produto.nome}"
+              >
 
-  mDesc.innerText =
-    produto.desc;
+            </button>
+          `
+        )
+        .join("");
+  }
 
-  mDescricaoCompleta.innerText =
-    descricaoCompletaProduto(
-      produto
-    );
+  if (mDesc) {
+    mDesc.innerText =
+      produto.desc || "";
+  }
 
-  mPreco.innerText =
-    formatarPreco(
-      produto.preco
-    );
+  if (mDescricaoCompleta) {
+    mDescricaoCompleta.innerText =
+      descricaoCompletaProduto(
+        produto
+      );
+  }
 
-  mEstoque.innerText =
-    textoEstoque(
-      produto
-    );
+  if (mPreco) {
+    mPreco.innerText =
+      formatarPreco(
+        produto.preco
+      );
+  }
 
-  mEstoqueBox.className =
-    `stock-box mb-3 ${
+  if (mEstoque) {
+    mEstoque.innerText =
+      textoEstoque(
+        produto
+      );
+  }
+
+  if (mEstoqueBox) {
+    mEstoqueBox.className =
+      `stock-box mb-3 ${
+        produtoDisponivel(
+          produto
+        )
+          ? ""
+          : "out"
+      }`;
+  }
+
+  const tamanhos =
+    Array.isArray(
+      produto.tamanhos
+    )
+      ? produto.tamanhos
+      : [
+          "P",
+          "M",
+          "G",
+          "GG"
+        ];
+
+  if (mTamanho) {
+    mTamanho.innerHTML =
+      `<option value="">
+        Escolha o tamanho
+      </option>
+      ${tamanhos
+        .map(
+          (tamanho) =>
+            `<option value="${tamanho}">
+              ${tamanho}
+            </option>`
+        )
+        .join("")}`;
+
+    mTamanho.disabled =
+      !produtoDisponivel(
+        produto
+      );
+  }
+
+  if (mTabelaTamanhos) {
+    mTabelaTamanhos.innerHTML =
+      tamanhos
+        .map(
+          (tamanho) => {
+            const [
+              largura,
+              altura
+            ] =
+              medidasPorTamanho(
+                tamanho
+              );
+
+            return `
+              <tr>
+                <td>${tamanho}</td>
+                <td>${largura}</td>
+                <td>${altura}</td>
+              </tr>
+            `;
+          }
+        )
+        .join("");
+  }
+
+  if (mQuantidade) {
+    mQuantidade.value = 1;
+
+    mQuantidade.max =
+      obterEstoque(
+        produto
+      );
+
+    mQuantidade.disabled =
+      !produtoDisponivel(
+        produto
+      );
+  }
+
+  if (mAdd) {
+    mAdd.disabled =
+      !produtoDisponivel(
+        produto
+      );
+
+    mAdd.innerText =
       produtoDisponivel(
         produto
       )
-        ? ""
-        : "out"
-    }`;
-
-  mTamanho.innerHTML =
-    `<option value="">
-      Escolha o tamanho
-    </option>
-    ${produto.tamanhos
-      .map(
-        (tamanho) =>
-          `<option value="${tamanho}">
-            ${tamanho}
-          </option>`
-      )
-      .join("")}`;
-
-  mTabelaTamanhos.innerHTML =
-    produto.tamanhos
-      .map((tamanho) => {
-        const [
-          largura,
-          altura
-        ] =
-          medidasPorTamanho(
-            tamanho
-          );
-
-        return `
-          <tr>
-            <td>${tamanho}</td>
-            <td>${largura}</td>
-            <td>${altura}</td>
-          </tr>
-        `;
-      })
-      .join("");
-
-  mTamanho.disabled =
-    !produtoDisponivel(
-      produto
-    );
-
-  mQuantidade.value = 1;
-
-  mQuantidade.max =
-    obterEstoque(produto);
-
-  mQuantidade.disabled =
-    !produtoDisponivel(
-      produto
-    );
-
-  mAdd.disabled =
-    !produtoDisponivel(
-      produto
-    );
-
-  mAdd.innerText =
-    produtoDisponivel(
-      produto
-    )
-      ? "Adicionar ao carrinho"
-      : "Produto esgotado";
+        ? "Adicionar ao carrinho"
+        : "Produto esgotado";
+  }
 
   modalProduto.show();
 }
-
 
 // ============================================================
 // PAGAMENTO
@@ -1147,9 +1489,10 @@ function abrirPagamento() {
     return;
   }
 
-  modalPagamento.show();
+  if (modalPagamento) {
+    modalPagamento.show();
+  }
 }
-
 
 async function abrirCheckoutMercadoPago(
   pedidoCriado,
@@ -1169,19 +1512,31 @@ async function abrirCheckoutMercadoPago(
         body: JSON.stringify({
           pedidoId:
             pedidoCriado.id,
+
           itens
         })
       }
     );
 
-  const dadosPagamento =
-    await resposta.json();
+  const texto =
+    await resposta.text();
+
+  let dadosPagamento;
+
+  try {
+    dadosPagamento =
+      JSON.parse(texto);
+  } catch {
+    throw new Error(
+      "O servidor de pagamento não retornou JSON."
+    );
+  }
 
   if (!resposta.ok) {
     throw new Error(
       dadosPagamento.detalhe ||
-      dadosPagamento.erro ||
-      "Não foi possível iniciar o Mercado Pago."
+        dadosPagamento.erro ||
+        "Não foi possível iniciar o Mercado Pago."
     );
   }
 
@@ -1199,7 +1554,6 @@ async function abrirCheckoutMercadoPago(
     checkoutUrl;
 }
 
-
 async function confirmarPagamento() {
   const pedido = {
     clienteNome:
@@ -1207,63 +1561,61 @@ async function confirmarPagamento() {
         .getElementById(
           "checkoutNome"
         )
-        .value.trim(),
+        ?.value.trim() || "",
 
     telefone:
       document
         .getElementById(
           "checkoutTelefone"
         )
-        .value.trim(),
+        ?.value.trim() || "",
 
     cep:
       document
         .getElementById(
           "checkoutCep"
         )
-        .value.trim(),
+        ?.value.trim() || "",
 
     rua:
       document
         .getElementById(
           "checkoutRua"
         )
-        .value.trim(),
+        ?.value.trim() || "",
 
     numero:
       document
         .getElementById(
           "checkoutNumero"
         )
-        .value.trim(),
+        ?.value.trim() || "",
 
     bairro:
       document
         .getElementById(
           "checkoutBairro"
         )
-        .value.trim(),
+        ?.value.trim() || "",
 
     cidade:
       document
         .getElementById(
           "checkoutCidade"
         )
-        .value.trim(),
+        ?.value.trim() || "",
 
     complemento:
       document
         .getElementById(
           "checkoutComplemento"
         )
-        .value.trim(),
+        ?.value.trim() || "",
 
     metodoPagamento:
-      document
-        .getElementById(
-          "metodoPagamento"
-        )
-        .value,
+      document.getElementById(
+        "metodoPagamento"
+      )?.value || "",
 
     statusPagamento:
       "Aguardando pagamento",
@@ -1275,20 +1627,28 @@ async function confirmarPagamento() {
       calcularTotalCarrinho(),
 
     itens:
-      carrinho.map((item) => ({
-        id: item.id,
-        nome: item.nome,
-        categoria: item.categoria,
-        preco: item.preco,
-        tamanho: item.tamanho,
-        img: normalizarImagemSupabase(
-          item.img
-        ),
-        quantidade:
-          Number(
-            item.quantidade || 1
-          )
-      }))
+      carrinho.map(
+        (item) => ({
+          id: item.id,
+          nome: item.nome,
+          categoria:
+            item.categoria,
+          preco: item.preco,
+          tamanho:
+            item.tamanho,
+
+          img:
+            normalizarImagemSupabase(
+              item.img
+            ),
+
+          quantidade:
+            Number(
+              item.quantidade ||
+                1
+            )
+        })
+      )
   };
 
   if (!pedido.itens.length) {
@@ -1346,20 +1706,32 @@ async function confirmarPagamento() {
               "application/json"
           },
 
-          body: JSON.stringify(
-            pedido
-          )
+          body:
+            JSON.stringify(
+              pedido
+            )
         }
       );
 
-    const dadosResposta =
-      await resposta.json();
+    const texto =
+      await resposta.text();
+
+    let dadosResposta;
+
+    try {
+      dadosResposta =
+        JSON.parse(texto);
+    } catch {
+      throw new Error(
+        "O servidor de pedidos não retornou JSON."
+      );
+    }
 
     if (!resposta.ok) {
       throw new Error(
         dadosResposta.detalhe ||
-        dadosResposta.erro ||
-        "Não foi possível criar o pedido."
+          dadosResposta.erro ||
+          "Não foi possível criar o pedido."
       );
     }
 
@@ -1415,18 +1787,20 @@ async function confirmarPagamento() {
     }
 
   } catch (error) {
-    console.error(error);
+    console.error(
+      "Erro ao confirmar pagamento:",
+      error
+    );
 
     mostrarAviso(
       error.message ||
-      "Não foi possível registrar o pedido agora."
+        "Não foi possível registrar o pedido agora."
     );
   }
 }
 
-
 // ============================================================
-// EVENTOS
+// RENDERIZAR TUDO
 // ============================================================
 
 function renderizarTudo() {
@@ -1434,8 +1808,11 @@ function renderizarTudo() {
   renderizarProdutos();
 }
 
+// ============================================================
+// EVENTOS — CATEGORIAS
+// ============================================================
 
-categoriasEl.addEventListener(
+categoriasEl?.addEventListener(
   "click",
   (e) => {
     const botao =
@@ -1443,7 +1820,9 @@ categoriasEl.addEventListener(
         "[data-categoria]"
       );
 
-    if (!botao) return;
+    if (!botao) {
+      return;
+    }
 
     categoriaAtual =
       botao.dataset.categoria;
@@ -1452,8 +1831,7 @@ categoriasEl.addEventListener(
   }
 );
 
-
-categoriaSelectEl.addEventListener(
+categoriaSelectEl?.addEventListener(
   "change",
   () => {
     categoriaAtual =
@@ -1463,32 +1841,43 @@ categoriaSelectEl.addEventListener(
   }
 );
 
+// ============================================================
+// EVENTOS — BUSCA
+// ============================================================
 
-buscarEl.addEventListener(
+buscarEl?.addEventListener(
   "input",
   () => {
-    buscarTopoEl.value =
-      buscarEl.value;
+    if (buscarTopoEl) {
+      buscarTopoEl.value =
+        buscarEl.value;
+    }
 
     renderizarProdutos();
   }
 );
 
-
-buscarTopoEl.addEventListener(
+buscarTopoEl?.addEventListener(
   "input",
   () => {
     sincronizarBusca();
+
     renderizarProdutos();
   }
 );
 
+// ============================================================
+// EVENTOS — ORDENAÇÃO
+// ============================================================
 
-ordenarEl.addEventListener(
+ordenarEl?.addEventListener(
   "change",
   renderizarProdutos
 );
 
+// ============================================================
+// EVENTOS — BANNER
+// ============================================================
 
 heroPrev?.addEventListener(
   "click",
@@ -1498,7 +1887,6 @@ heroPrev?.addEventListener(
     )
 );
 
-
 heroNext?.addEventListener(
   "click",
   () =>
@@ -1507,6 +1895,9 @@ heroNext?.addEventListener(
     )
 );
 
+// ============================================================
+// EVENTOS — TEMA
+// ============================================================
 
 themeToggle?.addEventListener(
   "click",
@@ -1521,6 +1912,9 @@ themeToggle?.addEventListener(
   }
 );
 
+// ============================================================
+// EVENTOS — MENU
+// ============================================================
 
 document
   .querySelectorAll(
@@ -1538,27 +1932,42 @@ document
 
           renderizarTudo();
 
-          bootstrap.Collapse
-            .getOrCreateInstance(
-              document.getElementById(
-                "mainMenu"
+          const mainMenu =
+            document.getElementById(
+              "mainMenu"
+            );
+
+          if (
+            mainMenu &&
+            window.bootstrap
+          ) {
+            bootstrap.Collapse
+              .getOrCreateInstance(
+                mainMenu
               )
-            )
-            .hide();
+              .hide();
+          }
 
-          window.scrollTo({
-            top:
-              document.querySelector(
-                ".catalog-shell"
-              ).offsetTop - 120,
+          const catalogShell =
+            document.querySelector(
+              ".catalog-shell"
+            );
 
-            behavior:
-              "smooth"
-          });
+          if (
+            catalogShell
+          ) {
+            window.scrollTo({
+              top:
+                catalogShell.offsetTop -
+                120,
+
+              behavior:
+                "smooth"
+            });
+          }
         }
       )
   );
-
 
 // ============================================================
 // CLIQUES DOS PRODUTOS
@@ -1568,15 +1977,23 @@ document.addEventListener(
   "click",
   (e) => {
     const addBtn =
-      e.target.closest(".add");
+      e.target.closest(
+        ".add"
+      );
 
     const verBtn =
-      e.target.closest(".ver");
+      e.target.closest(
+        ".ver"
+      );
 
     const produtoMedia =
       e.target.closest(
         ".ver-produto"
       );
+
+    // --------------------------------------------------------
+    // ADICIONAR AO CARRINHO
+    // --------------------------------------------------------
 
     if (addBtn) {
       const id =
@@ -1593,9 +2010,6 @@ document.addEventListener(
         document.querySelector(
           `.tamanho[data-id="${id}"]`
         );
-
-      const tamanho =
-        select.value;
 
       if (!produto) {
         mostrarAviso(
@@ -1616,6 +2030,17 @@ document.addEventListener(
 
         return;
       }
+
+      if (!select) {
+        mostrarAviso(
+          "Não foi possível encontrar o seletor de tamanho."
+        );
+
+        return;
+      }
+
+      const tamanho =
+        select.value;
 
       if (!tamanho) {
         select.style.borderColor =
@@ -1638,6 +2063,10 @@ document.addEventListener(
       );
     }
 
+    // --------------------------------------------------------
+    // VER MAIS
+    // --------------------------------------------------------
+
     if (verBtn) {
       const produto =
         produtos.find(
@@ -1654,6 +2083,10 @@ document.addEventListener(
         );
       }
     }
+
+    // --------------------------------------------------------
+    // CLICAR NA IMAGEM
+    // --------------------------------------------------------
 
     if (produtoMedia) {
       const produto =
@@ -1674,12 +2107,11 @@ document.addEventListener(
   }
 );
 
-
 // ============================================================
-// MINIATURAS DO PRODUTO
+// MINIATURAS
 // ============================================================
 
-mThumbs.addEventListener(
+mThumbs?.addEventListener(
   "click",
   (e) => {
     const thumb =
@@ -1687,10 +2119,14 @@ mThumbs.addEventListener(
         ".detail-thumb"
       );
 
-    if (!thumb) return;
+    if (!thumb) {
+      return;
+    }
 
-    mImg.src =
-      thumb.dataset.img;
+    if (mImg) {
+      mImg.src =
+        thumb.dataset.img;
+    }
 
     mThumbs
       .querySelectorAll(
@@ -1709,11 +2145,16 @@ mThumbs.addEventListener(
   }
 );
 
+// ============================================================
+// BOTÃO ADICIONAR DO MODAL
+// ============================================================
 
-mAdd.addEventListener(
+mAdd?.addEventListener(
   "click",
   () => {
-    if (!produtoAtual) return;
+    if (!produtoAtual) {
+      return;
+    }
 
     if (
       !produtoDisponivel(
@@ -1729,7 +2170,7 @@ mAdd.addEventListener(
     }
 
     const tamanho =
-      mTamanho.value;
+      mTamanho?.value;
 
     if (!tamanho) {
       mostrarErroProduto(
@@ -1742,7 +2183,8 @@ mAdd.addEventListener(
 
     const quantidade =
       Number(
-        mQuantidade.value || 1
+        mQuantidade?.value ||
+          1
       );
 
     if (
@@ -1767,45 +2209,58 @@ mAdd.addEventListener(
       )
     ) {
       limparErroProduto();
-      modalProduto.hide();
+
+      modalProduto?.hide();
     }
   }
 );
 
-
-mTamanho.addEventListener(
+mTamanho?.addEventListener(
   "change",
   limparErroProduto
 );
 
-
-mQuantidade.addEventListener(
+mQuantidade?.addEventListener(
   "input",
   limparErroProduto
 );
 
+// ============================================================
+// MODAL CARRINHO
+// ============================================================
 
 document
   .getElementById(
     "cartModal"
   )
-  .addEventListener(
+  ?.addEventListener(
     "show.bs.modal",
     renderizarCarrinho
   );
 
+// ============================================================
+// ANO
+// ============================================================
 
-document.getElementById(
-  "ano2"
-).innerText =
-  new Date().getFullYear();
+const ano2 =
+  document.getElementById(
+    "ano2"
+  );
 
+if (ano2) {
+  ano2.innerText =
+    new Date().getFullYear();
+}
 
 // ============================================================
-// INICIAR
+// INICIAR PÁGINA
 // ============================================================
 
 async function iniciarPagina() {
+  console.log(
+    "🚀 Iniciando Resenha Sports..."
+  );
+
   aplicarTema(
     localStorage.getItem(
       "resenha-tema"
@@ -1814,12 +2269,24 @@ async function iniciarPagina() {
 
   carregarBanners();
 
+  /*
+   * PRIMEIRO carrega os produtos.
+   * Só depois renderiza a vitrine.
+   */
   await carregarProdutosAPI();
+
+  console.log(
+    "📦 Total de produtos:",
+    produtos.length
+  );
 
   renderizarTudo();
 
   atualizarCarrinho();
+
+  console.log(
+    "✅ Resenha Sports iniciada."
+  );
 }
 
 iniciarPagina();
-```
