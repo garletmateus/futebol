@@ -1433,3 +1433,394 @@ body.dark-mode .product-card select {
     background-color: #0f172a;
     color: #edf2f7;
 }
+
+
+/* =========================================================
+   VITRINE DE PRODUTOS — DESTAQUE DE TEXTOS E DARK MODE
+   Adicionado para melhorar contraste e hierarquia visual
+   ========================================================= */
+
+/* Card */
+.product-card {
+    border: 1px solid #e3e8ee;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .05);
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(34, 48, 173, .28);
+    box-shadow: 0 18px 38px rgba(15, 23, 42, .12);
+}
+
+/* Corpo do produto alinhado à esquerda para destacar melhor as informações */
+.product-body {
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* Nome do produto */
+.product-name {
+    width: 100%;
+    color: #1d2939;
+    font-family: "DM Sans", sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.38;
+    letter-spacing: .005em;
+    margin: 8px 0 12px !important;
+    min-height: 58px;
+}
+
+/* Preço principal */
+.product-price {
+    width: 100%;
+    color: #182388;
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-top: 2px;
+    margin-bottom: 4px;
+}
+
+/* Texto complementar / parcelas */
+.product-installments {
+    width: 100%;
+    color: #667085;
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 14px;
+}
+
+/* Etiqueta Personalize */
+.badge-tag {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    order: -1;
+    margin-bottom: 8px;
+    padding: 0;
+    background: transparent;
+    color: #d97706;
+    border-radius: 0;
+    font-size: .98rem;
+    font-weight: 800;
+    letter-spacing: .01em;
+}
+
+/* Caso o HTML use a classe de preço antigo */
+.product-old-price,
+.old-price,
+.price-old,
+.product-price-old,
+del {
+    color: #8a94a3;
+}
+
+/* Caso o HTML use a classe de desconto */
+.product-discount,
+.discount,
+.discount-percent,
+.off {
+    color: #15803d;
+    font-weight: 800;
+}
+
+/* Avaliações */
+.product-rating,
+.rating,
+.stars {
+    color: #f59e0b;
+    font-weight: 800;
+}
+
+/* =========================================================
+   MODO ESCURO — VITRINE COM ALTO CONTRASTE
+   ========================================================= */
+
+body.dark-mode .product-card {
+    background: #111827 !important;
+    border-color: #334155 !important;
+    color: #f8fafc;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .22);
+}
+
+body.dark-mode .product-card:hover {
+    border-color: #475569 !important;
+    box-shadow: 0 20px 42px rgba(0, 0, 0, .36);
+}
+
+body.dark-mode .product-media {
+    background: #1e293b !important;
+}
+
+body.dark-mode .product-name {
+    color: #f8fafc !important;
+    font-weight: 800 !important;
+}
+
+body.dark-mode .product-price {
+    color: #f8fafc !important;
+    font-weight: 800 !important;
+}
+
+body.dark-mode .product-installments {
+    color: #cbd5e1 !important;
+    font-weight: 600 !important;
+}
+
+body.dark-mode .badge-tag {
+    background: transparent !important;
+    color: #fbbf24 !important;
+}
+
+body.dark-mode .product-old-price,
+body.dark-mode .old-price,
+body.dark-mode .price-old,
+body.dark-mode .product-price-old,
+body.dark-mode del {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .product-discount,
+body.dark-mode .discount,
+body.dark-mode .discount-percent,
+body.dark-mode .off {
+    color: #86efac !important;
+    font-weight: 800 !important;
+}
+
+body.dark-mode .product-rating,
+body.dark-mode .rating,
+body.dark-mode .stars {
+    color: #fbbf24 !important;
+}
+
+/* Nota da avaliação, caso exista em um span */
+body.dark-mode .rating-value,
+body.dark-mode .product-rating-value {
+    background: #1e293b !important;
+    color: #cbd5e1 !important;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 3px 7px;
+}
+
+/* Mantém links e textos internos legíveis */
+body.dark-mode .product-card,
+body.dark-mode .product-card p,
+body.dark-mode .product-card span {
+    color: inherit;
+}
+
+/* Reforça o nome e preço após regras antigas do arquivo */
+body.dark-mode .product-card .product-name {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .product-card .product-price {
+    color: #ffffff !important;
+}
+/* =========================================
+   DESTAQUE DOS PRODUTOS - RESENHA SPORTS
+========================================= */
+
+.product-card {
+    overflow: hidden;
+}
+
+/* Área das informações */
+.product-card .product-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* PERSONALIZE */
+.product-highlight {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    color: #d88600;
+    margin-bottom: 8px;
+}
+
+/* NOME DO PRODUTO */
+.product-card .product-name {
+    font-size: 1.32rem;
+    line-height: 1.35;
+    font-weight: 800;
+    color: #18212b;
+    margin: 0 0 10px;
+    letter-spacing: 0.2px;
+}
+
+/* DESCRIÇÃO */
+.product-card .product-desc {
+    font-size: 0.96rem;
+    line-height: 1.45;
+    color: #52616d;
+    margin-bottom: 18px;
+}
+
+/* CAIXA DE PREÇO */
+.price-box {
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 18px;
+}
+
+/* PREÇO PIX */
+.pix-price {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #18212b;
+    letter-spacing: 0.2px;
+}
+
+/* PREÇO ANTIGO + DESCONTO */
+.old-price-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+/* PREÇO ANTIGO */
+.old-price {
+    font-size: 1rem;
+    color: #7b8790;
+    text-decoration: line-through;
+}
+
+/* DESCONTO */
+.discount {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #26734d;
+}
+
+/* AVALIAÇÃO */
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+/* ESTRELAS */
+.stars {
+    font-size: 1.15rem;
+    letter-spacing: 2px;
+    color: #d88600;
+}
+
+/* NOTA */
+.rating-value {
+    font-size: 0.85rem;
+    color: #66727c;
+    background: #eef1f3;
+    padding: 4px 9px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+/* TAMANHOS */
+.product-card .sizes {
+    font-weight: 600;
+    color: #59656d;
+    margin-bottom: 14px;
+}
+
+
+/* =========================================
+   MODO ESCURO
+========================================= */
+
+body.dark-mode .product-card {
+    background: #182027;
+    border-color: #2d3942;
+}
+
+body.dark-mode .product-card .product-body {
+    background: #182027;
+}
+
+/* PERSONALIZE */
+body.dark-mode .product-highlight {
+    color: #f5a623;
+}
+
+/* NOME DO PRODUTO */
+body.dark-mode .product-card .product-name {
+    color: #ffffff;
+}
+
+/* DESCRIÇÃO */
+body.dark-mode .product-card .product-desc {
+    color: #aeb8c1;
+}
+
+/* PREÇO PIX */
+body.dark-mode .pix-price {
+    color: #ffffff;
+}
+
+/* PREÇO ANTIGO */
+body.dark-mode .old-price {
+    color: #8e9aa3;
+}
+
+/* DESCONTO */
+body.dark-mode .discount {
+    color: #5ac88c;
+}
+
+/* ESTRELAS */
+body.dark-mode .stars {
+    color: #f5a623;
+}
+
+/* NOTA */
+body.dark-mode .rating-value {
+    color: #c9d1d8;
+    background: #27323b;
+}
+
+/* TAMANHOS */
+body.dark-mode .product-card .sizes {
+    color: #c2cbd2;
+}
+
+/* SELECT DE TAMANHOS */
+body.dark-mode .product-card .form-select {
+    background-color: #222c34;
+    color: #ffffff;
+    border-color: #3b4750;
+}
+
+body.dark-mode .product-card .form-select:focus {
+    border-color: #f5a623;
+    box-shadow: 0 0 0 0.2rem rgba(245, 166, 35, 0.15);
+}
+
+/* HOVER NO CARD */
+.product-card {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+}
+
+body.dark-mode .product-card:hover {
+    border-color: #46535d;
+}

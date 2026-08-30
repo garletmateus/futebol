@@ -265,41 +265,139 @@ function obterProdutosFiltrados() {
 
 function renderizarProdutos() {
   if (falhaAoCarregarProdutos) {
-    lista.innerHTML = `<div class="empty-state">Não foi possível carregar os produtos do banco de dados.</div>`;
+    lista.innerHTML = `
+      <div class="empty-state">
+        Não foi possível carregar os produtos do banco de dados.
+      </div>
+    `;
     return;
   }
 
   const itens = obterProdutosFiltrados();
 
   if (!itens.length) {
-    lista.innerHTML = `<div class="empty-state">Nenhum produto encontrado para esse filtro.</div>`;
+    lista.innerHTML = `
+      <div class="empty-state">
+        Nenhum produto encontrado para esse filtro.
+      </div>
+    `;
     return;
   }
 
-  lista.innerHTML = itens.map((produto) => `
-    <article class="product-card">
-      <div class="product-media ver-produto" data-id="${produto.id}">
-        <img src="${produto.img}" alt="${produto.nome}">
-        <span class="badge-tag">${labelCategoria(produto.categoria)}</span>
-      </div>
-      <div class="product-body">
-        <h3 class="product-name">${produto.nome}</h3>
-        <p class="product-desc">${produto.desc}</p>
-        <div class="product-meta">
-          <div class="product-price">R$ ${formatarPreco(produto.preco)}</div>
-          <div class="sizes">${produto.tamanhos.join(" • ")}</div>
+  lista.innerHTML = itens.map((produto) => {
+
+    const preco = Number(produto.preco);
+
+    // Calcula o preço antigo considerando 14% de desconto
+    const precoAntigo = preco / 0.86;
+
+    return `
+      <article class="product-card">
+
+        <div class="product-media ver-produto" data-id="${produto.id}">
+          <img src="${produto.img}" alt="${produto.nome}">
+          <span class="badge-tag">${labelCategoria(produto.categoria)}</span>
         </div>
-        <select class="form-select tamanho mb-2" data-id="${produto.id}" ${produtoDisponivel(produto) ? "" : "disabled"}>
-          <option value="">Escolha o tamanho</option>
-          ${produto.tamanhos.map((tamanho) => `<option value="${tamanho}">${tamanho}</option>`).join("")}
-        </select>
-        <div class="product-actions">
-          <button class="btn-shop primary add" data-id="${produto.id}" ${produtoDisponivel(produto) ? "" : "disabled"}>${produtoDisponivel(produto) ? "Adicionar" : "Esgotado"}</button>
-          <button class="btn-shop ghost ver" data-id="${produto.id}">Ver mais</button>
+
+        <div class="product-body">
+
+          <div class="product-highlight">
+            Personalize
+          </div>
+
+          <h3 class="product-name">
+            ${produto.nome}
+          </h3>
+
+          <p class="product-desc">
+            ${produto.desc}
+          </p>
+
+          <div class="price-box">
+
+            <div class="pix-price">
+              R$ ${formatarPreco(preco)} no Pix
+            </div>
+
+            <div class="old-price-row">
+
+              <span class="old-price">
+                R$ ${formatarPreco(precoAntigo)}
+              </span>
+
+              <span class="discount">
+                14% off
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="product-rating">
+
+            <div class="stars">
+              ★★★★★
+            </div>
+
+            <span class="rating-value">
+              5.00
+            </span>
+
+          </div>
+
+          <div class="product-meta">
+
+            <div class="sizes">
+              ${produto.tamanhos.join(" • ")}
+            </div>
+
+          </div>
+
+          <select
+            class="form-select tamanho mb-2"
+            data-id="${produto.id}"
+            ${produtoDisponivel(produto) ? "" : "disabled"}
+          >
+
+            <option value="">
+              Escolha o tamanho
+            </option>
+
+            ${produto.tamanhos
+              .map(
+                (tamanho) =>
+                  `<option value="${tamanho}">${tamanho}</option>`
+              )
+              .join("")}
+
+          </select>
+
+          <div class="product-actions">
+
+            <button
+              class="btn-shop primary add"
+              data-id="${produto.id}"
+              ${produtoDisponivel(produto) ? "" : "disabled"}
+            >
+              ${produtoDisponivel(produto)
+                ? "Adicionar"
+                : "Esgotado"}
+            </button>
+
+            <button
+              class="btn-shop ghost ver"
+              data-id="${produto.id}"
+            >
+              Ver mais
+            </button>
+
+          </div>
+
         </div>
-      </div>
-    </article>
-  `).join("");
+
+      </article>
+    `;
+  }).join("");
 }
 
 function atualizarCarrinho() {
