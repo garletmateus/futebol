@@ -17,6 +17,7 @@ const labelsCategoria = {
 // ============================================================
 
 const lista = document.getElementById("lista-produtos");
+const vitrines = document.getElementById("vitrines-produtos");
 const categoriasEl = document.getElementById("categorias");
 const buscarEl = document.getElementById("buscar");
 const buscarTopoEl = document.getElementById("buscarTopo");
@@ -73,6 +74,7 @@ let carrinho = JSON.parse(
 );
 
 let categoriaAtual = "Todos";
+let modoCatalogo = "home";
 let produtoAtual = null;
 let falhaAoCarregarProdutos = false;
 
@@ -174,9 +176,6 @@ async function obterImagensAutomaticas(produto) {
     return [];
   }
 
-  /*
-   * Já é uma URL válida.
-   */
   const nomeArquivo = decodeURIComponent(
     imagemPrincipal.split("/").pop()
   );
@@ -646,7 +645,6 @@ function removerItem(index) {
 // ============================================================
 // PRODUTOS — API
 // ============================================================
-
 async function carregarProdutosAPI() {
   falhaAoCarregarProdutos = false;
 
@@ -1035,29 +1033,176 @@ function obterProdutosFiltrados() {
 // RENDERIZAR PRODUTOS
 // ============================================================
 
-function renderizarProdutos() {
-  if (!lista) {
-    console.error(
-      "❌ Elemento #lista-produtos não encontrado no HTML."
+function obterValorVendas(produto) {
+  const campos = [
+    "vendas",
+    "vendidos",
+    "quantidade_vendida",
+    "quantidadeVendida",
+    "total_vendido",
+    "totalVendido"
+  ];
+
+  for (const campo of campos) {
+    const valor = Number(produto?.[campo]);
+    if (Number.isFinite(valor)) return valor;
+  }
+
+  return null;
+}
+
+function ordenarMaisVendidos(listaProdutos) {
+  const possuiDadosDeVendas = listaProdutos.some(
+    (produto) => obterValorVendas(produto) !== null
+  );
+
+  if (possuiDadosDeVendas) {
+    return [...listaProdutos].sort(
+      (a, b) =>
+        (obterValorVendas(b) ?? 0) -
+        (obterValorVendas(a) ?? 0)
     );
-
-    return;
   }
 
-  if (
-    falhaAoCarregarProdutos
-  ) {
-    lista.innerHTML = `
-      <div class="empty-state">
-        Não foi possível carregar os produtos do banco de dados.
+  // Fallback: a API atual não traz um campo de vendas.
+  return [...listaProdutos];
+}
+
+function obterProdutosLancamentos() {
+  const camposData = [
+    "created_at",
+    "createdAt",
+    "data_cadastro",
+    "dataCadastro",
+    "data_criacao",
+    "dataCriacao"
+  ];
+
+  const possuiData = produtos.some((produto) =>
+    camposData.some((campo) => produto?.[campo])
+  );
+
+  if (possuiData) {
+    return [...produtos].sort((a, b) => {
+      const dataA =
+        camposData
+          .map((campo) => Date.parse(String(a?.[campo] || "")))
+          .find(Number.isFinite) || 0;
+
+      const dataB =
+        camposData
+          .map((campo) => Date.parse(String(b?.[campo] || "")))
+          .find(Number.isFinite) || 0;
+
+      return dataB - dataA;
+    });
+  }
+
+  // Como o endpoint atual usa ID DESC, os maiores IDs são os mais recentes.
+  return [...produtos].sort(
+    (a, b) => Number(b.id || 0) - Number(a.id || 0)
+  );
+}
+
+function criarCardProduto(produto) {
+  const preco = Number(produto.preco || 0);
+  const precoAntigo = preco / 0.86;
+  const imagem = normalizarImagemSupabase(produto.img);
+
+  const tamanhos = Array.isArray(produto.tamanhos)
+    ? produto.tamanhos
+    : ["P", "M", "G", "GG"];
+
+  return `
+    <article class="product-card">
+
+      <div class="product-media ver-produto" data-id="${produto.id}">
+        <img
+          src="${imagem}"
+          alt="${produto.nome}"
+          loading="lazy"
+          onerror="this.onerror=null; this.src='${imagem}'"
+        >
+
+        <span class="badge-tag">
+          ${labelCategoria(produto.categoria)}
+        </span>
       </div>
-    `;
 
-    return;
-  }
+      <div class="product-body">
 
-  const itens =
-    obterProdutosFiltrados();
+        <div class="product-highlight"></div>
+
+        <h3 class="product-name">${produto.nome}</h3>
+
+        <p class="product-desc">${produto.desc || ""}</p>
+
+        <div class="price-box">
+          <div class="pix-price">
+            R$ ${formatarPreco(preco)} no Pix
+          </div>
+
+          <div class="old-price-row">
+            <span class="old-price">
+              R$ ${formatarPreco(precoAntigo)}
+            </span>
+            <span class="discount">14% off</span>
+          </div>
+        </div>
+
+        <div class="product-rating">
+          <div class="stars">★★★★★</div>
+          <span class="rating-value">5.00</span>
+        </div>
+
+        <div class="product-meta">
+          <div class="sizes">${tamanhos.join(" • ")}</div>
+        </div>
+
+        <select
+          class="form-select tamanho mb-2"
+          data-id="${produto.id}"
+          ${produtoDisponivel(produto) ? "" : "disabled"}
+        >
+          <option value="">Escolha o tamanho</option>
+
+          ${tamanhos
+            .map(
+              (tamanho) =>
+                `<option value="${tamanho}">${tamanho}</option>`
+            )
+            .join("")}
+        </select>
+
+        <div class="product-actions">
+          <button
+            type="button"
+            class="btn-shop primary add"
+            data-id="${produto.id}"
+            ${produtoDisponivel(produto) ? "" : "disabled"}
+          >
+            ${produtoDisponivel(produto) ? "Adicionar" : "Esgotado"}
+          </button>
+
+          <button
+            type="button"
+            class="btn-shop ghost ver"
+            data-id="${produto.id}"
+          >
+            Ver mais
+          </button>
+        </div>
+
+      </div>
+    </article>
+  `;
+}
+
+function renderizarListaCompleta(itens) {
+  if (!lista) return;
+
+  lista.classList.remove("d-none");
+  vitrines?.classList.add("d-none");
 
   if (!itens.length) {
     lista.innerHTML = `
@@ -1065,190 +1210,217 @@ function renderizarProdutos() {
         Nenhum produto encontrado para esse filtro.
       </div>
     `;
-
     return;
   }
 
-  lista.innerHTML =
-    itens
-      .map(
-        (produto) => {
-          const preco =
-            Number(
-              produto.preco || 0
-            );
+  lista.innerHTML = itens.map(criarCardProduto).join("");
+}
 
-          const precoAntigo =
-            preco / 0.86;
+function criarVitrine(id, titulo, itens) {
+  if (!itens.length) return "";
 
-          const imagem =
-            normalizarImagemSupabase(
-              produto.img
-            );
+  return `
+    <section class="vitrine-section" data-vitrine-section="${id}">
+      <div class="vitrine-header">
+        <div class="vitrine-title-wrap">
+          <h2 class="vitrine-title">${titulo}</h2>
+          <span class="vitrine-title-line"></span>
+        </div>
 
-          const tamanhos =
-            Array.isArray(
-              produto.tamanhos
-            )
-              ? produto.tamanhos
-              : [
-                  "P",
-                  "M",
-                  "G",
-                  "GG"
-                ];
+        <button
+          type="button"
+          class="vitrine-see-all"
+          data-vitrine-ver-todos="${id}"
+        >
+          Ver todos →
+        </button>
+      </div>
 
-          return `
-            <article class="product-card">
+      <div class="vitrine-track-wrap">
+        <button
+          type="button"
+          class="vitrine-arrow left"
+          data-vitrine-scroll="${id}"
+          data-direction="-1"
+          aria-label="Produtos anteriores"
+        >‹</button>
 
-              <div
-                class="product-media ver-produto"
-                data-id="${produto.id}"
-              >
+        <div id="vitrine-track-${id}" class="vitrine-track">
+          ${itens.slice(0, 8).map(criarCardProduto).join("")}
+        </div>
 
-                <img
-                  src="${imagem}"
-                  alt="${produto.nome}"
-                  loading="lazy"
-                  onerror="this.onerror=null; this.src='${imagem}'"
-                >
+        <button
+          type="button"
+          class="vitrine-arrow right"
+          data-vitrine-scroll="${id}"
+          data-direction="1"
+          aria-label="Próximos produtos"
+        >›</button>
+      </div>
+    </section>
+  `;
+}
 
-                <span class="badge-tag">
-                  ${labelCategoria(
-                    produto.categoria
-                  )}
-                </span>
+// ============================================================
+// VITRINES — CONTROLE MANUAL PELO ADMIN
+// ============================================================
 
-              </div>
+function normalizarNomeVitrine(valor) {
+  const texto = String(valor || "")
+    .trim()
+    .toLowerCase();
 
-              <div class="product-body">
+  const aliases = {
+    "lançamentos": "lancamentos",
+    "lancamento": "lancamentos",
+    "lancamentos": "lancamentos",
 
-                <div class="product-highlight">
-                  Personalize
-                </div>
+    "mais vendidos": "mais-vendidos",
+    "mais vendido": "mais-vendidos",
+    "mais_vendidos": "mais-vendidos",
+    "mais-vendidos": "mais-vendidos",
 
-                <h3 class="product-name">
-                  ${produto.nome}
-                </h3>
+    "internacional": "internacionais",
+    "internacionais": "internacionais",
+    "times internacionais": "internacionais",
 
-                <p class="product-desc">
-                  ${produto.desc || ""}
-                </p>
+    "brasileiro": "brasileiros",
+    "brasileiros": "brasileiros",
+    "times brasileiros": "brasileiros",
 
-                <div class="price-box">
+    "seleção": "selecoes",
+    "seleções": "selecoes",
+    "selecao": "selecoes",
+    "selecoes": "selecoes"
+  };
 
-                  <div class="pix-price">
-                    R$ ${formatarPreco(
-                      preco
-                    )}
-                    no Pix
-                  </div>
+  return aliases[texto] || texto;
+}
 
-                  <div class="old-price-row">
+function obterVitrinesProduto(produto) {
+  let lista =
+    produto?.vitrines ??
+    produto?.secoes ??
+    [];
 
-                    <span class="old-price">
-                      R$ ${formatarPreco(
-                        precoAntigo
-                      )}
-                    </span>
+  if (typeof lista === "string") {
+    try {
+      lista = JSON.parse(lista);
+    } catch {
+      lista = lista
+        .split(",")
+        .map(item => item.trim());
+    }
+  }
 
-                    <span class="discount">
-                      14% off
-                    </span>
+  if (!Array.isArray(lista)) {
+    lista = [];
+  }
 
-                  </div>
+  return [
+    ...new Set(
+      lista
+        .map(normalizarNomeVitrine)
+        .filter(Boolean)
+    )
+  ];
+}
 
-                </div>
+function produtoEstaNaVitrine(produto, vitrine) {
+  const vitrinesProduto =
+    obterVitrinesProduto(produto);
 
-                <div class="product-rating">
+  const vitrineNormalizada =
+    normalizarNomeVitrine(vitrine);
 
-                  <div class="stars">
-                    ★★★★★
-                  </div>
+  return vitrinesProduto.includes(
+    vitrineNormalizada
+  );
+}
 
-                  <span class="rating-value">
-                    5.00
-                  </span>
-
-                </div>
-
-                <div class="product-meta">
-
-                  <div class="sizes">
-                    ${tamanhos.join(
-                      " • "
-                    )}
-                  </div>
-
-                </div>
-
-                <select
-                  class="form-select tamanho mb-2"
-                  data-id="${produto.id}"
-                  ${
-                    produtoDisponivel(
-                      produto
-                    )
-                      ? ""
-                      : "disabled"
-                  }
-                >
-
-                  <option value="">
-                    Escolha o tamanho
-                  </option>
-
-                  ${tamanhos
-                    .map(
-                      (tamanho) =>
-                        `<option value="${tamanho}">
-                          ${tamanho}
-                        </option>`
-                    )
-                    .join("")}
-
-                </select>
-
-                <div class="product-actions">
-
-                  <button
-                    type="button"
-                    class="btn-shop primary add"
-                    data-id="${produto.id}"
-                    ${
-                      produtoDisponivel(
-                        produto
-                      )
-                        ? ""
-                        : "disabled"
-                    }
-                  >
-                    ${
-                      produtoDisponivel(
-                        produto
-                      )
-                        ? "Adicionar"
-                        : "Esgotado"
-                    }
-                  </button>
-
-                  <button
-                    type="button"
-                    class="btn-shop ghost ver"
-                    data-id="${produto.id}"
-                  >
-                    Ver mais
-                  </button>
-
-                </div>
-
-              </div>
-
-            </article>
-          `;
-        }
+function obterProdutosDaVitrine(tipo) {
+  return produtos.filter(
+    produto =>
+      produtoEstaNaVitrine(
+        produto,
+        tipo
       )
-      .join("");
+  );
+}
+
+function renderizarVitrines() {
+  if (!vitrines) return;
+    lista?.classList.add("d-none");
+  vitrines.classList.remove("d-none");
+
+  vitrines.innerHTML = [
+    criarVitrine(
+      "lancamentos",
+      "Lançamentos",
+      obterProdutosDaVitrine("lancamentos")
+    ),
+    criarVitrine(
+      "mais-vendidos",
+      "Mais vendidos",
+      obterProdutosDaVitrine("mais-vendidos")
+    ),
+    criarVitrine(
+      "internacionais",
+      "Times internacionais",
+      obterProdutosDaVitrine("internacionais")
+    ),
+    criarVitrine(
+      "brasileiros",
+      "Times brasileiros",
+      obterProdutosDaVitrine("brasileiros")
+    ),
+    criarVitrine(
+      "selecoes",
+      "Seleções",
+      obterProdutosDaVitrine("selecoes")
+    )
+  ].join("");
+
+  if (!vitrines.innerHTML.trim()) {
+    vitrines.innerHTML = `
+      <div class="vitrine-empty">
+        Nenhum produto disponível no momento.
+      </div>
+    `;
+  }
+}
+
+function renderizarProdutos() {
+  if (!lista) {
+    console.error("❌ Elemento #lista-produtos não encontrado no HTML.");
+    return;
+  }
+
+  if (falhaAoCarregarProdutos) {
+    vitrines?.classList.add("d-none");
+    lista.classList.remove("d-none");
+
+    lista.innerHTML = `
+      <div class="empty-state">
+        Não foi possível carregar os produtos do banco de dados.
+      </div>
+    `;
+    return;
+  }
+
+  const busca = obterBuscaAtual();
+
+  // Home sem busca/categoria = vitrines.
+  if (
+    modoCatalogo === "home" &&
+    categoriaAtual === "Todos" &&
+    !busca
+  ) {
+    renderizarVitrines();
+    return;
+  }
+
+  renderizarListaCompleta(obterProdutosFiltrados());
 }
 
 // ============================================================
@@ -1827,6 +1999,8 @@ categoriasEl?.addEventListener(
     categoriaAtual =
       botao.dataset.categoria;
 
+    modoCatalogo = "lista";
+
     renderizarTudo();
   }
 );
@@ -1837,10 +2011,14 @@ categoriaSelectEl?.addEventListener(
     categoriaAtual =
       categoriaSelectEl.value;
 
+    modoCatalogo =
+      categoriaAtual === "Todos"
+        ? "home"
+        : "lista";
+
     renderizarTudo();
   }
 );
-
 // ============================================================
 // EVENTOS — BUSCA
 // ============================================================
@@ -1853,6 +2031,11 @@ buscarEl?.addEventListener(
         buscarEl.value;
     }
 
+    modoCatalogo =
+      buscarEl.value.trim()
+        ? "lista"
+        : "home";
+
     renderizarProdutos();
   }
 );
@@ -1861,6 +2044,11 @@ buscarTopoEl?.addEventListener(
   "input",
   () => {
     sincronizarBusca();
+
+    modoCatalogo =
+      buscarTopoEl.value.trim()
+        ? "lista"
+        : "home";
 
     renderizarProdutos();
   }
@@ -1872,7 +2060,10 @@ buscarTopoEl?.addEventListener(
 
 ordenarEl?.addEventListener(
   "change",
-  renderizarProdutos
+  () => {
+    modoCatalogo = "lista";
+    renderizarProdutos();
+  }
 );
 
 // ============================================================
@@ -1917,6 +2108,35 @@ themeToggle?.addEventListener(
 // ============================================================
 
 document
+  .querySelectorAll('.nav-link')
+  .forEach((link) => {
+    if (
+      link.dataset.navCategory ||
+      link.getAttribute("href") !== "#" ||
+      link.innerText.trim().toLowerCase() !== "início"
+    ) {
+      return;
+    }
+
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      categoriaAtual = "Todos";
+      modoCatalogo = "home";
+
+      if (buscarEl) buscarEl.value = "";
+      if (buscarTopoEl) buscarTopoEl.value = "";
+
+      renderizarTudo();
+
+      window.scrollTo({
+        top: document.querySelector(".catalog-shell")?.offsetTop - 30 || 0,
+        behavior: "smooth"
+      });
+    });
+  });
+
+document
   .querySelectorAll(
     "[data-nav-category]"
   )
@@ -1929,6 +2149,8 @@ document
 
           categoriaAtual =
             link.dataset.navCategory;
+
+          modoCatalogo = "lista";
 
           renderizarTudo();
 
@@ -1968,6 +2190,79 @@ document
         }
       )
   );
+
+// ============================================================
+// EVENTOS — VITRINES DA HOME
+// ============================================================
+
+document.addEventListener("click", (e) => {
+  const botaoTodos = e.target.closest(
+    "[data-vitrine-ver-todos]"
+  );
+
+  if (botaoTodos) {
+    const tipo = botaoTodos.dataset.vitrineVerTodos;
+
+    if (
+      tipo === "internacionais" ||
+      tipo === "brasileiros" ||
+      tipo === "selecoes"
+    ) {
+      const categorias = {
+        internacionais: "Europa",
+        brasileiros: "Brasileirao",
+        selecoes: "Selecoes"
+      };
+
+      categoriaAtual = categorias[tipo];
+      modoCatalogo = "lista";
+      renderizarTudo();
+
+      window.scrollTo({
+        top:
+          document.querySelector(".catalog-shell")?.offsetTop - 30 || 0,
+        behavior: "smooth"
+      });
+
+      return;
+    }
+
+    const itens = obterProdutosDaVitrine(tipo);
+
+    modoCatalogo = "lista";
+    renderizarListaCompleta(itens);
+
+    window.scrollTo({
+      top:
+        document.querySelector(".catalog-shell")?.offsetTop - 30 || 0,
+      behavior: "smooth"
+    });
+
+    return;
+  }
+
+  const botaoScroll = e.target.closest(
+    "[data-vitrine-scroll]"
+  );
+
+  if (botaoScroll) {
+    const tipo = botaoScroll.dataset.vitrineScroll;
+    const direcao = Number(
+      botaoScroll.dataset.direction || 1
+    );
+
+    const track = document.getElementById(
+      `vitrine-track-${tipo}`
+    );
+
+    if (track) {
+      track.scrollBy({
+        left: Math.max(track.clientWidth * 0.82, 260) * direcao,
+        behavior: "smooth"
+      });
+    }
+  }
+});
 
 // ============================================================
 // CLIQUES DOS PRODUTOS

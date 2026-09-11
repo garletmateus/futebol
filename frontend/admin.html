@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
-
 <html lang="pt-BR">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +10,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap"
+  rel="stylesheet"
+>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+>
 
 <style>
+
+/* ============================================================
+   GERAL
+============================================================ */
+
 :root {
   --primary: #0d7a5f;
   --primary-dark: #085542;
@@ -36,6 +47,11 @@ body {
   box-shadow: 0 16px 34px rgba(17, 33, 27, .08);
 }
 
+
+/* ============================================================
+   IMAGENS
+============================================================ */
+
 .thumb {
   width: 64px;
   height: 64px;
@@ -53,6 +69,11 @@ body {
   display: none;
 }
 
+
+/* ============================================================
+   BOTÕES
+============================================================ */
+
 .btn-primary {
   background: var(--primary);
   border-color: var(--primary);
@@ -63,6 +84,11 @@ body {
   border-color: var(--primary-dark);
 }
 
+
+/* ============================================================
+   BADGE
+============================================================ */
+
 .badge-soft {
   display: inline-flex;
   align-items: center;
@@ -72,6 +98,11 @@ body {
   color: #0d7a5f;
   font-weight: 700;
 }
+
+
+/* ============================================================
+   UPLOAD
+============================================================ */
 
 .upload-box {
   border: 2px dashed #cbd9d3;
@@ -89,394 +120,844 @@ body {
   font-size: .8rem;
   word-break: break-all;
 }
+
+
+/* ============================================================
+   VITRINES
+============================================================ */
+
+.vitrines-box {
+  border: 1px solid #d7e2dd;
+  border-radius: 18px;
+  padding: 18px;
+  background: #f8fbfa;
+}
+
+.vitrine-option {
+  border: 1px solid #d7e2dd;
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: white;
+  transition: .2s;
+  cursor: pointer;
+  height: 100%;
+}
+
+.vitrine-option:hover {
+  border-color: var(--primary);
+  background: #f5faf8;
+}
+
+.vitrine-option .form-check-input {
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+  cursor: pointer;
+}
+
+.vitrine-option label {
+  cursor: pointer;
+  width: 100%;
+}
+
+.vitrine-titulo {
+  font-weight: 700;
+}
+
+.vitrine-descricao {
+  font-size: .85rem;
+  color: #6c757d;
+}
+
+
+/* ============================================================
+   TABELA
+============================================================ */
+
+.table th {
+  white-space: nowrap;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 767px) {
+
+  .card {
+    border-radius: 18px;
+  }
+
+  .table {
+    font-size: .9rem;
+  }
+
+  .thumb {
+    width: 52px;
+    height: 52px;
+  }
+
+}
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="container py-5 shell">
 
-  <!-- CABEÇALHO -->
 
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+  <!-- ========================================================
+       CABEÇALHO
+  ========================================================= -->
 
-```
-<div>
-  <p class="text-secondary mb-1">Área restrita</p>
-
-  <h1
-    class="h2 mb-0"
-    style="font-family:'Barlow',sans-serif;color:var(--ink)"
+  <div
+    class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4"
   >
-    Painel administrativo
-  </h1>
-</div>
 
-<div class="d-flex gap-2">
+    <div>
 
-  <a
-    href="index.html"
-    class="btn btn-outline-dark"
-  >
-    Ver loja
-  </a>
+      <p class="text-secondary mb-1">
+        Área restrita
+      </p>
 
-  <button
-    id="logoutBtn"
-    class="btn btn-dark"
-  >
-    Sair
-  </button>
+      <h1
+        class="h2 mb-0"
+        style="font-family:'Barlow',sans-serif;color:var(--ink)"
+      >
+        Painel administrativo
+      </h1>
 
-</div>
-```
+    </div>
+
+
+    <div class="d-flex gap-2">
+
+      <a
+        href="index.html"
+        class="btn btn-outline-dark"
+      >
+        Ver loja
+      </a>
+
+      <button
+        id="logoutBtn"
+        class="btn btn-dark"
+      >
+        Sair
+      </button>
+
+    </div>
 
   </div>
 
-  <!-- PRODUTOS -->
+
+
+  <!-- ========================================================
+       PRODUTOS
+  ========================================================= -->
 
   <div class="card p-4 mb-4">
 
-```
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
 
-  <div>
-
-    <h2 class="h4 mb-1">
-      Produtos
-    </h2>
-
-    <p class="text-secondary mb-0">
-      Cadastre, edite ou exclua os itens da vitrine.
-    </p>
-
-  </div>
-
-  <span class="badge-soft">
-    CRUD ativo
-  </span>
-
-</div>
-
-
-<div
-  id="adminMensagem"
-  class="alert d-none"
-  role="alert"
-></div>
-
-
-<form
-  id="produtoForm"
-  class="row g-3"
->
-
-  <input
-    type="hidden"
-    id="produtoId"
-  >
-
-
-  <!-- NOME -->
-
-  <div class="col-md-6">
-
-    <label class="form-label fw-semibold">
-      Nome
-    </label>
-
-    <input
-      id="nome"
-      class="form-control"
-      required
+    <div
+      class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3"
     >
 
-  </div>
+      <div>
 
+        <h2 class="h4 mb-1">
+          Produtos
+        </h2>
 
-  <!-- CATEGORIA -->
+        <p class="text-secondary mb-0">
+          Cadastre, edite ou exclua os itens da vitrine.
+        </p>
 
-  <div class="col-md-3">
-
-    <label class="form-label fw-semibold">
-      Categoria
-    </label>
-
-    <input
-      id="categoria"
-      class="form-control"
-      required
-    >
-
-  </div>
-
-
-  <!-- PREÇO -->
-
-  <div class="col-md-3">
-
-    <label class="form-label fw-semibold">
-      Preço
-    </label>
-
-    <input
-      id="preco"
-      type="number"
-      step="0.01"
-      min="0"
-      class="form-control"
-      required
-    >
-
-  </div>
-
-
-  <!-- ESTOQUE -->
-
-  <div class="col-md-3">
-
-    <label class="form-label fw-semibold">
-      Estoque
-    </label>
-
-    <input
-      id="estoque"
-      type="number"
-      min="0"
-      class="form-control"
-      required
-    >
-
-  </div>
-
-
-  <!-- IMAGEM PRINCIPAL -->
-
-  <div class="col-12">
-
-    <label class="form-label fw-semibold">
-      Imagem principal
-    </label>
-
-    <div class="upload-box">
-
-      <input
-        id="imagemArquivo"
-        type="file"
-        class="form-control"
-        accept="image/jpeg,image/png,image/webp"
-      >
-
-      <div
-        id="uploadStatus"
-        class="upload-status text-secondary"
-      >
-        Escolha uma imagem JPG, PNG ou WEBP.
       </div>
 
-      <img
-        id="previewImagem"
-        class="preview-img mt-3"
-        alt="Pré-visualização"
-      >
+
+      <span class="badge-soft">
+        CRUD ativo
+      </span>
+
+    </div>
+
+
+
+    <!-- MENSAGEM -->
+
+    <div
+      id="adminMensagem"
+      class="alert d-none"
+      role="alert"
+    ></div>
+
+
+
+    <!-- ======================================================
+         FORMULÁRIO
+    ======================================================= -->
+
+    <form
+      id="produtoForm"
+      class="row g-3"
+    >
+
 
       <input
         type="hidden"
-        id="img"
+        id="produtoId"
       >
 
-      <div
-        id="urlImagem"
-        class="image-url text-secondary mt-2"
-      ></div>
 
-    </div>
+
+      <!-- ====================================================
+           NOME
+      ===================================================== -->
+
+      <div class="col-md-6">
+
+        <label class="form-label fw-semibold">
+          Nome
+        </label>
+
+        <input
+          id="nome"
+          class="form-control"
+          required
+        >
+
+      </div>
+
+
+
+      <!-- ====================================================
+           CATEGORIA
+      ===================================================== -->
+
+      <div class="col-md-3">
+
+        <label class="form-label fw-semibold">
+          Categoria
+        </label>
+
+        <input
+          id="categoria"
+          class="form-control"
+          placeholder="Brasileirao, Europa ou Selecoes"
+          required
+        >
+
+      </div>
+
+
+
+      <!-- ====================================================
+           PREÇO
+      ===================================================== -->
+
+      <div class="col-md-3">
+
+        <label class="form-label fw-semibold">
+          Preço
+        </label>
+
+        <input
+          id="preco"
+          type="number"
+          step="0.01"
+          min="0"
+          class="form-control"
+          required
+        >
+
+      </div>
+
+
+
+      <!-- ====================================================
+           VITRINES
+      ===================================================== -->
+
+      <div class="col-12">
+
+        <label class="form-label fw-semibold">
+          Onde exibir na página inicial
+        </label>
+
+
+        <div class="vitrines-box">
+
+
+          <p class="text-secondary small mb-3">
+            Escolha exatamente em quais vitrines este produto
+            deverá aparecer. Um mesmo produto pode aparecer em
+            mais de uma vitrine. Se nenhuma for marcada, ele não
+            aparecerá nas vitrines da página inicial.
+          </p>
+
+
+
+          <!-- UMA ÚNICA ROW -->
+
+          <div class="row g-3">
+
+
+            <!-- ==================================================
+                 LANÇAMENTOS
+            =================================================== -->
+
+            <div class="col-md-6">
+
+              <div class="vitrine-option">
+
+                <div
+                  class="form-check d-flex align-items-start gap-2 m-0"
+                >
+
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="vitrineLancamentos"
+                    value="lancamentos"
+                  >
+
+                  <label
+                    class="form-check-label"
+                    for="vitrineLancamentos"
+                  >
+
+                    <div class="vitrine-titulo">
+                      ⭐ Lançamentos
+                    </div>
+
+                    <div class="vitrine-descricao">
+                      Exibe o produto na seção de lançamentos.
+                    </div>
+
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 MAIS VENDIDOS
+            =================================================== -->
+
+            <div class="col-md-6">
+
+              <div class="vitrine-option">
+
+                <div
+                  class="form-check d-flex align-items-start gap-2 m-0"
+                >
+
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="vitrineMaisVendidos"
+                    value="mais-vendidos"
+                  >
+
+                  <label
+                    class="form-check-label"
+                    for="vitrineMaisVendidos"
+                  >
+
+                    <div class="vitrine-titulo">
+                      🔥 Mais vendidos
+                    </div>
+
+                    <div class="vitrine-descricao">
+                      Exibe o produto na seção de mais vendidos.
+                    </div>
+
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 TIMES INTERNACIONAIS
+            =================================================== -->
+
+            <div class="col-md-6">
+
+              <div class="vitrine-option">
+
+                <div
+                  class="form-check d-flex align-items-start gap-2 m-0"
+                >
+
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="vitrineInternacionais"
+                    value="internacionais"
+                  >
+
+                  <label
+                    class="form-check-label"
+                    for="vitrineInternacionais"
+                  >
+
+                    <div class="vitrine-titulo">
+                      🌎 Times internacionais
+                    </div>
+
+                    <div class="vitrine-descricao">
+                      Exibe o produto na seção de times internacionais.
+                    </div>
+
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 TIMES BRASILEIROS
+            =================================================== -->
+
+            <div class="col-md-6">
+
+              <div class="vitrine-option">
+
+                <div
+                  class="form-check d-flex align-items-start gap-2 m-0"
+                >
+
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="vitrineBrasileiros"
+                    value="brasileiros"
+                  >
+
+                  <label
+                    class="form-check-label"
+                    for="vitrineBrasileiros"
+                  >
+
+                    <div class="vitrine-titulo">
+                      🇧🇷 Times brasileiros
+                    </div>
+
+                    <div class="vitrine-descricao">
+                      Exibe o produto na seção de times brasileiros.
+                    </div>
+
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 SELEÇÕES
+            =================================================== -->
+
+            <div class="col-md-6">
+
+              <div class="vitrine-option">
+
+                <div
+                  class="form-check d-flex align-items-start gap-2 m-0"
+                >
+
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="vitrineSelecoes"
+                    value="selecoes"
+                  >
+
+                  <label
+                    class="form-check-label"
+                    for="vitrineSelecoes"
+                  >
+
+                    <div class="vitrine-titulo">
+                      🏆 Seleções
+                    </div>
+
+                    <div class="vitrine-descricao">
+                      Exibe o produto na seção de seleções.
+                    </div>
+
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ====================================================
+           ESTOQUE
+      ===================================================== -->
+
+      <div class="col-md-3">
+
+        <label class="form-label fw-semibold">
+          Estoque
+        </label>
+
+        <input
+          id="estoque"
+          type="number"
+          min="0"
+          class="form-control"
+          required
+        >
+
+      </div>
+
+
+
+      <!-- ====================================================
+           IMAGEM PRINCIPAL
+      ===================================================== -->
+
+      <div class="col-12">
+
+        <label class="form-label fw-semibold">
+          Imagem principal
+        </label>
+
+
+        <div class="upload-box">
+
+
+          <input
+            id="imagemArquivo"
+            type="file"
+            class="form-control"
+            accept="image/jpeg,image/png,image/webp"
+          >
+
+
+          <div
+            id="uploadStatus"
+            class="upload-status text-secondary"
+          >
+            Escolha uma imagem JPG, PNG ou WEBP.
+          </div>
+
+
+          <img
+            id="previewImagem"
+            class="preview-img mt-3"
+            alt="Pré-visualização"
+          >
+
+
+          <input
+            type="hidden"
+            id="img"
+          >
+
+
+          <div
+            id="urlImagem"
+            class="image-url text-secondary mt-2"
+          ></div>
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ====================================================
+           IMAGENS EXTRAS
+      ===================================================== -->
+
+      <div class="col-12">
+
+        <label class="form-label fw-semibold">
+          Imagens extras
+        </label>
+
+
+        <input
+          id="imagensArquivos"
+          type="file"
+          class="form-control"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+        >
+
+
+        <div class="form-text">
+          Você pode selecionar várias imagens extras.
+        </div>
+
+
+        <div
+          id="extrasStatus"
+          class="upload-status text-secondary"
+        ></div>
+
+      </div>
+
+
+
+      <!-- ====================================================
+           DESCRIÇÃO
+      ===================================================== -->
+
+      <div class="col-12">
+
+        <label class="form-label fw-semibold">
+          Descrição
+        </label>
+
+
+        <textarea
+          id="desc"
+          class="form-control"
+          rows="3"
+          required
+        ></textarea>
+
+      </div>
+
+
+
+      <!-- ====================================================
+           TAMANHOS
+      ===================================================== -->
+
+      <div class="col-12">
+
+        <label class="form-label fw-semibold">
+          Tamanhos
+        </label>
+
+
+        <input
+          id="tamanhos"
+          class="form-control"
+          placeholder="P, M, G, GG"
+          required
+        >
+
+      </div>
+
+
+
+      <!-- ====================================================
+           BOTÕES
+      ===================================================== -->
+
+      <div class="col-12 d-flex gap-2">
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+          id="salvarBtn"
+        >
+          Salvar produto
+        </button>
+
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="cancelarBtn"
+        >
+          Cancelar
+        </button>
+
+      </div>
+
+
+    </form>
 
   </div>
 
 
-  <!-- IMAGENS EXTRAS -->
 
-  <div class="col-12">
-
-    <label class="form-label fw-semibold">
-      Imagens extras
-    </label>
-
-    <input
-      id="imagensArquivos"
-      type="file"
-      class="form-control"
-      accept="image/jpeg,image/png,image/webp"
-      multiple
-    >
-
-    <div class="form-text">
-      Você pode selecionar várias imagens extras.
-    </div>
-
-    <div
-      id="extrasStatus"
-      class="upload-status text-secondary"
-    ></div>
-
-  </div>
-
-
-  <!-- DESCRIÇÃO -->
-
-  <div class="col-12">
-
-    <label class="form-label fw-semibold">
-      Descrição
-    </label>
-
-    <textarea
-      id="desc"
-      class="form-control"
-      rows="3"
-      required
-    ></textarea>
-
-  </div>
-
-
-  <!-- TAMANHOS -->
-
-  <div class="col-12">
-
-    <label class="form-label fw-semibold">
-      Tamanhos
-    </label>
-
-    <input
-      id="tamanhos"
-      class="form-control"
-      placeholder="P, M, G, GG"
-      required
-    >
-
-  </div>
-
-
-  <!-- BOTÕES -->
-
-  <div class="col-12 d-flex gap-2">
-
-    <button
-      class="btn btn-primary"
-      type="submit"
-      id="salvarBtn"
-    >
-      Salvar produto
-    </button>
-
-    <button
-      class="btn btn-outline-secondary"
-      type="button"
-      id="cancelarBtn"
-    >
-      Cancelar
-    </button>
-
-  </div>
-
-</form>
-```
-
-  </div>
-
-  <!-- LISTA DE PRODUTOS -->
+  <!-- ========================================================
+       LISTA DE PRODUTOS
+  ========================================================= -->
 
   <div class="card p-4 mb-4">
 
-```
-<div class="table-responsive">
 
-  <table class="table align-middle mb-0">
+    <div class="table-responsive">
 
-    <thead>
+      <table class="table align-middle mb-0">
 
-      <tr>
+        <thead>
 
-        <th>Produto</th>
-        <th>Categoria</th>
-        <th>Preço</th>
-        <th>Estoque</th>
-        <th>Tamanhos</th>
-        <th class="text-end">Ações</th>
+          <tr>
 
-      </tr>
+            <th>
+              Produto
+            </th>
 
-    </thead>
+            <th>
+              Categoria
+            </th>
 
-    <tbody id="listaProdutos"></tbody>
+            <th>
+              Preço
+            </th>
 
-  </table>
+            <th>
+              Estoque
+            </th>
 
-</div>
-```
+            <th>
+              Tamanhos
+            </th>
+
+            <th>
+              Vitrines
+            </th>
+
+            <th class="text-end">
+              Ações
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="listaProdutos"></tbody>
+
+      </table>
+
+    </div>
 
   </div>
 
-  <!-- PEDIDOS -->
+
+
+  <!-- ========================================================
+       PEDIDOS
+  ========================================================= -->
 
   <div class="card p-4">
 
-```
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
 
-  <div>
+    <div
+      class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3"
+    >
 
-    <h2 class="h4 mb-1">
-      Pedidos recebidos
-    </h2>
+      <div>
 
-    <p class="text-secondary mb-0">
-      Acompanhe pagamento e envio por aqui.
-    </p>
+        <h2 class="h4 mb-1">
+          Pedidos recebidos
+        </h2>
+
+        <p class="text-secondary mb-0">
+          Acompanhe pagamento e envio por aqui.
+        </p>
+
+      </div>
+
+
+      <span class="badge-soft">
+        Status de pedido
+      </span>
+
+    </div>
+
+
+
+    <div class="table-responsive">
+
+      <table class="table align-middle mb-0">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Pedido
+            </th>
+
+            <th>
+              Cliente
+            </th>
+
+            <th>
+              Pagamento
+            </th>
+
+            <th>
+              Entrega
+            </th>
+
+            <th>
+              Total
+            </th>
+
+            <th class="text-end">
+              Atualizar
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="listaPedidos"></tbody>
+
+      </table>
+
+    </div>
 
   </div>
 
-  <span class="badge-soft">
-    Status de pedido
-  </span>
 
 </div>
 
 
-<div class="table-responsive">
-
-  <table class="table align-middle mb-0">
-
-    <thead>
-
-      <tr>
-
-        <th>Pedido</th>
-        <th>Cliente</th>
-        <th>Pagamento</th>
-        <th>Entrega</th>
-        <th>Total</th>
-        <th class="text-end">Atualizar</th>
-
-      </tr>
-
-    </thead>
-
-    <tbody id="listaPedidos"></tbody>
-
-  </table>
-
-</div>
-```
-
-  </div>
-
-</div>
 
 <script>
+
 
 // ============================================================
 // AUTENTICAÇÃO
@@ -485,8 +966,11 @@ body {
 if (
   sessionStorage.getItem("resenha_admin_auth") !== "ok"
 ) {
+
   window.location.href = "login.html";
+
 }
+
 
 
 // ============================================================
@@ -498,11 +982,13 @@ const PEDIDOS_API = "/api/pedidos";
 const UPLOAD_API = "/api/upload-imagem";
 
 
+
 // ============================================================
 // ELEMENTOS
 // ============================================================
 
-const form = document.getElementById("produtoForm");
+const form =
+  document.getElementById("produtoForm");
 
 const listaProdutos =
   document.getElementById("listaProdutos");
@@ -535,6 +1021,7 @@ const salvarBtn =
   document.getElementById("salvarBtn");
 
 
+
 // ============================================================
 // FORMATAR PREÇO
 // ============================================================
@@ -552,6 +1039,7 @@ function formatarPreco(valor) {
 }
 
 
+
 // ============================================================
 // FORMATAR DATA
 // ============================================================
@@ -563,6 +1051,7 @@ function formatarData(data) {
   );
 
 }
+
 
 
 // ============================================================
@@ -583,6 +1072,7 @@ function mostrarMensagem(
 }
 
 
+
 // ============================================================
 // LIMPAR FORMULÁRIO
 // ============================================================
@@ -591,18 +1081,56 @@ function limparProduto() {
 
   form.reset();
 
+
   document.getElementById(
     "produtoId"
   ).value = "";
+
 
   document.getElementById(
     "img"
   ).value = "";
 
+
+  // ----------------------------------------------------------
+  // LIMPAR TODAS AS VITRINES
+  // ----------------------------------------------------------
+
+  document.getElementById(
+    "vitrineLancamentos"
+  ).checked = false;
+
+
+  document.getElementById(
+    "vitrineMaisVendidos"
+  ).checked = false;
+
+
+  document.getElementById(
+    "vitrineInternacionais"
+  ).checked = false;
+
+
+  document.getElementById(
+    "vitrineBrasileiros"
+  ).checked = false;
+
+
+  document.getElementById(
+    "vitrineSelecoes"
+  ).checked = false;
+
+
+
+  // ----------------------------------------------------------
+  // LIMPAR IMAGEM
+  // ----------------------------------------------------------
+
   previewImagem.style.display =
     "none";
 
-  previewImagem.src = "";
+  previewImagem.src =
+    "";
 
   uploadStatus.innerText =
     "Escolha uma imagem JPG, PNG ou WEBP.";
@@ -612,9 +1140,11 @@ function limparProduto() {
 
   document.getElementById(
     "urlImagem"
-  ).innerText = "";
+  ).innerText =
+    "";
 
 }
+
 
 
 // ============================================================
@@ -628,29 +1158,37 @@ imagemArquivo.addEventListener(
     const arquivo =
       imagemArquivo.files[0];
 
+
     if (!arquivo) {
 
       previewImagem.style.display =
         "none";
 
       return;
+
     }
+
 
     const url =
       URL.createObjectURL(
         arquivo
       );
 
-    previewImagem.src = url;
+
+    previewImagem.src =
+      url;
+
 
     previewImagem.style.display =
       "block";
+
 
     uploadStatus.innerText =
       `Imagem selecionada: ${arquivo.name}`;
 
   }
 );
+
 
 
 // ============================================================
@@ -664,10 +1202,12 @@ async function enviarImagem(
   const formData =
     new FormData();
 
+
   formData.append(
     "imagem",
     arquivo
   );
+
 
   const resposta =
     await fetch(
@@ -678,9 +1218,11 @@ async function enviarImagem(
       }
     );
 
+
   const dados =
     await resposta.json()
       .catch(() => ({}));
+
 
   if (!resposta.ok) {
 
@@ -692,6 +1234,7 @@ async function enviarImagem(
 
   }
 
+
   if (!dados.url) {
 
     throw new Error(
@@ -700,9 +1243,116 @@ async function enviarImagem(
 
   }
 
+
   return dados.url;
 
 }
+
+
+
+// ============================================================
+// NORMALIZAR VITRINES
+// ============================================================
+
+function normalizarVitrines(
+  vitrines
+) {
+
+  if (
+    Array.isArray(vitrines)
+  ) {
+
+    return vitrines;
+
+  }
+
+
+  if (
+    typeof vitrines === "string"
+  ) {
+
+    try {
+
+      const resultado =
+        JSON.parse(vitrines);
+
+
+      return Array.isArray(resultado)
+        ? resultado
+        : [];
+
+    } catch {
+
+      return [];
+
+    }
+
+  }
+
+
+  return [];
+
+}
+
+
+
+// ============================================================
+// NOME DAS VITRINES
+// ============================================================
+
+function nomeVitrine(
+  vitrine
+) {
+
+  if (
+    vitrine === "lancamentos"
+  ) {
+
+    return "⭐ Lançamentos";
+
+  }
+
+
+  if (
+    vitrine === "mais-vendidos"
+  ) {
+
+    return "🔥 Mais vendidos";
+
+  }
+
+
+  if (
+    vitrine === "internacionais"
+  ) {
+
+    return "🌎 Times internacionais";
+
+  }
+
+
+  if (
+    vitrine === "brasileiros"
+  ) {
+
+    return "🇧🇷 Times brasileiros";
+
+  }
+
+
+  if (
+    vitrine === "selecoes"
+  ) {
+
+    return "🏆 Seleções";
+
+  }
+
+
+  return vitrine;
+
+}
+
 
 
 // ============================================================
@@ -718,6 +1368,7 @@ async function carregarProdutos() {
         PRODUTOS_API
       );
 
+
     if (!resposta.ok) {
 
       throw new Error(
@@ -726,92 +1377,142 @@ async function carregarProdutos() {
 
     }
 
+
     const produtos =
       await resposta.json();
+
 
     window.__produtos =
       produtos;
 
+
+
+    // --------------------------------------------------------
+    // LISTA
+    // --------------------------------------------------------
+
     listaProdutos.innerHTML =
       produtos.map(
-        (produto) => `
+        (produto) => {
 
-        <tr>
+          const vitrines =
+            normalizarVitrines(
+              produto.vitrines
+            );
 
-          <td>
 
-            <div class="d-flex align-items-center gap-3">
+          return `
 
-              <img
-                src="${produto.img}"
-                class="thumb"
-                alt="${produto.nome}"
-              >
+            <tr>
 
-              <div>
+              <td>
 
-                <strong>
-                  ${produto.nome}
-                </strong>
+                <div class="d-flex align-items-center gap-3">
 
-                <br>
+                  <img
+                    src="${produto.img || ""}"
+                    class="thumb"
+                    alt="${produto.nome || ""}"
+                  >
 
-                <span class="text-secondary small">
-                  ${produto.desc || ""}
-                </span>
+                  <div>
 
-              </div>
+                    <strong>
+                      ${produto.nome || ""}
+                    </strong>
 
-            </div>
+                    <br>
 
-          </td>
+                    <span class="text-secondary small">
+                      ${produto.desc || ""}
+                    </span>
 
-          <td>
-            ${produto.categoria}
-          </td>
+                  </div>
 
-          <td>
-            R$ ${formatarPreco(produto.preco)}
-          </td>
+                </div>
 
-          <td>
+              </td>
 
-            ${
-              Number(produto.estoque || 0) > 0
-                ? `${produto.estoque} disponíveis`
-                : "Esgotado"
-            }
 
-          </td>
+              <td>
+                ${produto.categoria || ""}
+              </td>
 
-          <td>
-            ${produto.tamanhos.join(", ")}
-          </td>
 
-          <td class="text-end">
+              <td>
+                R$ ${formatarPreco(produto.preco)}
+              </td>
 
-            <button
-              class="btn btn-sm btn-outline-primary"
-              onclick="editarProduto(${produto.id})"
-            >
-              Editar
-            </button>
 
-            <button
-              class="btn btn-sm btn-outline-danger"
-              onclick="excluirProduto(${produto.id})"
-            >
-              Excluir
-            </button>
+              <td>
 
-          </td>
+                ${
+                  Number(produto.estoque || 0) > 0
+                    ? `${produto.estoque} disponíveis`
+                    : "Esgotado"
+                }
 
-        </tr>
+              </td>
 
-      `
+
+              <td>
+
+                ${
+                  Array.isArray(produto.tamanhos)
+                    ? produto.tamanhos.join(", ")
+                    : ""
+                }
+
+              </td>
+
+
+              <td>
+
+                ${
+                  vitrines.length
+                    ? vitrines
+                        .map(nomeVitrine)
+                        .join("<br>")
+                    : '<span class="text-secondary small">Nenhuma</span>'
+                }
+
+              </td>
+
+
+              <td class="text-end">
+
+                <button
+                  class="btn btn-sm btn-outline-primary"
+                  onclick="editarProduto(${produto.id})"
+                >
+                  Editar
+                </button>
+
+
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  onclick="excluirProduto(${produto.id})"
+                >
+                  Excluir
+                </button>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
       ).join("");
 
+
   } catch (error) {
+
+    console.error(
+      "Erro ao carregar produtos:",
+      error
+    );
+
 
     mostrarMensagem(
       "danger",
@@ -823,38 +1524,63 @@ async function carregarProdutos() {
 }
 
 
+
 // ============================================================
 // EDITAR PRODUTO
 // ============================================================
 
-function editarProduto(id) {
+function editarProduto(
+  id
+) {
 
   const produto =
     (window.__produtos || [])
       .find(
         (item) =>
-          item.id === id
+          Number(item.id) === Number(id)
       );
 
+
   if (!produto) {
+
+    mostrarMensagem(
+      "danger",
+      "Produto não encontrado."
+    );
+
     return;
+
   }
+
+
+
+  // ----------------------------------------------------------
+  // DADOS
+  // ----------------------------------------------------------
 
   document.getElementById(
     "produtoId"
-  ).value = produto.id;
+  ).value =
+    produto.id;
+
 
   document.getElementById(
     "nome"
-  ).value = produto.nome;
+  ).value =
+    produto.nome || "";
+
 
   document.getElementById(
     "categoria"
-  ).value = produto.categoria;
+  ).value =
+    produto.categoria || "";
+
 
   document.getElementById(
     "preco"
-  ).value = produto.preco;
+  ).value =
+    produto.preco || "";
+
 
   document.getElementById(
     "estoque"
@@ -863,39 +1589,121 @@ function editarProduto(id) {
       produto.estoque || 0
     );
 
+
   document.getElementById(
     "img"
   ).value =
     produto.img || "";
+
 
   document.getElementById(
     "desc"
   ).value =
     produto.desc || "";
 
+
   document.getElementById(
     "tamanhos"
   ).value =
-    (produto.tamanhos || [])
-      .join(", ");
+    Array.isArray(produto.tamanhos)
+      ? produto.tamanhos.join(", ")
+      : "";
+
+
+
+  // ==========================================================
+  // RECUPERAR VITRINES
+  // ==========================================================
+
+  const vitrines =
+    normalizarVitrines(
+      produto.vitrines
+    );
+
+
+
+  document.getElementById(
+    "vitrineLancamentos"
+  ).checked =
+    vitrines.includes(
+      "lancamentos"
+    );
+
+
+  document.getElementById(
+    "vitrineMaisVendidos"
+  ).checked =
+    vitrines.includes(
+      "mais-vendidos"
+    );
+
+
+  document.getElementById(
+    "vitrineInternacionais"
+  ).checked =
+    vitrines.includes(
+      "internacionais"
+    );
+
+
+  document.getElementById(
+    "vitrineBrasileiros"
+  ).checked =
+    vitrines.includes(
+      "brasileiros"
+    );
+
+
+  document.getElementById(
+    "vitrineSelecoes"
+  ).checked =
+    vitrines.includes(
+      "selecoes"
+    );
+
+
+
+  // ==========================================================
+  // IMAGEM
+  // ==========================================================
 
   if (produto.img) {
 
     previewImagem.src =
       produto.img;
 
+
     previewImagem.style.display =
       "block";
+
 
     document.getElementById(
       "urlImagem"
     ).innerText =
       produto.img;
 
+
     uploadStatus.innerText =
       "Imagem atual do produto.";
 
   }
+
+
+
+  // ==========================================================
+  // EXTRAS
+  // ==========================================================
+
+  imagensArquivos.value = "";
+
+  extrasStatus.innerText =
+    "As imagens extras atuais serão mantidas se nenhuma nova imagem for enviada.";
+
+
+
+  // ==========================================================
+  // IR PARA O FORMULÁRIO
+  // ==========================================================
 
   window.scrollTo({
     top: 0,
@@ -905,19 +1713,26 @@ function editarProduto(id) {
 }
 
 
+
 // ============================================================
 // EXCLUIR PRODUTO
 // ============================================================
 
-async function excluirProduto(id) {
+async function excluirProduto(
+  id
+) {
 
   if (
     !confirm(
       "Deseja realmente excluir este produto?"
     )
   ) {
+
     return;
+
   }
+
+
 
   try {
 
@@ -929,11 +1744,13 @@ async function excluirProduto(id) {
         }
       );
 
+
     if (!resposta.ok) {
 
       const dados =
         await resposta.json()
           .catch(() => ({}));
+
 
       throw new Error(
         dados.detalhe ||
@@ -943,12 +1760,15 @@ async function excluirProduto(id) {
 
     }
 
+
     await carregarProdutos();
+
 
     mostrarMensagem(
       "success",
       "Produto excluído com sucesso."
     );
+
 
   } catch (error) {
 
@@ -960,6 +1780,7 @@ async function excluirProduto(id) {
   }
 
 }
+
 
 
 // ============================================================
@@ -975,149 +1796,184 @@ async function carregarPedidos() {
         PEDIDOS_API
       );
 
+
+    if (!resposta.ok) {
+
+      throw new Error(
+        "Não foi possível carregar os pedidos."
+      );
+
+    }
+
+
     const pedidos =
       await resposta.json();
+
 
     window.__pedidos =
       pedidos;
 
+
+
     if (!pedidos.length) {
 
       listaPedidos.innerHTML = `
+
         <tr>
+
           <td
             colspan="6"
             class="text-center text-secondary py-4"
           >
             Nenhum pedido recebido ainda.
           </td>
+
         </tr>
+
       `;
 
       return;
+
     }
+
+
 
     listaPedidos.innerHTML =
       pedidos.map(
         (pedido) => `
 
-        <tr>
+          <tr>
 
-          <td>
+            <td>
 
-            <strong>
-              #${pedido.id}
-            </strong>
+              <strong>
+                #${pedido.id}
+              </strong>
 
-            <br>
+              <br>
 
-            <span class="text-secondary small">
-              ${formatarData(pedido.createdAt)}
-            </span>
+              <span class="text-secondary small">
+                ${formatarData(pedido.createdAt)}
+              </span>
 
-          </td>
+            </td>
 
-          <td>
 
-            <strong>
-              ${pedido.clienteNome}
-            </strong>
 
-            <br>
+            <td>
 
-            <span class="text-secondary small">
-              ${pedido.metodoPagamento} • ${pedido.cidade}
-            </span>
+              <strong>
+                ${pedido.clienteNome}
+              </strong>
 
-          </td>
+              <br>
 
-          <td>
+              <span class="text-secondary small">
+                ${pedido.metodoPagamento} • ${pedido.cidade}
+              </span>
 
-            <select
-              class="form-select form-select-sm"
-              id="statusPagamento-${pedido.id}"
-            >
+            </td>
 
-              ${
-                [
-                  "Aguardando pagamento",
-                  "Pago"
-                ]
-                  .map(
-                    (status) => `
-                    <option
-                      value="${status}"
-                      ${
-                        pedido.statusPagamento === status
-                          ? "selected"
-                          : ""
-                      }
-                    >
-                      ${status}
-                    </option>
-                  `
-                  )
-                  .join("")
-              }
 
-            </select>
 
-          </td>
+            <td>
 
-          <td>
+              <select
+                class="form-select form-select-sm"
+                id="statusPagamento-${pedido.id}"
+              >
 
-            <select
-              class="form-select form-select-sm"
-              id="statusEntrega-${pedido.id}"
-            >
+                ${
+                  [
+                    "Aguardando pagamento",
+                    "Pago"
+                  ]
+                    .map(
+                      (status) => `
 
-              ${
-                [
-                  "Pedido recebido",
-                  "Separando",
-                  "Enviado",
-                  "Entregue"
-                ]
-                  .map(
-                    (status) => `
-                    <option
-                      value="${status}"
-                      ${
-                        pedido.statusEntrega === status
-                          ? "selected"
-                          : ""
-                      }
-                    >
-                      ${status}
-                    </option>
-                  `
-                  )
-                  .join("")
-              }
+                        <option
+                          value="${status}"
+                          ${
+                            pedido.statusPagamento === status
+                              ? "selected"
+                              : ""
+                          }
+                        >
+                          ${status}
+                        </option>
 
-            </select>
+                      `
+                    )
+                    .join("")
+                }
 
-          </td>
+              </select>
 
-          <td>
-            R$ ${formatarPreco(pedido.total)}
-          </td>
+            </td>
 
-          <td class="text-end">
 
-            <button
-              class="btn btn-sm btn-primary"
-              onclick="salvarStatusPedido(${pedido.id})"
-            >
-              Salvar status
-            </button>
 
-          </td>
+            <td>
 
-        </tr>
+              <select
+                class="form-select form-select-sm"
+                id="statusEntrega-${pedido.id}"
+              >
 
-      `
+                ${
+                  [
+                    "Pedido recebido",
+                    "Separando",
+                    "Enviado",
+                    "Entregue"
+                  ]
+                    .map(
+                      (status) => `
+
+                        <option
+                          value="${status}"
+                          ${
+                            pedido.statusEntrega === status
+                              ? "selected"
+                              : ""
+                          }
+                        >
+                          ${status}
+                        </option>
+
+                      `
+                    )
+                    .join("")
+                }
+
+              </select>
+
+            </td>
+
+
+
+            <td>
+              R$ ${formatarPreco(pedido.total)}
+            </td>
+
+
+
+            <td class="text-end">
+
+              <button
+                class="btn btn-sm btn-primary"
+                onclick="salvarStatusPedido(${pedido.id})"
+              >
+                Salvar status
+              </button>
+
+            </td>
+
+          </tr>
+
+        `
       ).join("");
+
 
   } catch (error) {
 
@@ -1131,21 +1987,27 @@ async function carregarPedidos() {
 }
 
 
+
 // ============================================================
 // SALVAR STATUS PEDIDO
 // ============================================================
 
-async function salvarStatusPedido(id) {
+async function salvarStatusPedido(
+  id
+) {
 
   const statusPagamento =
     document.getElementById(
       `statusPagamento-${id}`
     ).value;
 
+
   const statusEntrega =
     document.getElementById(
       `statusEntrega-${id}`
     ).value;
+
+
 
   try {
 
@@ -1153,6 +2015,7 @@ async function salvarStatusPedido(id) {
       await fetch(
         `${PEDIDOS_API}/${id}/status`,
         {
+
           method: "PATCH",
 
           headers: {
@@ -1165,18 +2028,35 @@ async function salvarStatusPedido(id) {
               statusPagamento,
               statusEntrega
             })
+
         }
       );
 
+
     if (!resposta.ok) {
 
+      const dados =
+        await resposta.json()
+          .catch(() => ({}));
+
+
       throw new Error(
+        dados.detalhe ||
+        dados.erro ||
         "Não foi possível atualizar o pedido."
       );
 
     }
 
+
     await carregarPedidos();
+
+
+    mostrarMensagem(
+      "success",
+      "Status do pedido atualizado com sucesso."
+    );
+
 
   } catch (error) {
 
@@ -1190,6 +2070,7 @@ async function salvarStatusPedido(id) {
 }
 
 
+
 // ============================================================
 // SALVAR PRODUTO
 // ============================================================
@@ -1200,27 +2081,35 @@ form.addEventListener(
 
     e.preventDefault();
 
+
+
     const id =
       document.getElementById(
         "produtoId"
       ).value;
 
+
+
     try {
 
-      salvarBtn.disabled = true;
+      salvarBtn.disabled =
+        true;
+
 
       salvarBtn.innerText =
         "Salvando...";
 
 
-      // --------------------------------------------------------
+
+      // ======================================================
       // IMAGEM PRINCIPAL
-      // --------------------------------------------------------
+      // ======================================================
 
       let imagemPrincipal =
         document.getElementById(
           "img"
         ).value.trim();
+
 
 
       if (
@@ -1230,20 +2119,24 @@ form.addEventListener(
         uploadStatus.innerText =
           "Enviando imagem principal...";
 
+
         imagemPrincipal =
           await enviarImagem(
             imagemArquivo.files[0]
           );
+
 
         document.getElementById(
           "img"
         ).value =
           imagemPrincipal;
 
+
         document.getElementById(
           "urlImagem"
         ).innerText =
           imagemPrincipal;
+
 
         uploadStatus.innerText =
           "Imagem principal enviada com sucesso.";
@@ -1251,9 +2144,10 @@ form.addEventListener(
       }
 
 
-      // --------------------------------------------------------
+
+      // ======================================================
       // VERIFICAR IMAGEM PRINCIPAL
-      // --------------------------------------------------------
+      // ======================================================
 
       if (!imagemPrincipal) {
 
@@ -1264,9 +2158,10 @@ form.addEventListener(
       }
 
 
-      // --------------------------------------------------------
+
+      // ======================================================
       // IMAGENS EXTRAS
-      // --------------------------------------------------------
+      // ======================================================
 
       const imagensExtras = [];
 
@@ -1279,6 +2174,7 @@ form.addEventListener(
           `Enviando ${imagensArquivos.files.length} imagem(ns) extra(s)...`;
 
 
+
         for (
           const arquivo
           of imagensArquivos.files
@@ -1289,11 +2185,14 @@ form.addEventListener(
               arquivo
             );
 
+
           imagensExtras.push(
             url
           );
 
         }
+
+
 
         extrasStatus.innerText =
           `${imagensExtras.length} imagem(ns) extra(s) enviada(s) com sucesso.`;
@@ -1301,9 +2200,98 @@ form.addEventListener(
       }
 
 
-      // --------------------------------------------------------
+
+      // ======================================================
+      // VITRINES
+      // ======================================================
+
+      const vitrines = [];
+
+
+
+      // LANÇAMENTOS
+
+      if (
+        document.getElementById(
+          "vitrineLancamentos"
+        ).checked
+      ) {
+
+        vitrines.push(
+          "lancamentos"
+        );
+
+      }
+
+
+
+      // MAIS VENDIDOS
+
+      if (
+        document.getElementById(
+          "vitrineMaisVendidos"
+        ).checked
+      ) {
+
+        vitrines.push(
+          "mais-vendidos"
+        );
+
+      }
+
+
+
+      // INTERNACIONAIS
+
+      if (
+        document.getElementById(
+          "vitrineInternacionais"
+        ).checked
+      ) {
+
+        vitrines.push(
+          "internacionais"
+        );
+
+      }
+
+
+
+      // BRASILEIROS
+
+      if (
+        document.getElementById(
+          "vitrineBrasileiros"
+        ).checked
+      ) {
+
+        vitrines.push(
+          "brasileiros"
+        );
+
+      }
+
+
+
+      // SELEÇÕES
+
+      if (
+        document.getElementById(
+          "vitrineSelecoes"
+        ).checked
+      ) {
+
+        vitrines.push(
+          "selecoes"
+        );
+
+      }
+
+
+
+      // ======================================================
       // DADOS DO PRODUTO
-      // --------------------------------------------------------
+      // ======================================================
 
       const produto = {
 
@@ -1312,10 +2300,12 @@ form.addEventListener(
             "nome"
           ).value.trim(),
 
+
         categoria:
           document.getElementById(
             "categoria"
           ).value.trim(),
+
 
         preco:
           Number(
@@ -1323,6 +2313,7 @@ form.addEventListener(
               "preco"
             ).value
           ),
+
 
         estoque:
           Math.max(
@@ -1334,18 +2325,23 @@ form.addEventListener(
             )
           ),
 
+
         img:
           imagemPrincipal,
 
-        imagens: [
-          imagemPrincipal,
-          ...imagensExtras
-        ],
+
+        imagens:
+          [
+            imagemPrincipal,
+            ...imagensExtras
+          ],
+
 
         desc:
           document.getElementById(
             "desc"
           ).value.trim(),
+
 
         tamanhos:
           document.getElementById(
@@ -1356,14 +2352,23 @@ form.addEventListener(
               (item) =>
                 item.trim()
             )
-            .filter(Boolean)
+            .filter(Boolean),
+
+
+        // ==================================================
+        // VITRINES
+        // ==================================================
+
+        vitrines:
+          vitrines
 
       };
 
 
-      // --------------------------------------------------------
+
+      // ======================================================
       // SALVAR NO BANCO
-      // --------------------------------------------------------
+      // ======================================================
 
       const resposta =
         await fetch(
@@ -1377,10 +2382,14 @@ form.addEventListener(
                 ? "PUT"
                 : "POST",
 
+
             headers: {
+
               "Content-Type":
                 "application/json"
+
             },
+
 
             body:
               JSON.stringify(
@@ -1391,9 +2400,13 @@ form.addEventListener(
         );
 
 
+
       const dados =
         await resposta.json()
-          .catch(() => ({}));
+          .catch(
+            () => ({})
+          );
+
 
 
       if (!resposta.ok) {
@@ -1407,13 +2420,16 @@ form.addEventListener(
       }
 
 
-      // --------------------------------------------------------
+
+      // ======================================================
       // FINALIZAR
-      // --------------------------------------------------------
+      // ======================================================
 
       limparProduto();
 
+
       await carregarProdutos();
+
 
       mostrarMensagem(
         "success",
@@ -1422,6 +2438,7 @@ form.addEventListener(
           : "Produto cadastrado com sucesso!"
       );
 
+
     } catch (error) {
 
       console.error(
@@ -1429,16 +2446,19 @@ form.addEventListener(
         error
       );
 
+
       mostrarMensagem(
         "danger",
         error.message ||
-        "Não foi possível enviar as imagens."
+        "Não foi possível salvar o produto."
       );
+
 
     } finally {
 
       salvarBtn.disabled =
         false;
+
 
       salvarBtn.innerText =
         "Salvar produto";
@@ -1449,14 +2469,25 @@ form.addEventListener(
 );
 
 
+
 // ============================================================
 // CANCELAR
 // ============================================================
 
 cancelarBtn.addEventListener(
   "click",
-  limparProduto
+  () => {
+
+    limparProduto();
+
+    mostrarMensagem(
+      "info",
+      "Formulário limpo."
+    );
+
+  }
 );
+
 
 
 // ============================================================
@@ -1475,11 +2506,13 @@ document
         "resenha_admin_auth"
       );
 
+
       window.location.href =
         "login.html";
 
     }
   );
+
 
 
 // ============================================================
@@ -1493,6 +2526,7 @@ Promise.all([
 
 </script>
 
+
 </body>
+
 </html>
-```

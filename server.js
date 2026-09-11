@@ -9,6 +9,8 @@ const { createClient } = require("@supabase/supabase-js");
 
 const produtosRouter = require("./backend/routes/produtos");
 const pedidosRouter = require("./backend/routes/pedidos");
+const pagamentosRouter = require("./backend/routes/pagamentos");
+
 const { ensureSchema } = require("./backend/ensureSchema");
 
 const app = express();
@@ -21,6 +23,7 @@ const frontendDir = path.resolve(__dirname, "frontend");
 // ============================================================
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
+
 const SUPABASE_SERVICE_ROLE_KEY =
   process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -120,7 +123,6 @@ app.post(
   upload.single("imagem"),
   async (req, res) => {
     try {
-      // Verifica se recebeu o arquivo
       if (!req.file) {
         return res.status(400).json({
           sucesso: false,
@@ -128,7 +130,6 @@ app.post(
         });
       }
 
-      // Verifica configuração do Supabase
       if (!supabase) {
         return res.status(500).json({
           sucesso: false,
@@ -136,7 +137,6 @@ app.post(
         });
       }
 
-      // Extensão original
       const extensaoOriginal = path
         .extname(req.file.originalname)
         .toLowerCase();
@@ -155,7 +155,6 @@ app.post(
         });
       }
 
-      // Nome original sem extensão
       let nomeBase = path
         .basename(
           req.file.originalname,
@@ -171,14 +170,12 @@ app.post(
         nomeBase = "imagem";
       }
 
-      // Nome único
       const nomeArquivo =
         String(Date.now()) +
         "-" +
         nomeBase +
         extensaoOriginal;
 
-      // Pasta dentro do bucket
       const caminho =
         "produtos/" + nomeArquivo;
 
@@ -199,10 +196,6 @@ app.post(
         "Destino:",
         caminho
       );
-
-      // ========================================================
-      // ENVIA PARA O BUCKET
-      // ========================================================
 
       const resultadoUpload =
         await supabase.storage
@@ -232,10 +225,6 @@ app.post(
           detalhe: uploadError.message
         });
       }
-
-      // ========================================================
-      // GERA URL PÚBLICA
-      // ========================================================
 
       const resultadoUrl =
         supabase.storage
@@ -271,10 +260,6 @@ app.post(
       console.log(
         "=========================================="
       );
-
-      // ========================================================
-      // RETORNO PARA O PAINEL
-      // ========================================================
 
       return res.status(201).json({
         sucesso: true,
@@ -317,6 +302,15 @@ app.use(
 app.use(
   "/api/pedidos",
   pedidosRouter
+);
+
+// ============================================================
+// PAGAMENTOS MERCADO PAGO
+// ============================================================
+
+app.use(
+  "/api/pagamentos",
+  pagamentosRouter
 );
 
 // ============================================================
@@ -405,6 +399,12 @@ if (process.env.VERCEL !== "1") {
             "Upload: http://localhost:" +
               PORT +
               "/api/upload-imagem"
+          );
+
+          console.log(
+            "Pagamentos: http://localhost:" +
+              PORT +
+              "/api/pagamentos"
           );
 
           console.log(
