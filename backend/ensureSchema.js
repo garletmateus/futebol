@@ -2,6 +2,7 @@
 const db = require("./db");
 
 async function ensureSchema() {
+
   // ============================================================
   // PRODUTOS - ESTOQUE
   // ============================================================
@@ -70,10 +71,9 @@ async function ensureSchema() {
   `);
 
   // ============================================================
-  // GARANTE COLUNAS DA TABELA PEDIDOS
+  // GARANTE COLUNA STATUS_PAGAMENTO
   // ============================================================
 
-  // Status do pagamento
   const statusPagamentoColumn = await db.query(`
     SELECT column_name
     FROM information_schema.columns
@@ -95,7 +95,10 @@ async function ensureSchema() {
     );
   }
 
-  // ID da preferência do Mercado Pago
+  // ============================================================
+  // ID DA PREFERÊNCIA DO MERCADO PAGO
+  // ============================================================
+
   const preferenceColumn = await db.query(`
     SELECT column_name
     FROM information_schema.columns
@@ -115,7 +118,10 @@ async function ensureSchema() {
     );
   }
 
-  // ID do pagamento do Mercado Pago
+  // ============================================================
+  // ID DO PAGAMENTO DO MERCADO PAGO
+  // ============================================================
+
   const paymentColumn = await db.query(`
     SELECT column_name
     FROM information_schema.columns
@@ -195,6 +201,76 @@ async function ensureSchema() {
   `);
 
   // ============================================================
+  // TABELA DE CLIENTES
+  // ============================================================
+
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS clientes (
+      id SERIAL PRIMARY KEY,
+
+      nome VARCHAR(160) NOT NULL,
+
+      email VARCHAR(180) NOT NULL UNIQUE,
+
+      senha VARCHAR(255) NOT NULL,
+
+      telefone VARCHAR(40) DEFAULT '',
+
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  console.log("Tabela de clientes verificada com sucesso.");
+
+  // ============================================================
+  // VÍNCULO DO PEDIDO COM CLIENTE
+  // ============================================================
+
+  await db.query(`
+    ALTER TABLE pedidos
+    ADD COLUMN IF NOT EXISTS cliente_id INTEGER
+  `);
+
+  // ============================================================
+  // CÓDIGO DE RASTREIO
+  // ============================================================
+
+  await db.query(`
+    ALTER TABLE pedidos
+    ADD COLUMN IF NOT EXISTS codigo_rastreio VARCHAR(100)
+  `);
+
+  // ============================================================
+  // FOREIGN KEY CLIENTE -> PEDIDO
+  // ============================================================
+
+  await db.query(`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'pedidos_cliente_id_fkey'
+      ) THEN
+
+        ALTER TABLE pedidos
+        ADD CONSTRAINT pedidos_cliente_id_fkey
+        FOREIGN KEY (cliente_id)
+        REFERENCES clientes(id)
+        ON DELETE SET NULL;
+
+      END IF;
+    END
+    $$;
+  `);
+
+  console.log(
+    "Vínculo de clientes e rastreio verificado com sucesso."
+  );
+
+  // ============================================================
   // FINAL
   // ============================================================
 
@@ -206,3 +282,4 @@ async function ensureSchema() {
 module.exports = {
   ensureSchema
 };
+

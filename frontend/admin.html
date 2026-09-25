@@ -29,6 +29,7 @@
 :root {
   --primary: #0d7a5f;
   --primary-dark: #085542;
+  --danger: #dc3545;
   --ink: #11211b;
 }
 
@@ -67,6 +68,121 @@ body {
   border-radius: 18px;
   border: 2px solid #d7e2dd;
   display: none;
+}
+
+
+/* ============================================================
+   GALERIA DE IMAGENS ATUAIS
+============================================================ */
+
+.imagens-atuais-box {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #d7e2dd;
+  border-radius: 18px;
+  background: #f8fbfa;
+}
+
+.imagens-atuais-titulo {
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.imagens-atuais-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.imagem-atual-item {
+  width: 150px;
+  position: relative;
+  border: 1px solid #d7e2dd;
+  border-radius: 16px;
+  padding: 8px;
+  background: white;
+}
+
+.imagem-atual {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #d7e2dd;
+  background: #e8eeeb;
+  display: block;
+}
+
+.imagem-atual-principal {
+  border-color: var(--primary);
+}
+
+.imagem-atual-label {
+  display: block;
+  margin-top: 6px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+}
+
+.imagem-atual-label.extra {
+  color: #6c757d;
+}
+
+.btn-remover-imagem {
+  width: 100%;
+  margin-top: 8px;
+  border: 0;
+  border-radius: 8px;
+  padding: 7px 8px;
+  background: var(--danger);
+  color: white;
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn-remover-imagem:hover {
+  background: #bb2d3b;
+}
+
+.sem-imagens {
+  color: #6c757d;
+  font-size: .9rem;
+}
+
+
+/* ============================================================
+   NOVAS IMAGENS
+============================================================ */
+
+.novas-imagens-box {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #eef7f3;
+  border: 1px solid #d7e2dd;
+}
+
+.novas-imagens-titulo {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.novas-imagens-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nova-imagem-preview {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #d7e2dd;
 }
 
 
@@ -202,6 +318,15 @@ body {
     height: 52px;
   }
 
+  .imagem-atual-item {
+    width: 110px;
+  }
+
+  .imagem-atual {
+    width: 100%;
+    height: 100px;
+  }
+
 }
 
 </style>
@@ -320,9 +445,7 @@ body {
 
 
 
-      <!-- ====================================================
-           NOME
-      ===================================================== -->
+      <!-- NOME -->
 
       <div class="col-md-6">
 
@@ -340,9 +463,7 @@ body {
 
 
 
-      <!-- ====================================================
-           CATEGORIA
-      ===================================================== -->
+      <!-- CATEGORIA -->
 
       <div class="col-md-3">
 
@@ -361,9 +482,7 @@ body {
 
 
 
-      <!-- ====================================================
-           PREÇO
-      ===================================================== -->
+      <!-- PREÇO -->
 
       <div class="col-md-3">
 
@@ -397,7 +516,6 @@ body {
 
         <div class="vitrines-box">
 
-
           <p class="text-secondary small mb-3">
             Escolha exatamente em quais vitrines este produto
             deverá aparecer. Um mesmo produto pode aparecer em
@@ -406,15 +524,10 @@ body {
           </p>
 
 
-
-          <!-- UMA ÚNICA ROW -->
-
           <div class="row g-3">
 
 
-            <!-- ==================================================
-                 LANÇAMENTOS
-            =================================================== -->
+            <!-- LANÇAMENTOS -->
 
             <div class="col-md-6">
 
@@ -454,9 +567,7 @@ body {
 
 
 
-            <!-- ==================================================
-                 MAIS VENDIDOS
-            =================================================== -->
+            <!-- MAIS VENDIDOS -->
 
             <div class="col-md-6">
 
@@ -496,9 +607,7 @@ body {
 
 
 
-            <!-- ==================================================
-                 TIMES INTERNACIONAIS
-            =================================================== -->
+            <!-- INTERNACIONAIS -->
 
             <div class="col-md-6">
 
@@ -538,9 +647,7 @@ body {
 
 
 
-            <!-- ==================================================
-                 TIMES BRASILEIROS
-            =================================================== -->
+            <!-- BRASILEIROS -->
 
             <div class="col-md-6">
 
@@ -580,9 +687,7 @@ body {
 
 
 
-            <!-- ==================================================
-                 SELEÇÕES
-            =================================================== -->
+            <!-- SELEÇÕES -->
 
             <div class="col-md-6">
 
@@ -629,9 +734,7 @@ body {
 
 
 
-      <!-- ====================================================
-           ESTOQUE
-      ===================================================== -->
+      <!-- ESTOQUE -->
 
       <div class="col-md-3">
 
@@ -727,7 +830,8 @@ body {
 
 
         <div class="form-text">
-          Você pode selecionar várias imagens extras.
+          Selecione uma ou várias imagens. As imagens já cadastradas
+          serão mantidas, a menos que você clique em "Remover".
         </div>
 
 
@@ -736,13 +840,59 @@ body {
           class="upload-status text-secondary"
         ></div>
 
+
+
+        <!-- ==================================================
+             IMAGENS ATUAIS
+        =================================================== -->
+
+        <div
+          id="imagensAtuaisBox"
+          class="imagens-atuais-box"
+          style="display:none;"
+        >
+
+          <div class="imagens-atuais-titulo">
+            Imagens atuais do produto
+          </div>
+
+
+          <div
+            id="imagensAtuais"
+            class="imagens-atuais-grid"
+          ></div>
+
+        </div>
+
+
+
+        <!-- ==================================================
+             NOVAS IMAGENS SELECIONADAS
+        =================================================== -->
+
+        <div
+          id="novasImagensBox"
+          class="novas-imagens-box"
+          style="display:none;"
+        >
+
+          <div class="novas-imagens-titulo">
+            Novas imagens selecionadas
+          </div>
+
+
+          <div
+            id="novasImagensLista"
+            class="novas-imagens-lista"
+          ></div>
+
+        </div>
+
       </div>
 
 
 
-      <!-- ====================================================
-           DESCRIÇÃO
-      ===================================================== -->
+      <!-- DESCRIÇÃO -->
 
       <div class="col-12">
 
@@ -762,9 +912,7 @@ body {
 
 
 
-      <!-- ====================================================
-           TAMANHOS
-      ===================================================== -->
+      <!-- TAMANHOS -->
 
       <div class="col-12">
 
@@ -784,9 +932,7 @@ body {
 
 
 
-      <!-- ====================================================
-           BOTÕES
-      ===================================================== -->
+      <!-- BOTÕES -->
 
       <div class="col-12 d-flex gap-2">
 
@@ -914,29 +1060,41 @@ body {
 
           <tr>
 
-            <th>
-              Pedido
-            </th>
+<tr>
 
-            <th>
-              Cliente
-            </th>
+  <th>
+    Pedido
+  </th>
 
-            <th>
-              Pagamento
-            </th>
+  <th>
+    Cliente
+  </th>
 
-            <th>
-              Entrega
-            </th>
+  <th>
+    Pagamento
+  </th>
 
-            <th>
-              Total
-            </th>
+  <th>
+    Entrega
+  </th>
 
-            <th class="text-end">
-              Atualizar
-            </th>
+  <th>
+    Rastreio
+  </th>
+
+<th>
+  Rastreio
+</th>
+
+  <th>
+    Total
+  </th>
+
+  <th class="text-end">
+    Atualizar
+  </th>
+
+</tr>
 
           </tr>
 
@@ -967,7 +1125,7 @@ if (
   sessionStorage.getItem("resenha_admin_auth") !== "ok"
 ) {
 
-  window.location.href = "login.html";
+  window.location.href = "admin-login.html";
 
 }
 
@@ -1019,6 +1177,26 @@ const extrasStatus =
 
 const salvarBtn =
   document.getElementById("salvarBtn");
+
+const imagensAtuaisBox =
+  document.getElementById("imagensAtuaisBox");
+
+const imagensAtuais =
+  document.getElementById("imagensAtuais");
+
+const novasImagensBox =
+  document.getElementById("novasImagensBox");
+
+const novasImagensLista =
+  document.getElementById("novasImagensLista");
+
+
+
+// ============================================================
+// GALERIA ATUAL
+// ============================================================
+
+let imagensAtuaisProduto = [];
 
 
 
@@ -1074,6 +1252,512 @@ function mostrarMensagem(
 
 
 // ============================================================
+// NORMALIZAR IMAGENS
+// ============================================================
+
+function normalizarImagens(
+  imagens
+) {
+
+  if (
+    Array.isArray(imagens)
+  ) {
+
+    return imagens
+      .filter(Boolean)
+      .map(
+        imagem =>
+          String(imagem).trim()
+      )
+      .filter(Boolean);
+
+  }
+
+
+  if (
+    typeof imagens === "string"
+  ) {
+
+    try {
+
+      const resultado =
+        JSON.parse(imagens);
+
+
+      if (
+        Array.isArray(resultado)
+      ) {
+
+        return resultado
+          .filter(Boolean)
+          .map(
+            imagem =>
+              String(imagem).trim()
+          )
+          .filter(Boolean);
+
+      }
+
+    } catch {
+
+      return imagens
+        .split(",")
+        .map(
+          imagem =>
+            imagem.trim()
+        )
+        .filter(Boolean);
+
+    }
+
+  }
+
+
+  return [];
+
+}
+
+
+
+// ============================================================
+// REMOVER DUPLICADAS
+// ============================================================
+
+function removerImagensDuplicadas(
+  imagens
+) {
+
+  const resultado = [];
+
+  const usadas =
+    new Set();
+
+
+  for (
+    const imagem
+    of normalizarImagens(imagens)
+  ) {
+
+    if (
+      !usadas.has(imagem)
+    ) {
+
+      usadas.add(imagem);
+
+      resultado.push(imagem);
+
+    }
+
+  }
+
+
+  return resultado;
+
+}
+
+
+
+// ============================================================
+// RENDERIZAR GALERIA ATUAL
+// ============================================================
+
+function renderizarImagensAtuais() {
+
+  imagensAtuais.innerHTML = "";
+
+
+  if (
+    !imagensAtuaisProduto.length
+  ) {
+
+    imagensAtuaisBox.style.display =
+      "block";
+
+
+    imagensAtuais.innerHTML = `
+      <div class="sem-imagens">
+        Nenhuma imagem cadastrada.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  imagensAtuaisBox.style.display =
+    "block";
+
+
+  imagensAtuaisProduto.forEach(
+    (url, indice) => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "imagem-atual-item";
+
+
+      const img =
+        document.createElement(
+          "img"
+        );
+
+      img.className =
+        "imagem-atual";
+
+
+      if (
+        indice === 0
+      ) {
+
+        img.classList.add(
+          "imagem-atual-principal"
+        );
+
+      }
+
+
+      img.src =
+        url;
+
+
+      img.alt =
+        indice === 0
+          ? "Imagem principal"
+          : `Imagem extra ${indice}`;
+
+
+      img.onerror =
+        () => {
+
+          img.style.opacity =
+            "0.4";
+
+        };
+
+
+      const label =
+        document.createElement(
+          "span"
+        );
+
+      label.className =
+        "imagem-atual-label";
+
+
+      if (
+        indice === 0
+      ) {
+
+        label.innerText =
+          "⭐ Imagem principal";
+
+      } else {
+
+        label.classList.add(
+          "extra"
+        );
+
+        label.innerText =
+          `Imagem extra ${indice}`;
+
+      }
+
+
+      const removerBtn =
+        document.createElement(
+          "button"
+        );
+
+      removerBtn.type =
+        "button";
+
+      removerBtn.className =
+        "btn-remover-imagem";
+
+      removerBtn.innerText =
+        "❌ Remover";
+
+
+      removerBtn.addEventListener(
+        "click",
+        () => {
+
+          removerImagemAtual(
+            indice
+          );
+
+        }
+      );
+
+
+      item.appendChild(
+        img
+      );
+
+      item.appendChild(
+        label
+      );
+
+      item.appendChild(
+        removerBtn
+      );
+
+
+      imagensAtuais.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+
+// ============================================================
+// REMOVER IMAGEM ATUAL
+// ============================================================
+
+function removerImagemAtual(
+  indice
+) {
+
+  if (
+    indice < 0 ||
+    indice >= imagensAtuaisProduto.length
+  ) {
+
+    return;
+
+  }
+
+
+  const eraPrincipal =
+    indice === 0;
+
+
+  const imagemRemovida =
+    imagensAtuaisProduto[indice];
+
+
+  if (
+    !confirm(
+      eraPrincipal
+        ? "Essa é a imagem principal. Deseja removê-la? A próxima imagem será definida como principal."
+        : "Deseja remover esta imagem da galeria?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  imagensAtuaisProduto.splice(
+    indice,
+    1
+  );
+
+
+  // ----------------------------------------------------------
+  // Se removeu a principal, a próxima imagem vira principal.
+  // ----------------------------------------------------------
+
+  if (
+    eraPrincipal &&
+    imagensAtuaisProduto.length
+  ) {
+
+    const novaPrincipal =
+      imagensAtuaisProduto[0];
+
+
+    document.getElementById(
+      "img"
+    ).value =
+      novaPrincipal;
+
+
+    previewImagem.src =
+      novaPrincipal;
+
+
+    previewImagem.style.display =
+      "block";
+
+
+    document.getElementById(
+      "urlImagem"
+    ).innerText =
+      novaPrincipal;
+
+
+    uploadStatus.innerText =
+      "A próxima imagem foi definida como principal.";
+
+  }
+
+
+  // ----------------------------------------------------------
+  // Se não sobrou nenhuma imagem
+  // ----------------------------------------------------------
+
+  if (
+    !imagensAtuaisProduto.length
+  ) {
+
+    document.getElementById(
+      "img"
+    ).value =
+      "";
+
+
+    previewImagem.src =
+      "";
+
+
+    previewImagem.style.display =
+      "none";
+
+
+    document.getElementById(
+      "urlImagem"
+    ).innerText =
+      "";
+
+
+    uploadStatus.innerText =
+      "Nenhuma imagem principal cadastrada.";
+
+  }
+
+
+  renderizarImagensAtuais();
+
+
+  atualizarStatusGaleria();
+
+}
+
+
+
+// ============================================================
+// ATUALIZAR STATUS DA GALERIA
+// ============================================================
+
+function atualizarStatusGaleria() {
+
+  const quantidade =
+    imagensAtuaisProduto.length;
+
+
+  if (
+    quantidade === 0
+  ) {
+
+    extrasStatus.innerText =
+      "Nenhuma imagem cadastrada.";
+
+    return;
+
+  }
+
+
+  if (
+    quantidade === 1
+  ) {
+
+    extrasStatus.innerText =
+      "1 imagem cadastrada. Ela é a imagem principal.";
+
+    return;
+
+  }
+
+
+  extrasStatus.innerText =
+    `${quantidade - 1} imagem(ns) extra(s) cadastrada(s).`;
+
+}
+
+
+
+// ============================================================
+// PREVIEW DAS NOVAS IMAGENS
+// ============================================================
+
+function renderizarNovasImagensSelecionadas() {
+
+  novasImagensLista.innerHTML =
+    "";
+
+
+  const arquivos =
+    Array.from(
+      imagensArquivos.files
+    );
+
+
+  if (
+    !arquivos.length
+  ) {
+
+    novasImagensBox.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  novasImagensBox.style.display =
+    "block";
+
+
+  arquivos.forEach(
+    (arquivo) => {
+
+      const url =
+        URL.createObjectURL(
+          arquivo
+        );
+
+
+      const img =
+        document.createElement(
+          "img"
+        );
+
+
+      img.className =
+        "nova-imagem-preview";
+
+
+      img.src =
+        url;
+
+
+      img.alt =
+        arquivo.name;
+
+
+      novasImagensLista.appendChild(
+        img
+      );
+
+    }
+  );
+
+}
+
+
+
+// ============================================================
 // LIMPAR FORMULÁRIO
 // ============================================================
 
@@ -1092,8 +1776,28 @@ function limparProduto() {
   ).value = "";
 
 
+  imagensAtuaisProduto =
+    [];
+
+
+  imagensAtuais.innerHTML =
+    "";
+
+
+  imagensAtuaisBox.style.display =
+    "none";
+
+
+  novasImagensLista.innerHTML =
+    "";
+
+
+  novasImagensBox.style.display =
+    "none";
+
+
   // ----------------------------------------------------------
-  // LIMPAR TODAS AS VITRINES
+  // VITRINES
   // ----------------------------------------------------------
 
   document.getElementById(
@@ -1121,22 +1825,33 @@ function limparProduto() {
   ).checked = false;
 
 
+  // ----------------------------------------------------------
+  // IMAGENS
+  // ----------------------------------------------------------
 
-  // ----------------------------------------------------------
-  // LIMPAR IMAGEM
-  // ----------------------------------------------------------
+  imagemArquivo.value =
+    "";
+
+
+  imagensArquivos.value =
+    "";
+
 
   previewImagem.style.display =
     "none";
 
+
   previewImagem.src =
     "";
+
 
   uploadStatus.innerText =
     "Escolha uma imagem JPG, PNG ou WEBP.";
 
+
   extrasStatus.innerText =
     "";
+
 
   document.getElementById(
     "urlImagem"
@@ -1161,9 +1876,6 @@ imagemArquivo.addEventListener(
 
     if (!arquivo) {
 
-      previewImagem.style.display =
-        "none";
-
       return;
 
     }
@@ -1184,7 +1896,7 @@ imagemArquivo.addEventListener(
 
 
     uploadStatus.innerText =
-      `Imagem selecionada: ${arquivo.name}`;
+      `Nova imagem principal selecionada: ${arquivo.name}`;
 
   }
 );
@@ -1192,7 +1904,41 @@ imagemArquivo.addEventListener(
 
 
 // ============================================================
-// UPLOAD DE UMA IMAGEM
+// NOVAS IMAGENS EXTRAS
+// ============================================================
+
+imagensArquivos.addEventListener(
+  "change",
+  () => {
+
+    const quantidade =
+      imagensArquivos.files.length;
+
+
+    if (
+      quantidade > 0
+    ) {
+
+      extrasStatus.innerText =
+        `${quantidade} nova(s) imagem(ns) selecionada(s). Elas serão adicionadas à galeria.`;
+
+    } else {
+
+      extrasStatus.innerText =
+        "";
+
+    }
+
+
+    renderizarNovasImagensSelecionadas();
+
+  }
+);
+
+
+
+// ============================================================
+// UPLOAD
 // ============================================================
 
 async function enviarImagem(
@@ -1221,7 +1967,9 @@ async function enviarImagem(
 
   const dados =
     await resposta.json()
-      .catch(() => ({}));
+      .catch(
+        () => ({})
+      );
 
 
   if (!resposta.ok) {
@@ -1386,11 +2134,6 @@ async function carregarProdutos() {
       produtos;
 
 
-
-    // --------------------------------------------------------
-    // LISTA
-    // --------------------------------------------------------
-
     listaProdutos.innerHTML =
       produtos.map(
         (produto) => {
@@ -1554,9 +2297,9 @@ function editarProduto(
 
 
 
-  // ----------------------------------------------------------
+  // ==========================================================
   // DADOS
-  // ----------------------------------------------------------
+  // ==========================================================
 
   document.getElementById(
     "produtoId"
@@ -1612,14 +2355,13 @@ function editarProduto(
 
 
   // ==========================================================
-  // RECUPERAR VITRINES
+  // VITRINES
   // ==========================================================
 
   const vitrines =
     normalizarVitrines(
       produto.vitrines
     );
-
 
 
   document.getElementById(
@@ -1664,13 +2406,57 @@ function editarProduto(
 
 
   // ==========================================================
-  // IMAGEM
+  // GALERIA
   // ==========================================================
 
-  if (produto.img) {
+  let imagens =
+    normalizarImagens(
+      produto.imagens
+    );
+
+
+  if (
+    !imagens.length &&
+    produto.img
+  ) {
+
+    imagens = [
+      produto.img
+    ];
+
+  }
+
+
+  const imagemPrincipal =
+    produto.img ||
+    imagens[0] ||
+    "";
+
+
+  imagens =
+    removerImagensDuplicadas(
+      [
+        imagemPrincipal,
+        ...imagens
+      ]
+    );
+
+
+  imagensAtuaisProduto =
+    [...imagens];
+
+
+
+  // ==========================================================
+  // IMAGEM PRINCIPAL
+  // ==========================================================
+
+  if (
+    imagemPrincipal
+  ) {
 
     previewImagem.src =
-      produto.img;
+      imagemPrincipal;
 
 
     previewImagem.style.display =
@@ -1680,29 +2466,56 @@ function editarProduto(
     document.getElementById(
       "urlImagem"
     ).innerText =
-      produto.img;
+      imagemPrincipal;
 
 
     uploadStatus.innerText =
-      "Imagem atual do produto.";
+      "Imagem atual do produto. Se não escolher outra, ela será mantida.";
+
+  } else {
+
+    previewImagem.style.display =
+      "none";
+
+
+    previewImagem.src =
+      "";
 
   }
 
 
 
   // ==========================================================
-  // EXTRAS
+  // RENDERIZAR TODAS AS IMAGENS
   // ==========================================================
 
-  imagensArquivos.value = "";
+  renderizarImagensAtuais();
 
-  extrasStatus.innerText =
-    "As imagens extras atuais serão mantidas se nenhuma nova imagem for enviada.";
+  atualizarStatusGaleria();
 
 
 
   // ==========================================================
-  // IR PARA O FORMULÁRIO
+  // LIMPAR UPLOADS
+  // ==========================================================
+
+  imagemArquivo.value =
+    "";
+
+  imagensArquivos.value =
+    "";
+
+
+  novasImagensLista.innerHTML =
+    "";
+
+
+  novasImagensBox.style.display =
+    "none";
+
+
+  // ==========================================================
+  // SCROLL
   // ==========================================================
 
   window.scrollTo({
@@ -1733,7 +2546,6 @@ async function excluirProduto(
   }
 
 
-
   try {
 
     const resposta =
@@ -1749,7 +2561,9 @@ async function excluirProduto(
 
       const dados =
         await resposta.json()
-          .catch(() => ({}));
+          .catch(
+            () => ({})
+          );
 
 
       throw new Error(
@@ -1787,6 +2601,7 @@ async function excluirProduto(
 // CARREGAR PEDIDOS
 // ============================================================
 
+
 async function carregarPedidos() {
 
   try {
@@ -1814,7 +2629,6 @@ async function carregarPedidos() {
       pedidos;
 
 
-
     if (!pedidos.length) {
 
       listaPedidos.innerHTML = `
@@ -1822,7 +2636,7 @@ async function carregarPedidos() {
         <tr>
 
           <td
-            colspan="6"
+            colspan="7"
             class="text-center text-secondary py-4"
           >
             Nenhum pedido recebido ainda.
@@ -1835,7 +2649,6 @@ async function carregarPedidos() {
       return;
 
     }
-
 
 
     listaPedidos.innerHTML =
@@ -1859,7 +2672,6 @@ async function carregarPedidos() {
             </td>
 
 
-
             <td>
 
               <strong>
@@ -1873,7 +2685,6 @@ async function carregarPedidos() {
               </span>
 
             </td>
-
 
 
             <td>
@@ -1910,7 +2721,6 @@ async function carregarPedidos() {
               </select>
 
             </td>
-
 
 
             <td>
@@ -1951,11 +2761,23 @@ async function carregarPedidos() {
             </td>
 
 
+            <td style="min-width:220px;">
+
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                id="codigoRastreio-${pedido.id}"
+                value="${pedido.codigoRastreio || ""}"
+                placeholder="Ex.: BR123456789BR"
+                maxlength="100"
+              >
+
+            </td>
+
 
             <td>
               R$ ${formatarPreco(pedido.total)}
             </td>
-
 
 
             <td class="text-end">
@@ -1988,86 +2810,93 @@ async function carregarPedidos() {
 
 
 
+
 // ============================================================
 // SALVAR STATUS PEDIDO
 // ============================================================
 
-async function salvarStatusPedido(
-  id
-) {
 
-  const statusPagamento =
-    document.getElementById(
-      `statusPagamento-${id}`
-    ).value;
-
-
-  const statusEntrega =
-    document.getElementById(
-      `statusEntrega-${id}`
-    ).value;
-
-
+async function salvarStatusPedido(id) {
 
   try {
+
+    const statusPagamento =
+      document.getElementById(
+        `statusPagamento-${id}`
+      ).value;
+
+
+    const statusEntrega =
+      document.getElementById(
+        `statusEntrega-${id}`
+      ).value;
+
+
+    const codigoRastreio =
+      document.getElementById(
+        `codigoRastreio-${id}`
+      ).value.trim();
+
 
     const resposta =
       await fetch(
         `${PEDIDOS_API}/${id}/status`,
         {
-
           method: "PATCH",
 
           headers: {
-            "Content-Type":
-              "application/json"
+            "Content-Type": "application/json"
           },
 
-          body:
-            JSON.stringify({
-              statusPagamento,
-              statusEntrega
-            })
-
+          body: JSON.stringify({
+            statusPagamento,
+            statusEntrega,
+            codigoRastreio
+          })
         }
       );
 
 
     if (!resposta.ok) {
 
-      const dados =
+      const erro =
         await resposta.json()
           .catch(() => ({}));
 
-
       throw new Error(
-        dados.detalhe ||
-        dados.erro ||
+        erro.erro ||
         "Não foi possível atualizar o pedido."
       );
 
     }
 
 
-    await carregarPedidos();
-
-
-    mostrarMensagem(
-      "success",
-      "Status do pedido atualizado com sucesso."
+    alert(
+      "Pedido atualizado com sucesso!"
     );
+
+
+    await carregarPedidos();
 
 
   } catch (error) {
 
-    mostrarMensagem(
-      "danger",
-      error.message
+    console.error(
+      "Erro ao atualizar pedido:",
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Erro ao atualizar o pedido."
     );
 
   }
 
 }
+
+
 
 
 
@@ -2082,12 +2911,10 @@ form.addEventListener(
     e.preventDefault();
 
 
-
     const id =
       document.getElementById(
         "produtoId"
       ).value;
-
 
 
     try {
@@ -2111,6 +2938,10 @@ form.addEventListener(
         ).value.trim();
 
 
+
+      // ------------------------------------------------------
+      // NOVA IMAGEM PRINCIPAL
+      // ------------------------------------------------------
 
       if (
         imagemArquivo.files.length > 0
@@ -2146,10 +2977,12 @@ form.addEventListener(
 
 
       // ======================================================
-      // VERIFICAR IMAGEM PRINCIPAL
+      // VERIFICAR PRINCIPAL
       // ======================================================
 
-      if (!imagemPrincipal) {
+      if (
+        !imagemPrincipal
+      ) {
 
         throw new Error(
           "Selecione uma imagem principal antes de salvar o produto."
@@ -2160,10 +2993,38 @@ form.addEventListener(
 
 
       // ======================================================
-      // IMAGENS EXTRAS
+      // GALERIA EXISTENTE
       // ======================================================
 
-      const imagensExtras = [];
+      let galeriaFinal =
+        id
+          ? normalizarImagens(
+              imagensAtuaisProduto
+            )
+          : [];
+
+
+
+      // ======================================================
+      // COLOCAR A PRINCIPAL PRIMEIRO
+      // ======================================================
+
+      galeriaFinal =
+        removerImagensDuplicadas(
+          [
+            imagemPrincipal,
+            ...galeriaFinal
+          ]
+        );
+
+
+
+      // ======================================================
+      // NOVAS IMAGENS EXTRAS
+      // ======================================================
+
+      const imagensExtrasNovas =
+        [];
 
 
       if (
@@ -2172,7 +3033,6 @@ form.addEventListener(
 
         extrasStatus.innerText =
           `Enviando ${imagensArquivos.files.length} imagem(ns) extra(s)...`;
-
 
 
         for (
@@ -2186,18 +3046,43 @@ form.addEventListener(
             );
 
 
-          imagensExtras.push(
+          if (
             url
-          );
+          ) {
+
+            imagensExtrasNovas.push(
+              url
+            );
+
+          }
 
         }
 
-
-
-        extrasStatus.innerText =
-          `${imagensExtras.length} imagem(ns) extra(s) enviada(s) com sucesso.`;
-
       }
+
+
+
+      // ======================================================
+      // JUNTAR GALERIA
+      // ======================================================
+
+      galeriaFinal =
+        removerImagensDuplicadas(
+          [
+            imagemPrincipal,
+            ...galeriaFinal,
+            ...imagensExtrasNovas
+          ]
+        );
+
+
+
+      // ======================================================
+      // ATUALIZAR VARIÁVEL
+      // ======================================================
+
+      imagensAtuaisProduto =
+        [...galeriaFinal];
 
 
 
@@ -2207,9 +3092,6 @@ form.addEventListener(
 
       const vitrines = [];
 
-
-
-      // LANÇAMENTOS
 
       if (
         document.getElementById(
@@ -2224,9 +3106,6 @@ form.addEventListener(
       }
 
 
-
-      // MAIS VENDIDOS
-
       if (
         document.getElementById(
           "vitrineMaisVendidos"
@@ -2239,9 +3118,6 @@ form.addEventListener(
 
       }
 
-
-
-      // INTERNACIONAIS
 
       if (
         document.getElementById(
@@ -2256,9 +3132,6 @@ form.addEventListener(
       }
 
 
-
-      // BRASILEIROS
-
       if (
         document.getElementById(
           "vitrineBrasileiros"
@@ -2271,9 +3144,6 @@ form.addEventListener(
 
       }
 
-
-
-      // SELEÇÕES
 
       if (
         document.getElementById(
@@ -2290,7 +3160,7 @@ form.addEventListener(
 
 
       // ======================================================
-      // DADOS DO PRODUTO
+      // PRODUTO
       // ======================================================
 
       const produto = {
@@ -2331,10 +3201,7 @@ form.addEventListener(
 
 
         imagens:
-          [
-            imagemPrincipal,
-            ...imagensExtras
-          ],
+          galeriaFinal,
 
 
         desc:
@@ -2355,10 +3222,6 @@ form.addEventListener(
             .filter(Boolean),
 
 
-        // ==================================================
-        // VITRINES
-        // ==================================================
-
         vitrines:
           vitrines
 
@@ -2367,7 +3230,7 @@ form.addEventListener(
 
 
       // ======================================================
-      // SALVAR NO BANCO
+      // SALVAR
       // ======================================================
 
       const resposta =
@@ -2406,7 +3269,6 @@ form.addEventListener(
           .catch(
             () => ({})
           );
-
 
 
       if (!resposta.ok) {
@@ -2480,6 +3342,7 @@ cancelarBtn.addEventListener(
 
     limparProduto();
 
+
     mostrarMensagem(
       "info",
       "Formulário limpo."
@@ -2508,7 +3371,7 @@ document
 
 
       window.location.href =
-        "login.html";
+        "admin-login.html";
 
     }
   );

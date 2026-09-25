@@ -26,9 +26,9 @@ body{min-height:100vh;display:grid;place-items:center;background:linear-gradient
     <div class="col-12"><div class="border rounded-4 p-3"><strong class="d-block mb-2">Endereco de entrega</strong><span id="resumoEndereco" class="text-secondary">Nao informado</span></div></div>
   </div>
   <div class="d-flex gap-2 justify-content-center flex-wrap">
-    <a href="frontend/index.html" class="btn btn-success">Voltar para a loja</a>
-    <button class="btn btn-outline-dark" type="button" onclick="window.print()">Imprimir comprovante</button>
-  </div>
+  <a href="/" class="btn btn-success">Voltar para a loja</a>
+  <button class="btn btn-outline-dark" type="button" onclick="window.print()">Imprimir comprovante</button>
+</div>
 </div>
 <script>
 const checkout = JSON.parse(localStorage.getItem('resenha_checkout') || '{}');

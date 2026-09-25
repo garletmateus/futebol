@@ -1727,61 +1727,71 @@ async function abrirCheckoutMercadoPago(
 }
 
 async function confirmarPagamento() {
+  // ============================================================
+  // CLIENTE LOGADO
+  // ============================================================
+
+  const clienteSalvo = localStorage.getItem("resenha_cliente");
+
+  let cliente = null;
+
+  if (clienteSalvo) {
+    try {
+      cliente = JSON.parse(clienteSalvo);
+    } catch (erro) {
+      console.error(
+        "Erro ao ler os dados do cliente:",
+        erro
+      );
+    }
+  }
+
+  // ============================================================
+  // PEDIDO
+  // ============================================================
+
   const pedido = {
+    // ID DO CLIENTE LOGADO
+    clienteId: cliente?.id || null,
+
     clienteNome:
       document
-        .getElementById(
-          "checkoutNome"
-        )
+        .getElementById("checkoutNome")
         ?.value.trim() || "",
 
     telefone:
       document
-        .getElementById(
-          "checkoutTelefone"
-        )
+        .getElementById("checkoutTelefone")
         ?.value.trim() || "",
 
     cep:
       document
-        .getElementById(
-          "checkoutCep"
-        )
+        .getElementById("checkoutCep")
         ?.value.trim() || "",
 
     rua:
       document
-        .getElementById(
-          "checkoutRua"
-        )
+        .getElementById("checkoutRua")
         ?.value.trim() || "",
 
     numero:
       document
-        .getElementById(
-          "checkoutNumero"
-        )
+        .getElementById("checkoutNumero")
         ?.value.trim() || "",
 
     bairro:
       document
-        .getElementById(
-          "checkoutBairro"
-        )
+        .getElementById("checkoutBairro")
         ?.value.trim() || "",
 
     cidade:
       document
-        .getElementById(
-          "checkoutCidade"
-        )
+        .getElementById("checkoutCidade")
         ?.value.trim() || "",
 
     complemento:
       document
-        .getElementById(
-          "checkoutComplemento"
-        )
+        .getElementById("checkoutComplemento")
         ?.value.trim() || "",
 
     metodoPagamento:
@@ -1799,35 +1809,33 @@ async function confirmarPagamento() {
       calcularTotalCarrinho(),
 
     itens:
-      carrinho.map(
-        (item) => ({
-          id: item.id,
-          nome: item.nome,
-          categoria:
-            item.categoria,
-          preco: item.preco,
-          tamanho:
-            item.tamanho,
+      carrinho.map((item) => ({
+        id: item.id,
+        nome: item.nome,
+        categoria: item.categoria,
+        preco: item.preco,
+        tamanho: item.tamanho,
 
-          img:
-            normalizarImagemSupabase(
-              item.img
-            ),
+        img:
+          normalizarImagemSupabase(
+            item.img
+          ),
 
-          quantidade:
-            Number(
-              item.quantidade ||
-                1
-            )
-        })
-      )
+        quantidade:
+          Number(
+            item.quantidade || 1
+          )
+      }))
   };
+
+  // ============================================================
+  // VALIDAÇÕES
+  // ============================================================
 
   if (!pedido.itens.length) {
     mostrarAviso(
       "Adicione pelo menos um item ao carrinho antes de finalizar."
     );
-
     return;
   }
 
@@ -1838,7 +1846,6 @@ async function confirmarPagamento() {
     mostrarAviso(
       "O total do carrinho está inválido. Remova o item e adicione novamente."
     );
-
     return;
   }
 
@@ -1854,7 +1861,6 @@ async function confirmarPagamento() {
     mostrarAviso(
       "Preencha nome, telefone, CEP, rua, número, bairro e cidade."
     );
-
     return;
   }
 
@@ -1862,11 +1868,24 @@ async function confirmarPagamento() {
     mostrarAviso(
       "Escolha uma forma de pagamento."
     );
-
     return;
   }
 
+  // ============================================================
+  // ENVIA PEDIDO PARA O BACKEND
+  // ============================================================
+
   try {
+    console.log(
+      "🛒 Cliente logado:",
+      cliente
+    );
+
+    console.log(
+      "🆔 ID do cliente enviado no pedido:",
+      pedido.clienteId
+    );
+
     const resposta =
       await fetch(
         PEDIDOS_API,
@@ -1907,6 +1926,15 @@ async function confirmarPagamento() {
       );
     }
 
+    console.log(
+      "✅ Pedido criado:",
+      dadosResposta
+    );
+
+    // ============================================================
+    // MERCADO PAGO
+    // ============================================================
+
     if (
       pedido.metodoPagamento ===
       "Mercado Pago"
@@ -1925,6 +1953,10 @@ async function confirmarPagamento() {
 
       return;
     }
+
+    // ============================================================
+    // OUTRAS FORMAS DE PAGAMENTO
+    // ============================================================
 
     localStorage.setItem(
       "resenha_pedido_atual",
@@ -1947,12 +1979,14 @@ async function confirmarPagamento() {
     ) {
       window.location.href =
         "pagamento_pix.html";
+
     } else if (
       pedido.metodoPagamento ===
       "Cartão"
     ) {
       window.location.href =
         "pagamento_cartao_credito.html";
+
     } else {
       window.location.href =
         "pagamento_boleto.html";

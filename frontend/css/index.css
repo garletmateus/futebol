@@ -1790,29 +1790,89 @@ body.dark-mode .product-detail-modal .size-table th {
 @media (max-width: 991px) {
 
     .topbar-main {
-        grid-template-columns: 1fr auto;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
         grid-template-areas:
-            "brand toggle"
-            "search search";
+            "brand toggle actions"
+            "search search search";
+        gap: 1rem;
+        align-items: center;
     }
 
     .brand-block {
         grid-area: brand;
+        min-width: 0;
     }
 
+    /* MENU HAMBÚRGUER */
     .mobile-menu-toggle {
-        display: flex;
         grid-area: toggle;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         justify-self: end;
     }
 
-    .search-box {
-        grid-area: search;
+    /* ÁREA DOS ÍCONES */
+    .top-actions {
+        grid-area: actions;
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-end;
+        gap: .5rem;
+        min-width: max-content;
     }
 
-    .top-actions {
+    /* CONTA DO CLIENTE */
+    .top-actions > a.action-link {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        color: #fff !important;
+        text-decoration: none;
+    }
+
+    /* ÍCONE DO USUÁRIO */
+    .top-actions > a.action-link > .icon {
+        display: grid !important;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+    }
+
+    .top-actions > a.action-link > .icon svg {
+        display: block !important;
+        width: 26px;
+        height: 26px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.8;
+    }
+
+    /* ESCONDE SOMENTE O TEXTO "MINHA CONTA" */
+    .top-actions > a.action-link > span:not(.icon) {
         display: none;
     }
+
+    /* TEMA */
+    .top-actions .theme-toggle {
+        display: flex !important;
+    }
+
+    /* CARRINHO */
+    .top-actions .cart-pill {
+        display: flex !important;
+    }
+
+    /* PESQUISA */
+    .search-box {
+        grid-area: search;
+        width: 100%;
+    }
+
+    /* Filtros */
 
     .filters-row,
     .filters-row-modern {
@@ -1892,8 +1952,208 @@ body.dark-mode .product-detail-modal .size-table th {
     .product-detail-modal .detail-thumbs {
         align-items: flex-start;
     }
-
 }
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULAR
+========================================================= */
+
+@media (max-width: 640px) {
+
+    .brand-copy strong {
+        font-size: 1.4rem;
+    }
+
+    .brand-copy span {
+        font-size: .88rem;
+    }
+
+    .crest {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-card {
+        padding: 12px;
+    }
+
+    .product-body {
+        padding: 16px 10px 10px;
+    }
+
+    .product-name {
+        font-size: 1.18rem;
+        min-height: auto;
+    }
+
+    .product-actions {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+        margin-top: 8px;
+    }
+
+    .tamanho-btn {
+        width: 44px;
+        height: 40px;
+    }
+
+    .tamanhos-opcoes {
+        gap: 7px;
+    }
+
+    .cart-item {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-thumb {
+        width: 100%;
+        height: 180px;
+    }
+
+    .hero-banner {
+        height: 430px;
+        min-height: 430px;
+    }
+
+    .summary-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-shell {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .product-media {
+        aspect-ratio: 1 / 1;
+    }
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .product-name {
+        font-size: 1.1rem;
+    }
+
+    .product-price,
+    .pix-price {
+        font-size: 1.2rem;
+    }
+
+    .tamanho-btn {
+        width: 42px;
+        height: 39px;
+        font-size: .85rem;
+    }
+
+    .stars {
+        font-size: 1rem;
+    }
+}
+
+    /* Pesquisa */
+    .search-box {
+        grid-area: search;
+        width: 100%;
+    }
+
+    /* Filtros */
+    .filters-row,
+    .filters-row-modern {
+        grid-template-columns: 1fr;
+    }
+
+    /* Produtos */
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .catalog-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-arrow {
+        display: none;
+    }
+
+    .navbar-custom .navbar-collapse {
+        padding: .8rem 0;
+    }
+
+    .nav-menu {
+        align-items: flex-start;
+        gap: .3rem;
+    }
+
+    .nav-menu .nav-link {
+        padding: .65rem 0;
+    }
+
+    /* =====================================================
+       MODAL
+    ===================================================== */
+
+    .product-detail-grid,
+    .product-detail-modal .product-detail-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .detail-thumbs,
+    .product-detail-modal .detail-thumbs {
+        flex-direction: row;
+        order: 2;
+        align-items: flex-start;
+    }
+
+    .detail-photo,
+    .product-detail-modal .detail-photo {
+        min-height: auto;
+        order: 1;
+        padding-top: 0;
+    }
+
+    .product-detail-modal .detail-photo img {
+        max-height: 420px;
+    }
+
+    .detail-buy {
+        order: 3;
+    }
+
+    .detail-controls,
+    .product-detail-modal .detail-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .product-detail-body,
+    .product-detail-modal .product-detail-body {
+        padding: 1rem;
+    }
+
+    .product-detail-header {
+        padding: 1rem;
+    }
+
+    .product-detail-modal .detail-thumbs {
+        align-items: flex-start;
+    }
+
+
 
 /* =========================================================
    RESPONSIVIDADE - CELULAR
@@ -1952,6 +2212,8 @@ body.dark-mode .product-detail-modal .size-table th {
         gap: 7px;
     }
 
+    /* Carrinho */
+
     .cart-item {
         grid-template-columns: 1fr;
     }
@@ -1960,6 +2222,8 @@ body.dark-mode .product-detail-modal .size-table th {
         width: 100%;
         height: 180px;
     }
+
+    /* Hero */
 
     .hero-banner {
         height: 430px;
@@ -1979,8 +2243,8 @@ body.dark-mode .product-detail-modal .size-table th {
     .product-media {
         aspect-ratio: 1 / 1;
     }
-
 }
+
 
 /* =========================================================
    CELULARES PEQUENOS
@@ -2006,8 +2270,8 @@ body.dark-mode .product-detail-modal .size-table th {
     .stars {
         font-size: 1rem;
     }
-
 }
+
 
 /* =========================================================
    ACESSIBILIDADE / FOCO
@@ -2021,14 +2285,10 @@ body.dark-mode .product-detail-modal .size-table th {
     outline-offset: 2px;
 }
 
-/* =========================================================
-   CORREÇÃO FINAL DE ELEMENTOS QUE PODERIAM FICAR ESCONDIDOS
-========================================================= */
 
-/*
-   NÃO usar display:none nos tamanhos.
-   O JavaScript pode controlar a disponibilidade.
-*/
+/* =========================================================
+   CORREÇÃO FINAL
+========================================================= */
 
 .product-card .sizes,
 .product-card .tamanhos-container,
@@ -2036,10 +2296,6 @@ body.dark-mode .product-detail-modal .size-table th {
 .product-card .tamanho-btn {
     visibility: visible;
 }
-
-/*
-   A etiqueta deve ficar SEMPRE dentro da imagem.
-*/
 
 .product-media {
     isolation: isolate;
@@ -2049,10 +2305,6 @@ body.dark-mode .product-detail-modal .size-table th {
     position: absolute !important;
     z-index: 20 !important;
 }
-
-/*
-   Impede que textos longos estourem o card.
-*/
 
 .product-card,
 .product-body,

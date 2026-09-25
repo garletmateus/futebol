@@ -18,6 +18,7 @@ function mapearItens(rows) {
 function mapearPedido(row, itens) {
   return {
     id: row.id,
+    clienteId: row.cliente_id || null,
     clienteNome: row.cliente_nome,
     telefone: row.telefone,
     cep: row.cep,
@@ -29,6 +30,7 @@ function mapearPedido(row, itens) {
     metodoPagamento: row.metodo_pagamento,
     statusPagamento: row.status_pagamento,
     statusEntrega: row.status_entrega,
+    codigoRastreio: row.codigo_rastreio || "",
     total: Number(row.total),
     itens,
     createdAt: row.created_at,
@@ -81,7 +83,7 @@ async function buscarItensPedido(pedidoId) {
 }
 
 // =====================================================
-// LISTAR TODOS OS PEDIDOS
+// LISTAR TODOS OS PEDIDOS - ADMIN
 // =====================================================
 
 router.get("/", async (_req, res) => {
@@ -110,6 +112,53 @@ router.get("/", async (_req, res) => {
 
     res.status(500).json({
       erro: "Erro ao listar pedidos",
+      detalhe: error.message
+    });
+  }
+});
+
+// =====================================================
+// LISTAR PEDIDOS DE UM CLIENTE
+// IMPORTANTE: fica ANTES de /:id
+// =====================================================
+
+router.get("/cliente/:clienteId", async (req, res) => {
+  try {
+    const clienteId = Number(req.params.clienteId);
+
+    if (!Number.isInteger(clienteId) || clienteId <= 0) {
+      return res.status(400).json({
+        erro: "ID do cliente inválido"
+      });
+    }
+
+    const resultado = await db.query(
+      `SELECT *
+       FROM pedidos
+       WHERE cliente_id = $1
+       ORDER BY id DESC`,
+      [clienteId]
+    );
+
+    const pedidos = await Promise.all(
+      resultado.rows.map(async (pedido) =>
+        mapearPedido(
+          pedido,
+          await buscarItensPedido(pedido.id)
+        )
+      )
+    );
+
+    res.json(pedidos);
+
+  } catch (error) {
+    console.error(
+      "Erro ao listar pedidos do cliente:",
+      error
+    );
+
+    res.status(500).json({
+      erro: "Erro ao listar pedidos do cliente",
       detalhe: error.message
     });
   }
@@ -166,7 +215,39 @@ router.post("/", async (req, res) => {
       ? body.itens
       : [];
 
+    const clienteId =
+      body.clienteId !== undefined &&
+      body.clienteId !== null &&
+      body.clienteId !== ""
+        ? Number(body.clienteId)
+        : null;
+
+    if (
+      clienteId !== null &&
+      (!Number.isInteger(clienteId) || clienteId <= 0)
+    ) {
+      return res.status(400).json({
+        erro: "ID do cliente inválido"
+      });
+    }
+
+    // Se foi informado um cliente, confirma que ele existe.
+    if (clienteId !== null) {
+      const clienteResult = await db.query(
+        "SELECT id FROM clientes WHERE id = $1 LIMIT 1",
+        [clienteId]
+      );
+
+      if (clienteResult.rows.length === 0) {
+        return res.status(400).json({
+          erro: "Cliente não encontrado"
+        });
+      }
+    }
+
     const pedido = {
+      clienteId,
+
       clienteNome: String(
         body.clienteNome || ""
       ).trim(),
@@ -211,6 +292,10 @@ router.post("/", async (req, res) => {
       statusEntrega: String(
         body.statusEntrega ||
         "Pedido recebido"
+      ).trim(),
+
+      codigoRastreio: String(
+        body.codigoRastreio || ""
       ).trim(),
 
       total: Number(
@@ -276,6 +361,7 @@ router.post("/", async (req, res) => {
 
     const pedidoResult = await client.query(
       `INSERT INTO pedidos (
+        cliente_id,
         cliente_nome,
         telefone,
         cep,
@@ -287,14 +373,16 @@ router.post("/", async (req, res) => {
         metodo_pagamento,
         status_pagamento,
         status_entrega,
+        codigo_rastreio,
         total
       )
       VALUES (
-        $1, $2, $3, $4, $5, $6,
-        $7, $8, $9, $10, $11, $12
+        $1, $2, $3, $4, $5, $6, $7,
+        $8, $9, $10, $11, $12, $13, $14
       )
       RETURNING id`,
       [
+        pedido.clienteId,
         pedido.clienteNome,
         pedido.telefone,
         pedido.cep,
@@ -306,6 +394,7 @@ router.post("/", async (req, res) => {
         pedido.metodoPagamento,
         pedido.statusPagamento,
         pedido.statusEntrega,
+        pedido.codigoRastreio,
         pedido.total
       ]
     );
@@ -387,9 +476,7 @@ router.post("/", async (req, res) => {
       );
 
     const itensPedido =
-      await buscarItensPedido(
-        pedidoId
-      );
+      await buscarItensPedido(pedidoId);
 
     res.status(201).json(
       mapearPedido(
@@ -419,7 +506,8 @@ router.post("/", async (req, res) => {
 });
 
 // =====================================================
-// ATUALIZAR STATUS DO PEDIDO
+// ATUALIZAR STATUS E/OU RASTREIO DO PEDIDO
+// ADMIN
 // =====================================================
 
 router.patch("/:id/status", async (req, res) => {
@@ -438,10 +526,21 @@ router.patch("/:id/status", async (req, res) => {
           ).trim()
         : null;
 
-    if (!statusPagamento && !statusEntrega) {
+    const codigoRastreio =
+      req.body.codigoRastreio !== undefined
+        ? String(
+            req.body.codigoRastreio || ""
+          ).trim()
+        : null;
+
+    if (
+      !statusPagamento &&
+      !statusEntrega &&
+      codigoRastreio === null
+    ) {
       return res.status(400).json({
         erro:
-          "Informe ao menos um status para atualizar"
+          "Informe ao menos um status ou código de rastreio para atualizar"
       });
     }
 
@@ -453,9 +552,7 @@ router.patch("/:id/status", async (req, res) => {
         `status_pagamento = $${valores.length + 1}`
       );
 
-      valores.push(
-        statusPagamento
-      );
+      valores.push(statusPagamento);
     }
 
     if (statusEntrega) {
@@ -463,14 +560,20 @@ router.patch("/:id/status", async (req, res) => {
         `status_entrega = $${valores.length + 1}`
       );
 
-      valores.push(
-        statusEntrega
-      );
+      valores.push(statusEntrega);
     }
 
-    valores.push(
-      req.params.id
-    );
+    if (codigoRastreio !== null) {
+      campos.push(
+        `codigo_rastreio = $${valores.length + 1}`
+      );
+
+      valores.push(codigoRastreio);
+    }
+
+    campos.push("updated_at = CURRENT_TIMESTAMP");
+
+    valores.push(req.params.id);
 
     const idParametro =
       valores.length;
@@ -509,13 +612,13 @@ router.patch("/:id/status", async (req, res) => {
 
   } catch (error) {
     console.error(
-      "Erro ao atualizar status:",
+      "Erro ao atualizar pedido:",
       error
     );
 
     res.status(500).json({
       erro:
-        "Erro ao atualizar status do pedido",
+        "Erro ao atualizar pedido",
       detalhe: error.message
     });
   }

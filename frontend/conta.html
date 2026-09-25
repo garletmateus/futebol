@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Minha Conta | Resenha Sports</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --blue: #2230ad;
+      --blue-dark: #182388;
+      --green: #0d7a5f;
+      --bg: #eef4f3;
+      --text: #122019;
+      --muted: #60756d;
+      --line: #d8e4df;
+      --white: #ffffff;
+      --danger: #c62828;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "DM Sans", sans-serif;
+    }
+
+    header {
+      background: var(--blue);
+      color: white;
+      padding: 18px 20px;
+    }
+
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      color: white;
+      text-decoration: none;
+      font-family: "Barlow", sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .voltar {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .voltar:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1180px;
+      margin: 35px auto;
+      padding: 0 18px;
+    }
+
+    .titulo {
+      margin-bottom: 25px;
+    }
+
+    .titulo h1 {
+      font-family: "Barlow", sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .titulo p {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(18, 32, 25, 0.07);
+    }
+
+    .card h2 {
+      font-family: "Barlow", sans-serif;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .cliente-nome {
+      font-family: "Barlow", sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .cliente-email {
+      color: var(--muted);
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .cliente-telefone {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .cliente-id {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .btn-sair {
+      width: 100%;
+      height: 45px;
+      margin-top: 25px;
+
+      border: 1px solid #f0c7c7;
+      border-radius: 9px;
+
+      background: #fff5f5;
+      color: var(--danger);
+
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-sair:hover {
+      background: #fdecec;
+    }
+
+    .pedido {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 15px;
+      background: #fff;
+    }
+
+    .pedido:last-child {
+      margin-bottom: 0;
+    }
+
+    .pedido-topo {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .pedido-numero {
+      font-family: "Barlow", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .pedido-data {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .pedido-total {
+      font-family: "Barlow", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .status-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #edf0ff;
+      color: var(--blue);
+    }
+
+    .status.entrega {
+      background: #e8f7f1;
+      color: var(--green);
+    }
+
+    /* ============================
+       ENDEREÇO DE ENTREGA
+    ============================ */
+
+    .endereco {
+      background: #f7f9f8;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 15px;
+    }
+
+    .endereco-titulo {
+      font-family: "Barlow", sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .endereco-linha {
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .endereco-linha strong {
+      font-weight: 700;
+    }
+
+    .rastreio {
+      padding: 12px;
+      background: #f5f7f7;
+      border-radius: 9px;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .rastreio strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .pagamento {
+      padding: 12px;
+      background: #f5f7f7;
+      border-radius: 9px;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .pagamento strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .itens {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+    }
+
+    .itens-titulo {
+      font-family: "Barlow", sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 0;
+    }
+
+    .item img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #f5f7f7;
+      border: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-nome {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .item-detalhes {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .item-preco {
+      font-weight: 700;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .sem-pedidos {
+      text-align: center;
+      padding: 45px 20px;
+      color: var(--muted);
+    }
+
+    .sem-pedidos h3 {
+      font-family: "Barlow", sans-serif;
+      font-size: 25px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .btn-loja {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: 18px;
+      padding: 11px 18px;
+
+      background: var(--blue);
+      color: white;
+      text-decoration: none;
+
+      border-radius: 9px;
+      font-weight: 700;
+    }
+
+    .btn-loja:hover {
+      background: var(--blue-dark);
+    }
+
+    .carregando {
+      color: var(--muted);
+      text-align: center;
+      padding: 35px;
+    }
+
+    .erro {
+      background: #fdecec;
+      border: 1px solid #f5c2c2;
+      color: var(--danger);
+      border-radius: 10px;
+      padding: 14px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .titulo h1 {
+        font-size: 30px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      main {
+        margin-top: 25px;
+        padding: 0 12px;
+      }
+
+      .header-inner {
+        align-items: flex-start;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      .voltar {
+        font-size: 12px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .pedido-topo {
+        flex-direction: column;
+      }
+
+      .pedido-total {
+        text-align: left;
+      }
+
+      .item-preco {
+        display: none;
+      }
+
+      .endereco {
+        padding: 12px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+
+```
+<a href="/" class="logo">
+  RESENHA SPORTS
+</a>
+
+<a href="/" class="voltar">
+  ← Voltar para a loja
+</a>
+```
+
+  </div>
+</header>
+
+<main>
+
+  <div class="titulo">
+    <h1>Minha conta</h1>
+    <p>Acompanhe seus dados e seus pedidos.</p>
+  </div>
+
+  <div class="grid">
+
+
+<!-- ============================= -->
+<!-- DADOS DO CLIENTE -->
+<!-- ============================= -->
+
+<section class="card">
+
+  <h2>Meus dados</h2>
+
+  <div id="dadosCliente">
+    <div class="carregando">
+      Carregando...
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="btn-sair"
+    id="btnSair"
+  >
+    Sair da conta
+  </button>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- PEDIDOS -->
+<!-- ============================= -->
+
+<section class="card">
+
+  <h2>Meus pedidos</h2>
+
+  <div id="listaPedidos">
+
+    <div class="carregando">
+      Carregando seus pedidos...
+    </div>
+
+  </div>
+
+</section>
+
+
+  </div>
+
+</main>
+
+<script>
+
+  // =====================================================
+  // CLIENTE LOGADO
+  // =====================================================
+
+  const clienteSalvo =
+    localStorage.getItem("resenha_cliente");
+
+
+  // =====================================================
+  // VERIFICAR LOGIN
+  // =====================================================
+
+  if (!clienteSalvo) {
+
+    window.location.href = "login.html";
+
+  }
+
+
+  let cliente;
+
+  try {
+
+    cliente = JSON.parse(clienteSalvo);
+
+  } catch (erro) {
+
+    localStorage.removeItem("resenha_cliente");
+
+    window.location.href = "login.html";
+
+  }
+
+
+  // =====================================================
+  // VALIDAR ID DO CLIENTE
+  // =====================================================
+
+  if (!cliente || !cliente.id) {
+
+    localStorage.removeItem("resenha_cliente");
+
+    window.location.href = "login.html";
+
+  }
+
+
+  // =====================================================
+  // ELEMENTOS
+  // =====================================================
+
+  const dadosCliente =
+    document.getElementById("dadosCliente");
+
+  const listaPedidos =
+    document.getElementById("listaPedidos");
+
+  const btnSair =
+    document.getElementById("btnSair");
+
+
+  // =====================================================
+  // ESCAPAR HTML
+  // =====================================================
+
+  function escaparHtml(valor) {
+
+    const div =
+      document.createElement("div");
+
+    div.textContent =
+      valor ?? "";
+
+    return div.innerHTML;
+
+  }
+
+
+  // =====================================================
+  // FORMATAR DATA
+  // =====================================================
+
+  function formatarData(data) {
+
+    if (!data) return "-";
+
+    const dataObj =
+      new Date(data);
+
+    if (Number.isNaN(dataObj.getTime())) {
+      return "-";
+    }
+
+    return dataObj.toLocaleDateString(
+      "pt-BR",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      }
+    );
+
+  }
+
+
+  // =====================================================
+  // FORMATAR DATA E HORA
+  // =====================================================
+
+  function formatarDataHora(data) {
+
+    if (!data) return "-";
+
+    const dataObj =
+      new Date(data);
+
+    if (Number.isNaN(dataObj.getTime())) {
+      return "-";
+    }
+
+    return dataObj.toLocaleString(
+      "pt-BR",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }
+    );
+
+  }
+
+
+  // =====================================================
+  // FORMATAR DINHEIRO
+  // =====================================================
+
+  function formatarPreco(valor) {
+
+    return Number(valor || 0)
+      .toLocaleString(
+        "pt-BR",
+        {
+          style: "currency",
+          currency: "BRL"
+        }
+      );
+
+  }
+
+
+  // =====================================================
+  // MOSTRAR CLIENTE
+  // =====================================================
+
+  function mostrarCliente() {
+
+    dadosCliente.innerHTML = `
+
+      <div class="cliente-nome">
+        ${escaparHtml(cliente.nome)}
+      </div>
+
+      <div class="cliente-email">
+        ${escaparHtml(cliente.email)}
+      </div>
+
+      ${
+        cliente.telefone
+          ? `
+            <div class="cliente-telefone">
+              ${escaparHtml(cliente.telefone)}
+            </div>
+          `
+          : ""
+      }
+
+      <div class="cliente-id">
+        Cliente #${escaparHtml(cliente.id)}
+      </div>
+
+    `;
+
+  }
+
+
+  // =====================================================
+  // CARREGAR PEDIDOS
+  // =====================================================
+
+  async function carregarPedidos() {
+
+    listaPedidos.innerHTML = `
+      <div class="carregando">
+        Carregando seus pedidos...
+      </div>
+    `;
+
+    try {
+
+      const resposta =
+        await fetch(
+          `/api/pedidos/cliente/${encodeURIComponent(cliente.id)}`
+        );
+
+      const texto =
+        await resposta.text();
+
+      let dados;
+
+      try {
+
+        dados = JSON.parse(texto);
+
+      } catch (erro) {
+
+        throw new Error(
+          "O servidor não retornou uma resposta válida."
+        );
+
+      }
+
+
+      if (!resposta.ok) {
+
+        throw new Error(
+          dados.erro ||
+          dados.detalhe ||
+          "Erro ao carregar pedidos."
+        );
+
+      }
+
+
+      // -----------------------------------------------
+      // NENHUM PEDIDO
+      // -----------------------------------------------
+
+      if (
+        !Array.isArray(dados) ||
+        dados.length === 0
+      ) {
+
+        listaPedidos.innerHTML = `
+
+          <div class="sem-pedidos">
+
+            <h3>
+              Você ainda não fez nenhum pedido.
+            </h3>
+
+            <p>
+              Quando você realizar uma compra,
+              ela aparecerá aqui.
+            </p>
+
+            <a
+              href="/"
+              class="btn-loja"
+            >
+              Comprar agora
+            </a>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      // -----------------------------------------------
+      // MOSTRAR PEDIDOS
+      // -----------------------------------------------
+
+      listaPedidos.innerHTML =
+        dados
+          .map(
+            pedido => criarPedidoHtml(pedido)
+          )
+          .join("");
+
+
+    } catch (erro) {
+
+      console.error(
+        "Erro ao carregar pedidos:",
+        erro
+      );
+
+      listaPedidos.innerHTML = `
+
+        <div class="erro">
+
+          Não foi possível carregar seus pedidos.
+
+          <br><br>
+
+          ${escaparHtml(
+            erro.message ||
+            "Erro desconhecido."
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  // =====================================================
+  // CRIAR HTML DO ENDEREÇO
+  // =====================================================
+
+  function criarEnderecoHtml(pedido) {
+
+    const nome =
+      pedido.clienteNome ||
+      cliente.nome ||
+      "-";
+
+    const telefone =
+      pedido.telefone ||
+      cliente.telefone ||
+      "-";
+
+    const cep =
+      pedido.cep ||
+      "-";
+
+    const rua =
+      pedido.rua ||
+      "-";
+
+    const numero =
+      pedido.numero ||
+      "S/N";
+
+    const bairro =
+      pedido.bairro ||
+      "-";
+
+    const cidade =
+      pedido.cidade ||
+      "-";
+
+    const complemento =
+      pedido.complemento ||
+      "";
+
+
+    return `
+
+      <div class="endereco">
+
+        <div class="endereco-titulo">
+          📍 Endereço de entrega
+        </div>
+
+        <div class="endereco-linha">
+          <strong>Nome:</strong>
+          ${escaparHtml(nome)}
+        </div>
+
+        <div class="endereco-linha">
+          <strong>Telefone:</strong>
+          ${escaparHtml(telefone)}
+        </div>
+
+        <div class="endereco-linha">
+          <strong>CEP:</strong>
+          ${escaparHtml(cep)}
+        </div>
+
+        <div class="endereco-linha">
+          <strong>Endereço:</strong>
+          ${escaparHtml(rua)},
+          ${escaparHtml(numero)}
+        </div>
+
+        <div class="endereco-linha">
+          <strong>Bairro:</strong>
+          ${escaparHtml(bairro)}
+        </div>
+
+        <div class="endereco-linha">
+          <strong>Cidade:</strong>
+          ${escaparHtml(cidade)}
+        </div>
+
+        ${
+          complemento
+            ? `
+              <div class="endereco-linha">
+                <strong>Complemento:</strong>
+                ${escaparHtml(complemento)}
+              </div>
+            `
+            : ""
+        }
+
+      </div>
+
+    `;
+
+  }
+
+
+  // =====================================================
+  // CRIAR HTML DO PEDIDO
+  // =====================================================
+
+  function criarPedidoHtml(pedido) {
+
+    const itens =
+      Array.isArray(pedido.itens)
+        ? pedido.itens
+        : [];
+
+
+    // -----------------------------------------------
+    // ITENS
+    // -----------------------------------------------
+
+    const itensHtml =
+      itens.length
+        ? itens.map(
+            item => `
+
+              <div class="item">
+
+                ${
+                  item.img
+                    ? `
+                      <img
+                        src="${escaparHtml(item.img)}"
+                        alt="${escaparHtml(item.nome)}"
+                        onerror="this.src='https://placehold.co/100x100?text=Produto'"
+                      >
+                    `
+                    : `
+                      <img
+                        src="https://placehold.co/100x100?text=Produto"
+                        alt="Produto"
+                      >
+                    `
+                }
+
+                <div class="item-info">
+
+                  <div class="item-nome">
+                    ${escaparHtml(item.nome || "Produto")}
+                  </div>
+
+                  <div class="item-detalhes">
+
+                    Tamanho:
+                    ${escaparHtml(item.tamanho || "-")}
+
+                    • Quantidade:
+                    ${Number(item.quantidade || 0)}
+
+                  </div>
+
+                </div>
+
+                <div class="item-preco">
+
+                  ${formatarPreco(
+                    Number(item.preco || 0) *
+                    Number(item.quantidade || 0)
+                  )}
+
+                </div>
+
+              </div>
+
+            `
+          ).join("")
+        : `
+          <div class="item-detalhes">
+            Nenhum item encontrado neste pedido.
+          </div>
+        `;
+
+
+    // -----------------------------------------------
+    // RASTREIO
+    // -----------------------------------------------
+
+    const rastreio =
+      pedido.codigoRastreio
+        ? `
+
+          <div class="rastreio">
+
+            <strong>
+              📦 Código de rastreio
+            </strong>
+
+            ${escaparHtml(
+              pedido.codigoRastreio
+            )}
+
+          </div>
+
+        `
+        : "";
+
+
+    // -----------------------------------------------
+    // PAGAMENTO
+    // -----------------------------------------------
+
+    const pagamento = `
+
+      <div class="pagamento">
+
+        <strong>
+          💳 Forma de pagamento
+        </strong>
+
+        ${escaparHtml(
+          pedido.metodoPagamento ||
+          "-"
+        )}
+
+      </div>
+
+    `;
+
+
+    // -----------------------------------------------
+    // PEDIDO COMPLETO
+    // -----------------------------------------------
+
+    return `
+
+      <article class="pedido">
+
+        <div class="pedido-topo">
+
+          <div>
+
+            <div class="pedido-numero">
+              Pedido #${escaparHtml(pedido.id)}
+            </div>
+
+            <div class="pedido-data">
+              Realizado em
+              ${formatarDataHora(pedido.createdAt)}
+            </div>
+
+          </div>
+
+          <div class="pedido-total">
+            ${formatarPreco(pedido.total)}
+          </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="status-area">
+
+          <span class="status">
+
+            Pagamento:
+            ${escaparHtml(
+              pedido.statusPagamento ||
+              "Aguardando pagamento"
+            )}
+
+          </span>
+
+
+          <span class="status entrega">
+
+            Entrega:
+            ${escaparHtml(
+              pedido.statusEntrega ||
+              "Pedido recebido"
+            )}
+
+          </span>
+
+        </div>
+
+
+        <!-- ENDEREÇO -->
+
+        ${criarEnderecoHtml(pedido)}
+
+
+        <!-- PAGAMENTO -->
+
+        ${pagamento}
+
+
+        <!-- RASTREIO -->
+
+        ${rastreio}
+
+
+        <!-- ITENS -->
+
+        <div class="itens">
+
+          <div class="itens-titulo">
+            Produtos do pedido
+          </div>
+
+          ${itensHtml}
+
+        </div>
+
+      </article>
+
+    `;
+
+  }
+
+
+  // =====================================================
+  // SAIR
+  // =====================================================
+
+  btnSair.addEventListener(
+    "click",
+    function () {
+
+      localStorage.removeItem(
+        "resenha_cliente"
+      );
+
+      window.location.href =
+        "login.html";
+
+    }
+  );
+
+
+  // =====================================================
+  // INICIALIZAR
+  // =====================================================
+
+  mostrarCliente();
+
+  carregarPedidos();
+
+</script>
+
+</body>
+</html>

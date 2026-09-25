@@ -1,19 +1,30 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resenha Sports</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="./css/index.css?v=15">
-  
+
   <style>
-    /* Ajuste para garantir que o carrossel fique bonito e não distorça as fotos das camisas */
+
+    /* =========================================================
+       CARROSSEL PRINCIPAL
+    ========================================================= */
+
     .carousel-item picture {
       display: block;
       width: 100%;
@@ -27,8 +38,13 @@
       display: block;
     }
 
-    /* Banner maior e proporcional no celular */
+
+    /* =========================================================
+       BANNER MOBILE
+    ========================================================= */
+
     @media (max-width: 576px) {
+
       .hero .carousel-inner,
       .hero .carousel-item {
         width: 100%;
@@ -43,7 +59,6 @@
         display: block;
       }
 
-      /* Marcas: 5 logos bem distribuídas, sem esticar/distorcer */
       .brands-section {
         padding: 12px 0 !important;
         margin: 0 !important;
@@ -89,73 +104,92 @@
         opacity: .65;
       }
     }
-    
-    /* Estilização para deixar as imagens dos 3 cards responsivas e bonitas */
+
+
+    /* =========================================================
+       CARDS DE CATEGORIA
+    ========================================================= */
+
     .category-card img {
       width: 100%;
       height: auto;
       border-radius: 16px;
       transition: transform 0.3s ease;
     }
+
     .category-card img:hover {
       transform: scale(1.03);
     }
 
-    /* REMOVE COMPLETAMENTE O ESPAÇO EM BRANCO ACIMA DOS PRODUTOS NO CSS INTERNO */
-    body, 
-    .catalog-shell, 
-    main.container, 
+
+    /* =========================================================
+       REMOVE ESPAÇOS SUPERIORES
+    ========================================================= */
+
+    body,
+    .catalog-shell,
+    main.container,
     #lista-produtos,
     section {
       margin-top: 0 !important;
       padding-top: 0 !important;
     }
-    
-    .my-5, .mt-4, .mb-4 {
+
+    .my-5,
+    .mt-4,
+    .mb-4 {
       margin-top: 0 !important;
       margin-bottom: 0 !important;
       padding-top: 0 !important;
       padding-bottom: 0 !important;
     }
 
-    /* ESTILO EXCLUSIVO DO CARROSSEL DE MARCAS - AJUSTADO PARA SER PEQUENO */
+
+    /* =========================================================
+       CARROSSEL DE MARCAS
+    ========================================================= */
+
     .brands-section {
-      /* background-color: #f0f0f0;  <-- Descomente esta linha se quiser o fundo cinza claro */
-      padding: 10px 0; /* Padding menor */
+      padding: 10px 0;
       border-top: none;
       border-bottom: none;
     }
+
     .brand-carousel-container {
       display: flex;
-      justify-content: center; /* Centraliza o grupo de logos */
+      justify-content: center;
       align-items: center;
-      gap: 10px; /* Gap menor entre os logos */
+      gap: 10px;
     }
+
     .brand-logo-small {
-      height: 50px; /* ALTURA MÁXIMA PEQUENA PARA OS LOGOS */
+      height: 50px;
       width: auto;
       object-fit: contain;
-      filter: grayscale(100%); /* Mantém cinza elegante */
+      filter: grayscale(100%);
       opacity: 0.6;
       transition: all 0.3s ease;
-      display: block; /* Garante alinhamento */
-      margin-left: auto; /* Centraliza na coluna */
+      display: block;
+      margin-left: auto;
       margin-right: auto;
     }
+
     .brand-logo-small:hover {
       filter: grayscale(0%);
       opacity: 1;
     }
-    /* Setas escuras centrais */
+
     .brands-section .carousel-control-prev,
     .brands-section .carousel-control-next {
-      filter: invert(1); /* Torna as setinhas pretas */
+      filter: invert(1);
       opacity: 0.7;
     }
 
-    /* ================================
-       TAMANHOS CLICÁVEIS - DETALHE
-       ================================ */
+
+    /* =========================================================
+       TAMANHOS CLICÁVEIS
+    ========================================================= */
+
     .detail-size-picker {
       margin: 18px 0 16px;
     }
@@ -222,8 +256,6 @@
       color: #222;
     }
 
-    /* Esconde o select original, mantendo-o funcionando para o JavaScript
-       existente e para acessibilidade/fallback. */
     #mTamanho.detail-size-native {
       position: absolute !important;
       width: 1px !important;
@@ -271,6 +303,7 @@
     }
 
     @media (max-width: 576px) {
+
       .detail-size-options {
         gap: 8px;
       }
@@ -285,105 +318,359 @@
         flex-direction: column;
       }
     }
-/* Corrige o carrinho sumindo no mobile */
-@media (max-width: 991.98px) {
-  .topbar-main {
-    display: grid !important;
-    grid-template-columns: 1fr auto 1fr;
-    grid-template-rows: 48px 44px;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    min-height: 96px;
-    padding: 4px 0 6px;
-  }
 
-  .brand-block {
-    grid-column: 2;
-    grid-row: 1;
-    position: static !important;
-    transform: none !important;
-    margin: 0 auto !important;
-    z-index: 10;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 
-  .mobile-menu-toggle {
-    grid-column: 1;
-    grid-row: 1;
-    justify-self: start;
-    z-index: 11;
-  }
+    /* =========================================================
+       HEADER MOBILE
+       =========================================================
+       IMPORTANTE:
+       .mobile-menu-toggle está dentro de .top-actions.
+       Por isso o grid posiciona .top-actions inteiro à direita
+       e o flex organiza:
+       
+       ☰   👤   🛒
+    ========================================================= */
 
-  .search-box {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: 100% !important;
-    margin: 0 !important;
-    z-index: 5;
-  }
+    @media (max-width: 991.98px) {
 
-  .search-box input {
-    width: 100% !important;
-  }
+      .topbar-main {
+        display: grid !important;
 
-  .top-actions {
-    display: flex !important;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-left: 0 !important;
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    position: static !important;
-    transform: none !important;
-    z-index: 11;
-  }
+        grid-template-columns: 1fr auto !important;
+        grid-template-rows: 54px 48px !important;
 
-  /* esconde "Modo escuro" e "Minha conta" no mobile, deixando só o ícone do carrinho */
-  .top-actions .theme-toggle,
-  .top-actions > a.action-link {
-    display: none !important;
-  }
+        align-items: center !important;
 
-  .top-actions .cart-pill {
-    display: inline-flex !important;
-    align-items: center;
-    position: relative;
-  }
+        width: 100% !important;
+        min-height: 106px !important;
 
-  .top-actions .cart-pill span:not(.icon) {
-    display: none;
-  }
+        padding: 2px 0 4px !important;
 
-  .cart-count {
-    display: inline-flex !important;
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: red;
-    color: #fff;
-    font-size: 11px;
-    min-width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-  }
-}
+        position: relative !important;
+      }
+
+
+      /* LOGO CENTRALIZADA */
+
+      .brand-block {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+
+        justify-self: center !important;
+        align-self: center !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        position: static !important;
+        transform: none !important;
+
+        z-index: 10 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        text-decoration: none !important;
+      }
+
+
+      /* BUSCA NA SEGUNDA LINHA */
+
+      .search-box {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+
+        width: calc(100% - 8px) !important;
+
+        justify-self: center !important;
+
+        margin: 0 !important;
+
+        z-index: 5 !important;
+      }
+
+      .search-box input {
+        width: 100% !important;
+        height: 42px !important;
+        border-radius: 12px !important;
+      }
+
+
+      /* GRUPO DIREITO */
+
+      .top-actions {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: flex-end !important;
+
+        gap: 7px !important;
+
+        width: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        position: static !important;
+        transform: none !important;
+
+        z-index: 20 !important;
+      }
+
+
+      /* =====================================================
+         HAMBÚRGUER
+      ===================================================== */
+
+      .top-actions .mobile-menu-toggle {
+        display: flex !important;
+
+        width: 36px !important;
+        height: 36px !important;
+
+        flex: 0 0 36px !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        position: relative !important;
+
+        z-index: 30 !important;
+      }
+
+
+      /* =====================================================
+         MINHA CONTA — SOMENTE ÍCONE
+      ===================================================== */
+
+      .top-actions > a.action-link {
+        display: flex !important;
+
+        width: 36px !important;
+        height: 36px !important;
+
+        flex: 0 0 36px !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        color: #fff !important;
+
+        text-decoration: none !important;
+
+        position: relative !important;
+
+        z-index: 30 !important;
+      }
+
+      .top-actions > a.action-link .icon {
+        display: grid !important;
+
+        width: 32px !important;
+        height: 32px !important;
+
+        place-items: center !important;
+
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      .top-actions > a.action-link .icon svg {
+        display: block !important;
+
+        width: 24px !important;
+        height: 24px !important;
+
+        stroke: currentColor !important;
+        fill: none !important;
+
+        stroke-width: 1.8 !important;
+
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      .top-actions > a.action-link > span:not(.icon) {
+        display: none !important;
+      }
+
+
+      /* =====================================================
+         CARRINHO — SOMENTE ÍCONE
+      ===================================================== */
+
+      .top-actions .cart-pill {
+        display: inline-flex !important;
+
+        width: 36px !important;
+        height: 36px !important;
+
+        flex: 0 0 36px !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        position: relative !important;
+
+        color: #fff !important;
+
+        z-index: 30 !important;
+      }
+
+      .top-actions .cart-pill .icon {
+        display: grid !important;
+
+        width: 32px !important;
+        height: 32px !important;
+
+        place-items: center !important;
+
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      .top-actions .cart-pill .icon svg {
+        display: block !important;
+
+        width: 24px !important;
+        height: 24px !important;
+
+        stroke: currentColor !important;
+        fill: none !important;
+
+        stroke-width: 1.8 !important;
+      }
+
+      .top-actions .cart-pill > span:not(.icon):not(.cart-count) {
+        display: none !important;
+      }
+
+
+      /* =====================================================
+         NÚMERO DO CARRINHO
+      ===================================================== */
+
+      .top-actions .cart-count {
+        display: inline-flex !important;
+
+        position: absolute !important;
+
+        top: -3px !important;
+        right: -3px !important;
+
+        min-width: 16px !important;
+        height: 16px !important;
+
+        padding: 0 4px !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        border-radius: 50% !important;
+
+        background: red !important;
+        color: #fff !important;
+
+        font-size: 10px !important;
+        font-weight: 700 !important;
+
+        line-height: 1 !important;
+
+        z-index: 50 !important;
+      }
+
+
+      /* =====================================================
+         MODO ESCURO ESCONDIDO NO MOBILE
+      ===================================================== */
+
+      .top-actions .theme-toggle {
+        display: none !important;
+      }
+
+
+      /* =====================================================
+         MENU INFERIOR
+      ===================================================== */
+
+      .navline {
+        width: 100%;
+      }
+
+    }
+
+
+    /* =========================================================
+       HEADER MOBILE PEQUENO
+    ========================================================= */
+
+    @media (max-width: 576px) {
+
+      .topbar-main {
+        grid-template-columns: 1fr auto !important;
+        grid-template-rows: 54px 48px !important;
+
+        min-height: 106px !important;
+
+        padding: 2px 0 4px !important;
+      }
+
+      .top-actions {
+        gap: 5px !important;
+      }
+
+      .top-actions .mobile-menu-toggle,
+      .top-actions > a.action-link,
+      .top-actions .cart-pill {
+        width: 34px !important;
+        height: 34px !important;
+
+        flex-basis: 34px !important;
+      }
+
+      .top-actions > a.action-link .icon,
+      .top-actions .cart-pill .icon {
+        width: 30px !important;
+        height: 30px !important;
+      }
+
+      .top-actions > a.action-link .icon svg,
+      .top-actions .cart-pill .icon svg {
+        width: 23px !important;
+        height: 23px !important;
+      }
+
+      .search-box {
+        width: calc(100% - 8px) !important;
+      }
+
+      .search-box input {
+        height: 42px !important;
+        border-radius: 12px !important;
+      }
+
+    }
 
 
     /* =========================================================
        PRODUTOS NO CELULAR — 2 POR LINHA
-       Mantém 1 coluna em telas maiores e 2 cards lado a lado
-       no celular, como no modelo enviado.
-       ========================================================= */
+    ========================================================= */
+
     @media (max-width: 576px) {
+
       #lista-produtos.product-grid {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -407,49 +694,15 @@
       #lista-produtos.product-grid img {
         max-width: 100%;
       }
+
     }
 
-  
-    /* MOBILE — igual ao modelo enviado: banner inteiro, sem corte */
+
+    /* =========================================================
+       BANNER MOBILE — INTEIRO, SEM CORTE
+    ========================================================= */
+
     @media (max-width: 576px) {
-      .topbar-main {
-        grid-template-columns: 48px 1fr 48px !important;
-        grid-template-rows: 54px 48px !important;
-        min-height: 106px !important;
-        padding: 2px 0 4px !important;
-      }
-
-      .brand-block {
-        grid-column: 2 !important;
-        grid-row: 1 !important;
-        justify-self: center !important;
-        margin: 0 !important;
-        transform: none !important;
-      }
-
-      .mobile-menu-toggle {
-        grid-column: 1 !important;
-        grid-row: 1 !important;
-        justify-self: start !important;
-      }
-
-      .top-actions {
-        grid-column: 3 !important;
-        grid-row: 1 !important;
-        justify-self: end !important;
-      }
-
-      .search-box {
-        grid-column: 1 / -1 !important;
-        grid-row: 2 !important;
-        width: calc(100% - 8px) !important;
-        justify-self: center !important;
-      }
-
-      .search-box input {
-        height: 42px !important;
-        border-radius: 12px !important;
-      }
 
       .hero {
         width: 100% !important;
@@ -472,19 +725,28 @@
 
       .hero .carousel-item img {
         display: block !important;
+
         width: 100% !important;
         height: auto !important;
+
         min-height: 0 !important;
         max-height: none !important;
+
         object-fit: fill !important;
         object-position: center !important;
       }
 
-      /* Marcas abaixo do banner, proporcionais e nítidas */
+
+      /* =====================================================
+         MARCAS
+      ===================================================== */
+
       .brands-section {
         width: 100% !important;
+
         padding: 8px 0 !important;
         margin: 0 !important;
+
         overflow: hidden !important;
       }
 
@@ -497,8 +759,10 @@
       .brands-section .row {
         display: flex !important;
         flex-wrap: nowrap !important;
+
         align-items: center !important;
         justify-content: space-around !important;
+
         padding: 0 32px !important;
         margin: 0 !important;
       }
@@ -507,33 +771,44 @@
         flex: 0 0 20% !important;
         max-width: 20% !important;
         width: 20% !important;
+
         padding: 0 !important;
       }
 
       .brand-logo-small {
         display: block !important;
+
         width: auto !important;
         max-width: 42px !important;
         height: 48px !important;
+
         margin: 0 auto !important;
+
         object-fit: contain !important;
         object-position: center !important;
       }
+
     }
 
+
     @media (max-width: 576px) {
+
       .hero .carousel-item img.banner-responsive {
         width: 100% !important;
         height: auto !important;
         max-height: none !important;
+
         object-fit: contain !important;
         object-position: center !important;
       }
+
     }
 
+
     /* =========================================================
-       VITRINES DE PRODUTOS — HOME
-       ========================================================= */
+       VITRINES DE PRODUTOS
+    ========================================================= */
+
     .home-vitrines {
       width: 100%;
       padding: 6px 0 30px;
@@ -549,7 +824,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 14px;
+
       margin: 0 0 12px;
       padding: 0 2px;
     }
@@ -557,36 +834,50 @@
     .vitrine-title-wrap {
       display: flex;
       align-items: center;
+
       gap: 9px;
+
       min-width: 0;
       flex: 1;
     }
 
     .vitrine-title {
       margin: 0;
+
       font-size: 20px;
       line-height: 1.1;
       font-weight: 800;
+
       letter-spacing: .3px;
+
       text-transform: uppercase;
+
       white-space: nowrap;
     }
 
     .vitrine-title-line {
       flex: 1;
+
       height: 1px;
+
       min-width: 35px;
+
       background: rgba(120, 95, 35, .45);
     }
 
     .vitrine-see-all {
       border: 0;
       background: transparent;
+
       color: #9b7410;
+
       font-size: 13px;
       font-weight: 800;
+
       white-space: nowrap;
+
       cursor: pointer;
+
       padding: 5px 0;
     }
 
@@ -600,15 +891,23 @@
 
     .vitrine-track {
       display: grid;
+
       grid-auto-flow: column;
       grid-auto-columns: minmax(210px, 1fr);
+
       gap: 10px;
+
       overflow-x: auto;
       overflow-y: hidden;
+
       scroll-behavior: smooth;
+
       scrollbar-width: none;
+
       padding: 2px 2px 8px;
+
       overscroll-behavior-inline: contain;
+
       scroll-snap-type: x proximity;
     }
 
@@ -619,32 +918,51 @@
     .vitrine-track > .product-card {
       width: 100%;
       min-width: 0;
+
       scroll-snap-align: start;
+
       margin: 0;
     }
 
     .vitrine-arrow {
       position: absolute;
+
       top: 42%;
+
       transform: translateY(-50%);
+
       z-index: 3;
+
       width: 34px;
       height: 34px;
+
       border: 1px solid rgba(0,0,0,.10);
+
       border-radius: 50%;
+
       background: rgba(255,255,255,.94);
+
       color: #333;
+
       box-shadow: 0 2px 8px rgba(0,0,0,.12);
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       cursor: pointer;
+
       font-size: 22px;
       line-height: 1;
     }
 
-    .vitrine-arrow.left { left: -7px; }
-    .vitrine-arrow.right { right: -7px; }
+    .vitrine-arrow.left {
+      left: -7px;
+    }
+
+    .vitrine-arrow.right {
+      right: -7px;
+    }
 
     .vitrine-arrow:hover {
       transform: translateY(-50%) scale(1.04);
@@ -652,49 +970,64 @@
 
     .vitrine-empty {
       padding: 15px;
+
       border-radius: 12px;
+
       background: rgba(0,0,0,.03);
+
       color: #777;
+
       text-align: center;
     }
 
     @media (min-width: 992px) {
+
       .vitrine-track {
         grid-auto-columns: calc((100% - 30px) / 4);
       }
+
     }
 
     @media (min-width: 577px) and (max-width: 991px) {
+
       .vitrine-track {
         grid-auto-columns: calc((100% - 20px) / 3);
       }
+
     }
 
     @media (max-width: 576px) {
-      /* Vitrines compactas no celular — 2 produtos lado a lado */
+
       .home-vitrines {
         width: 100% !important;
+
         padding: 4px 4px 20px !important;
         margin: 0 !important;
       }
 
       .vitrine-section {
         width: 100% !important;
+
         margin: 0 0 20px !important;
         padding: 0 !important;
       }
 
       .vitrine-header {
         display: flex !important;
+
         align-items: center !important;
+
         gap: 6px !important;
+
         margin: 0 0 7px !important;
         padding: 0 2px !important;
       }
 
       .vitrine-title {
         font-size: 12px !important;
+
         line-height: 1 !important;
+
         font-weight: 800 !important;
       }
 
@@ -705,19 +1038,27 @@
 
       .vitrine-see-all {
         font-size: 9px !important;
+
         padding: 2px 0 !important;
       }
 
       .vitrine-track {
         display: grid !important;
+
         grid-auto-flow: column !important;
+
         grid-auto-columns: calc((100% - 8px) / 2) !important;
+
         gap: 8px !important;
+
         overflow-x: auto !important;
         overflow-y: hidden !important;
+
         padding: 0 1px 4px !important;
         margin: 0 !important;
+
         scrollbar-width: none !important;
+
         scroll-snap-type: x proximity !important;
       }
 
@@ -728,8 +1069,10 @@
       .vitrine-track > .product-card {
         width: 100% !important;
         min-width: 0 !important;
+
         margin: 0 !important;
         padding: 0 !important;
+
         scroll-snap-align: start !important;
       }
 
@@ -740,8 +1083,11 @@
 
       .vitrine-track .product-card img {
         width: 100% !important;
+
         height: 125px !important;
+
         object-fit: contain !important;
+
         display: block !important;
       }
 
@@ -753,24 +1099,34 @@
       .vitrine-track .product-card h4,
       .vitrine-track .product-card .product-name,
       .vitrine-track .product-card .card-title {
+
         font-size: 12px !important;
+
         line-height: 1.2 !important;
+
         margin-bottom: 4px !important;
+
         display: -webkit-box !important;
+
         -webkit-line-clamp: 3 !important;
         -webkit-box-orient: vertical !important;
+
         overflow: hidden !important;
       }
 
       .vitrine-track .product-card p {
         font-size: 10px !important;
+
         line-height: 1.25 !important;
+
         margin-bottom: 4px !important;
       }
 
       .vitrine-track .product-card .price,
       .vitrine-track .product-card .product-price {
+
         font-size: 13px !important;
+
         line-height: 1.1 !important;
       }
 
@@ -781,7 +1137,9 @@
 
       .vitrine-track .product-card button {
         font-size: 8px !important;
+
         padding: 5px 6px !important;
+
         min-height: 28px !important;
       }
 
@@ -792,6 +1150,7 @@
       .vitrine-arrow {
         width: 25px !important;
         height: 25px !important;
+
         font-size: 15px !important;
       }
 
@@ -802,7 +1161,13 @@
       .vitrine-arrow.right {
         right: -3px !important;
       }
+
     }
+
+
+    /* =========================================================
+       DARK MODE — VITRINES
+    ========================================================= */
 
     body.dark-mode .vitrine-see-all {
       color: #d5a82d;
@@ -815,6 +1180,7 @@
     body.dark-mode .vitrine-arrow {
       background: #202020;
       color: #fff;
+
       border-color: rgba(255,255,255,.12);
     }
 
@@ -823,489 +1189,1580 @@
       color: #bbb;
     }
 
-</style>
+  </style>
 </head>
 
+
 <body>
-  <header>
-    <div class="topbar">
-      <div class="container page-shell">
-        <div class="topbar-main">
-          <a href="index.html" class="brand-block">
-            <div class="crest">
-              <div class="crest-inner"></div>
-            </div>
-            <div class="brand-copy text-white"><strong>RESENHA</strong><span>SPORTS</span></div>
+
+<header>
+
+  <div class="topbar">
+
+    <div class="container page-shell">
+
+      <div class="topbar-main">
+
+        <!-- LOGO -->
+        <a href="index.html" class="brand-block">
+
+          <div class="crest">
+            <div class="crest-inner"></div>
+          </div>
+
+          <div class="brand-copy text-white">
+            <strong>RESENHA</strong>
+            <span>SPORTS</span>
+          </div>
+
+        </a>
+
+
+        <!-- BUSCA -->
+        <div class="search-box">
+
+          <input
+            type="text"
+            id="buscarTopo"
+            placeholder="O que você está buscando?">
+
+          <button
+            type="button"
+            aria-label="Buscar">
+            ⌕
+          </button>
+
+        </div>
+
+
+        <!-- AÇÕES -->
+        <div class="top-actions">
+
+
+          <!-- MENU MOBILE -->
+          <button
+            class="mobile-menu-toggle"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainMenu"
+            aria-controls="mainMenu"
+            aria-expanded="false"
+            aria-label="Abrir menu">
+
+            <span></span>
+
+          </button>
+
+
+          <!-- MODO ESCURO -->
+          <button
+            class="action-link theme-toggle"
+            id="themeToggle"
+            type="button"
+            aria-label="Alternar modo escuro">
+
+            <span class="icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3
+                  6.5 6.5 0 0 0 21 12.8z"></path>
+
+              </svg>
+
+            </span>
+
+            <span id="themeLabel">
+              Modo escuro
+            </span>
+
+          </button>
+
+
+          <!-- CONTA DO CLIENTE -->
+          <a
+            class="action-link"
+            href="login.html">
+
+            <span class="icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="12"
+                  cy="8"
+                  r="4">
+                </circle>
+
+                <path
+                  d="M4 20c1.8-4 5-6 8-6s6.2 2 8 6">
+                </path>
+
+              </svg>
+
+            </span>
+
+            <span>
+              Minha conta
+            </span>
+
           </a>
-          <button class="mobile-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu"
-            aria-controls="mainMenu" aria-expanded="false" aria-label="Abrir menu"><span></span></button>
-          <div class="search-box">
-            <input type="text" id="buscarTopo" placeholder="O que você está buscando?">
-            <button type="button" aria-label="Buscar">⌕</button>
-          </div>
-          <div class="top-actions">
 
-            <button class="action-link theme-toggle" id="themeToggle" type="button" aria-label="Alternar modo escuro">
-              <span class="icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8z"></path>
-                </svg>
-              </span>
-              <span id="themeLabel">Modo escuro</span>
-            </button>
-            <a class="action-link" href="login.html"><span class="icon"><svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="8" r="4"></circle>
-                  <path d="M4 20c1.8-4 5-6 8-6s6.2 2 8 6"></path>
-                </svg></span><span>Minha conta</span></a>
-            <button class="action-link cart-pill p-0 border-0 bg-transparent" data-bs-toggle="modal"
-              data-bs-target="#cartModal"><span class="icon"><svg viewBox="0 0 24 24">
-                  <circle cx="9" cy="20" r="1.5"></circle>
-                  <circle cx="18" cy="20" r="1.5"></circle>
-                  <path d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h9.9a1 1 0 0 0 1-.8L21 7H7"></path>
-                </svg></span><span>Meu carrinho</span><span id="cart-count" class="cart-count">0</span></button>
-          </div>
+
+          <!-- CARRINHO -->
+          <button
+            class="action-link cart-pill p-0 border-0 bg-transparent"
+            data-bs-toggle="modal"
+            data-bs-target="#cartModal">
+
+            <span class="icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <circle
+                  cx="9"
+                  cy="20"
+                  r="1.5">
+                </circle>
+
+                <circle
+                  cx="18"
+                  cy="20"
+                  r="1.5">
+                </circle>
+
+                <path
+                  d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h9.9
+                  a1 1 0 0 0 1-.8L21 7H7">
+                </path>
+
+              </svg>
+
+            </span>
+
+            <span>
+              Meu carrinho
+            </span>
+
+            <span
+              id="cart-count"
+              class="cart-count">
+              0
+            </span>
+
+          </button>
+
         </div>
-      </div>
-    </div>
-    <div class="navline">
-      <div class="container page-shell">
-        <nav class="navbar navbar-expand-lg navbar-custom px-">
-          <div class="collapse navbar-collapse" id="mainMenu">
-            <div class="nav-menu navbar-nav mx-auto w-100 justify-content-center">
-              <a class="nav-link" href="#">Início</a>
-              <a class="nav-link" href="#" data-nav-category="Brasileirao">Brasileirão</a>
-              <a class="nav-link" href="#" data-nav-category="Selecoes">Seleções</a>
-              <a class="nav-link" href="#" data-nav-category="Europa">Europa</a>
-              <a class="nav-link" href="login.html">Contato</a>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
-  </header>
 
-  <section class="hero container-fluid p-0 m-0">
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner rounded-3 shadow">
-        
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- MENU -->
+  <div class="navline">
+
+    <div class="container page-shell">
+
+      <nav class="navbar navbar-expand-lg navbar-custom px-0">
+
+        <div
+          class="collapse navbar-collapse"
+          id="mainMenu">
+
+          <div
+            class="nav-menu navbar-nav mx-auto w-100 justify-content-center">
+
+            <a
+              class="nav-link"
+              href="#">
+              Início
+            </a>
+
+            <a
+              class="nav-link"
+              href="#"
+              data-nav-category="Brasileirao">
+              Brasileirão
+            </a>
+
+            <a
+              class="nav-link"
+              href="#"
+              data-nav-category="Selecoes">
+              Seleções
+            </a>
+
+            <a
+              class="nav-link"
+              href="#"
+              data-nav-category="Europa">
+              Europa
+            </a>
+
+            <a
+              class="nav-link"
+              href="login.html">
+              Contato
+            </a>
+
+          </div>
+
+        </div>
+
+      </nav>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero container-fluid p-0 m-0">
+
+  <div
+    id="carouselExampleAutoplaying"
+    class="carousel slide"
+    data-bs-ride="carousel">
+
+    <div class="carousel-inner rounded-3 shadow">
+
+
+      <div class="carousel-item active">
+
+        <picture>
+
+          <img
+            src="image/telaresenha 03.webp"
+            data-mobile-candidates="image/mobile%201.webp|image/mobile%201.png|image/mobile%201.jpg|image/mobile1.webp|image/mobile1.png|image/mobile1.jpg"
+            class="d-block w-100 banner-responsive"
+            alt="Lançamentos Resenha Sports">
+
+        </picture>
+
+      </div>
+
+
+      <div class="carousel-item">
+
+        <picture>
+
+          <img
+            src="image/banner-brasileirao1.webp"
+            data-mobile-candidates="image/mobile%202.webp|image/mobile%202.png|image/mobile%202.jpg|image/mobile2.webp|image/mobile2.png|image/mobile2.jpg"
+            class="d-block w-100 banner-responsive"
+            alt="Destaques do Brasileirão">
+
+        </picture>
+
+      </div>
+
+
+      <div class="carousel-item">
+
+        <picture>
+
+          <img
+            src="image/telaresenha 02.webp"
+            data-mobile-candidates="image/mobile%203.webp|image/mobile%203.png|image/mobile%203.jpg|image/mobile3.webp|image/mobile3.png|image/mobile3.jpg"
+            class="d-block w-100 banner-responsive"
+            alt="Promoções em Equipamentos Esportivos">
+
+        </picture>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleAutoplaying"
+      data-bs-slide="prev">
+
+      <span
+        class="carousel-control-prev-icon"
+        aria-hidden="true">
+      </span>
+
+      <span class="visually-hidden">
+        Anterior
+      </span>
+
+    </button>
+
+
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleAutoplaying"
+      data-bs-slide="next">
+
+      <span
+        class="carousel-control-next-icon"
+        aria-hidden="true">
+      </span>
+
+      <span class="visually-hidden">
+        Próximo
+      </span>
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     MARCAS
+========================================================= -->
+
+<section class="brands-section container-fluid my-3">
+
+  <div class="container position-relative">
+
+    <div
+      id="carouselBrands"
+      class="carousel slide"
+      data-bs-ride="carousel">
+
+      <div class="carousel-inner">
+
+
         <div class="carousel-item active">
-          <picture>
-            <img src="image/telaresenha 03.webp" data-mobile-candidates="image/mobile%201.webp|image/mobile%201.png|image/mobile%201.jpg|image/mobile1.webp|image/mobile1.png|image/mobile1.jpg" class="d-block w-100 banner-responsive" alt="Lançamentos Resenha Sports">
-          </picture>
+
+          <div class="row align-items-center justify-content-center px-5 gap-0">
+
+            <div class="col-2">
+              <img
+                src="image/adidas.webp"
+                alt="Adidas"
+                class="brand-logo-small">
+            </div>
+
+            <div class="col-2">
+              <img
+                src="image/nike.webp"
+                alt="Nike"
+                class="brand-logo-small">
+            </div>
+
+            <div class="col-2">
+              <img
+                src="image/puma.webp"
+                alt="Puma"
+                class="brand-logo-small">
+            </div>
+
+            <div class="col-2">
+              <img
+                src="image/umbro.webp"
+                alt="Umbro"
+                class="brand-logo-small">
+            </div>
+
+            <div class="col-2">
+              <img
+                src="image/new.webp"
+                alt="New Balance"
+                class="brand-logo-small">
+            </div>
+
+          </div>
+
         </div>
-        
+
+
         <div class="carousel-item">
-          <picture>
-            <img src="image/banner-brasileirao1.webp" data-mobile-candidates="image/mobile%202.webp|image/mobile%202.png|image/mobile%202.jpg|image/mobile2.webp|image/mobile2.png|image/mobile2.jpg" class="d-block w-100 banner-responsive" alt="Destaques do Brasileirão">
-          </picture>
-        </div>
-        
-        <div class="carousel-item">
-          <picture>
-            <img src="image/telaresenha 02.webp" data-mobile-candidates="image/mobile%203.webp|image/mobile%203.png|image/mobile%203.jpg|image/mobile3.webp|image/mobile3.png|image/mobile3.jpg" class="d-block w-100 banner-responsive" alt="Promoções em Equipamentos Esportivos">
-          </picture>
+
+          <div class="row align-items-center justify-content-center px-5 gap-0">
+
+            <div class="col-2">
+              <img
+                src="image/new.webp"
+                alt="New Balance"
+                class="brand-logo-small">
+            </div>
+
+            <div class="col-2">
+              <img
+                src="image/umbro.webp"
+                alt="Umbro"
+                class="brand-logo-small">
+            </div>
+
+            <div class="col-2">
+              <img
+                src="image/puma.webp"
+                alt="Puma"
+                class="brand-logo-small">
+            </div>
+
+            <div class="col-2">
+              <img
+                src="image/nike.webp"
+                alt="Nike"
+                class="brand-logo-small">
+            </div>
+
+            <div class="col-2">
+              <img
+                src="image/adidas.webp"
+                alt="Adidas"
+                class="brand-logo-small">
+            </div>
+
+          </div>
+
         </div>
 
       </div>
-      
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Anterior</span>
+
+
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselBrands"
+        data-bs-slide="prev">
+
+        <span
+          class="carousel-control-prev-icon"
+          aria-hidden="true">
+        </span>
+
+        <span class="visually-hidden">
+          Anterior
+        </span>
+
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Próximo</span>
+
+
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselBrands"
+        data-bs-slide="next">
+
+        <span
+          class="carousel-control-next-icon"
+          aria-hidden="true">
+        </span>
+
+        <span class="visually-hidden">
+          Próximo
+        </span>
+
       </button>
+
     </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     CATEGORIAS
+========================================================= -->
+
+<section class="container p-0 m-0 mx-auto mb-4">
+
+  <div class="row g-4 justify-content-center m-0 p-0">
+
+    <div class="col-12 col-md-4 category-card p-2">
+
+      <img
+        src="image/09.webp"
+        alt="Nacionais"
+        class="shadow-sm">
+
+    </div>
+
+
+    <div class="col-12 col-md-4 category-card p-2">
+
+      <img
+        src="image/08.webp"
+        alt="Europeus"
+        class="shadow-sm">
+
+    </div>
+
+
+    <div class="col-12 col-md-4 category-card p-2">
+
+      <img
+        src="image/manina.webp"
+        alt="Femininas"
+        class="shadow-sm">
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     PRODUTOS
+========================================================= -->
+
+<main class="container page-shell catalog-shell p-0 m-0 mx-auto">
+
+  <div class="d-none">
+
+    <input
+      type="text"
+      id="buscar"
+      value="">
+
+    <select id="categoriaSelect">
+      <option value="Todos">
+        Todos
+      </option>
+    </select>
+
+    <select id="ordenar">
+      <option value="relevancia">
+        Relevância
+      </option>
+    </select>
+
+    <div id="categorias"></div>
+
+  </div>
+
+
+  <section
+    id="vitrines-produtos"
+    class="home-vitrines">
   </section>
 
-  <section class="brands-section container-fluid my-3">
-    <div class="container position-relative">
-      <div id="carouselBrands" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          
-          <div class="carousel-item active">
-            <div class="row align-items-center justify-content-center px-5 gap-0">
-              <div class="col-2"><img src="image/adidas.webp" alt="Adidas" class="brand-logo-small"></div>
-              <div class="col-2"><img src="image/nike.webp" alt="Nike" class="brand-logo-small"></div>
-              <div class="col-2"><img src="image/puma.webp" alt="Puma" class="brand-logo-small"></div>
-              <div class="col-2"><img src="image/umbro.webp" alt="Umbro" class="brand-logo-small"></div>
-              <div class="col-2"><img src="image/new.webp" alt="New Balance" class="brand-logo-small"></div>
-            </div>
-          </div>
-          
-          <div class="carousel-item">
-            <div class="row align-items-center justify-content-center px-5 gap-0">
-              <div class="col-2"><img src="image/new.webp" alt="New Balance" class="brand-logo-small"></div>
-              <div class="col-2"><img src="image/umbro.webp" alt="Umbro" class="brand-logo-small"></div>
-              <div class="col-2"><img src="image/puma.webp" alt="Puma" class="brand-logo-small"></div>
-              <div class="col-2"><img src="image/nike.webp" alt="Nike" class="brand-logo-small"></div>
-              <div class="col-2"><img src="image/adidas.webp" alt="Adidas" class="brand-logo-small"></div>
-            </div>
-          </div>
+
+  <section
+    id="lista-produtos"
+    class="product-grid p-0 m-0 d-none">
+  </section>
+
+</main>
+
+
+<!-- =========================================================
+     MODAL PRODUTO
+========================================================= -->
+
+<div
+  class="modal fade product-detail-modal"
+  id="modalProduto"
+  tabindex="-1"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-fullscreen">
+
+    <div class="modal-content">
+
+
+      <div class="modal-header product-detail-header">
+
+        <div>
+
+          <small
+            id="mBreadcrumb"
+            class="detail-breadcrumb">
+            Início / Camisas
+          </small>
+
+          <h5
+            id="mTitulo"
+            class="mb-0">
+          </h5>
 
         </div>
-        
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselBrands" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Anterior</span>
+
+
+        <button
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Fechar">
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselBrands" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Próximo</span>
-        </button>
-      </div>
-    </div>
-  </section>
 
-  <section class="container p-0 m-0 mx-auto mb-4">
-    <div class="row g-4 justify-content-center m-0 p-0">
-      
-      <div class="col-12 col-md-4 category-card p-2">
-        <img src="image/09.webp" alt="Nacionais" class="shadow-sm">
-      </div>
-      
-      <div class="col-12 col-md-4 category-card p-2">
-        <img src="image/08.webp" alt="Europeus" class="shadow-sm">
-      </div>
-      
-      <div class="col-12 col-md-4 category-card p-2">
-        <img src="image/manina.webp" alt="Femininas" class="shadow-sm">
       </div>
 
-    </div>
-  </section>
 
-  <main class="container page-shell catalog-shell p-0 m-0 mx-auto">
-    <div class="d-none">
-      <input type="text" id="buscar" value="">
-      <select id="categoriaSelect"><option value="Todos">Todos</option></select>
-      <select id="ordenar"><option value="relevancia">Relevância</option></select>
-      <div id="categorias"></div>
-    </div>
+      <div class="modal-body product-detail-body">
 
-    <section id="vitrines-produtos" class="home-vitrines"></section>
-    <section id="lista-produtos" class="product-grid p-0 m-0 d-none"></section>
-  </main>
-  
-  <div class="modal fade product-detail-modal" id="modalProduto" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content">
-        <div class="modal-header product-detail-header">
-          <div>
-            <small id="mBreadcrumb" class="detail-breadcrumb">Início / Camisas</small>
-            <h5 id="mTitulo" class="mb-0"></h5>
-          </div>
-          <button class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body product-detail-body">
-          <div class="product-detail-grid">
-            <aside id="mThumbs" class="detail-thumbs"></aside>
-            <section class="detail-photo">
-              <img id="mImg" alt="Produto selecionado">
-            </section>
-            <section class="detail-buy">
-              <small id="mCategoria" class="detail-category"></small>
-              <h1 id="mNomeCompleto"></h1>
-              <div class="detail-price">R$ <span id="mPreco"></span></div>
-              <p id="mDesc" class="detail-short"></p>
-              <div id="mEstoqueBox" class="stock-box mb-3">
-                <span>Disponibilidade</span>
-                <strong id="mEstoque">Carregando estoque...</strong>
-              </div>
-              <div class="detail-controls">
-                <div class="detail-size-picker">
-                  <span class="size-picker-label">Tamanho</span>
-                  <div id="mTamanhoBotoes" class="detail-size-options" role="group"
-                    aria-label="Selecione o tamanho do produto"></div>
+        <div class="product-detail-grid">
 
-                  <!-- Select original mantido como base para o JavaScript existente -->
-                  <select id="mTamanho" class="form-select detail-size-native" aria-hidden="true" tabindex="-1"></select>
+          <aside
+            id="mThumbs"
+            class="detail-thumbs">
+          </aside>
 
-                  <div class="detail-selected-size">
-                    Tamanho selecionado: <strong id="mTamanhoSelecionado">Nenhum</strong>
-                  </div>
-                </div>
-                <div>
-                  <label for="mQuantidade" class="form-label fw-semibold">Quantidade</label>
-                  <input id="mQuantidade" type="number" min="1" value="1" class="form-control">
-                </div>
-              </div>
-              <div id="mEstoqueSelecionado" class="detail-stock-selected">
-                <div class="stock-left">
-                  <span class="stock-dot"></span>
-                  <span id="mEstoqueSelecionadoTexto">Selecione um tamanho</span>
-                </div>
-                <span id="mEstoqueSelecionadoTamanho" class="stock-size"></span>
-              </div>
 
-              <div id="mErroProduto" class="detail-alert d-none" role="alert"></div>
-              <button id="mAdd" class="btn btn-success w-100 mt-3">Adicionar ao carrinho</button>
-              <div class="detail-benefits">
-                <div><strong>Compra protegida</strong><span>Seus dados cuidados durante toda a compra.</span></div>
-                <div><strong>Troca e devolução</strong><span>Se não gostar, você pode trocar ou devolver.</span></div>
-              </div>
-            </section>
-          </div>
-          <section class="detail-description">
-            <h2>Descrição do produto</h2>
-            <p id="mDescricaoCompleta"></p>
-            <h3>Descrição dos tamanhos</h3>
-            <div class="table-responsive">
-              <table class="size-table">
-                <thead>
-                  <tr><th>Tamanho</th><th>Largura</th><th>Altura</th></tr>
-                </thead>
-                <tbody id="mTabelaTamanhos"></tbody>
-              </table>
-            </div>
+          <section class="detail-photo">
+
+            <img
+              id="mImg"
+              alt="Produto selecionado">
+
           </section>
+
+
+          <section class="detail-buy">
+
+            <small
+              id="mCategoria"
+              class="detail-category">
+            </small>
+
+            <h1 id="mNomeCompleto"></h1>
+
+
+            <div class="detail-price">
+              R$ <span id="mPreco"></span>
+            </div>
+
+
+            <p
+              id="mDesc"
+              class="detail-short">
+            </p>
+
+
+            <div
+              id="mEstoqueBox"
+              class="stock-box mb-3">
+
+              <span>
+                Disponibilidade
+              </span>
+
+              <strong id="mEstoque">
+                Carregando estoque...
+              </strong>
+
+            </div>
+
+
+            <div class="detail-controls">
+
+
+              <div class="detail-size-picker">
+
+                <span class="size-picker-label">
+                  Tamanho
+                </span>
+
+
+                <div
+                  id="mTamanhoBotoes"
+                  class="detail-size-options"
+                  role="group"
+                  aria-label="Selecione o tamanho do produto">
+                </div>
+
+
+                <select
+                  id="mTamanho"
+                  class="form-select detail-size-native"
+                  aria-hidden="true"
+                  tabindex="-1">
+                </select>
+
+
+                <div class="detail-selected-size">
+
+                  Tamanho selecionado:
+
+                  <strong id="mTamanhoSelecionado">
+                    Nenhum
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div>
+
+                <label
+                  for="mQuantidade"
+                  class="form-label fw-semibold">
+                  Quantidade
+                </label>
+
+                <input
+                  id="mQuantidade"
+                  type="number"
+                  min="1"
+                  value="1"
+                  class="form-control">
+
+              </div>
+
+            </div>
+
+
+            <div
+              id="mEstoqueSelecionado"
+              class="detail-stock-selected">
+
+              <div class="stock-left">
+
+                <span class="stock-dot"></span>
+
+                <span id="mEstoqueSelecionadoTexto">
+                  Selecione um tamanho
+                </span>
+
+              </div>
+
+              <span
+                id="mEstoqueSelecionadoTamanho"
+                class="stock-size">
+              </span>
+
+            </div>
+
+
+            <div
+              id="mErroProduto"
+              class="detail-alert d-none"
+              role="alert">
+            </div>
+
+
+            <button
+              id="mAdd"
+              class="btn btn-success w-100 mt-3">
+              Adicionar ao carrinho
+            </button>
+
+
+            <div class="detail-benefits">
+
+              <div>
+                <strong>
+                  Compra protegida
+                </strong>
+
+                <span>
+                  Seus dados cuidados durante toda a compra.
+                </span>
+              </div>
+
+
+              <div>
+                <strong>
+                  Troca e devolução
+                </strong>
+
+                <span>
+                  Se não gostar, você pode trocar ou devolver.
+                </span>
+              </div>
+
+            </div>
+
+          </section>
+
         </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-dark text-white">
-          <h5 class="mb-0">Seu carrinho</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"
-            aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body p-4">
-          <div id="cart-items"></div>
-          <div class="summary-bar">
-            <div>
-              <div class="text-secondary">Total da compra</div><strong class="fs-4">R$ <span
-                  id="cart-total">0,00</span></strong>
-            </div><button class="btn btn-success" onclick="abrirPagamento()">Finalizar compra</button>
+
+
+        <section class="detail-description">
+
+          <h2>
+            Descrição do produto
+          </h2>
+
+          <p id="mDescricaoCompleta"></p>
+
+
+          <h3>
+            Descrição dos tamanhos
+          </h3>
+
+
+          <div class="table-responsive">
+
+            <table class="size-table">
+
+              <thead>
+
+                <tr>
+                  <th>Tamanho</th>
+                  <th>Largura</th>
+                  <th>Altura</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="mTabelaTamanhos">
+              </tbody>
+
+            </table>
+
           </div>
-        </div>
+
+        </section>
+
       </div>
+
     </div>
+
   </div>
-  
-  <div class="modal fade" id="modalPagamento" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-success text-white">
-          <h5 class="mb-0">Finalizar compra</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"
-            aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body p-4">
-          <div class="row g-3">
-            <div class="col-md-6"><label for="checkoutNome" class="form-label fw-semibold">Nome completo</label><input
-                id="checkoutNome" class="form-control" placeholder="Seu nome"></div>
-            <div class="col-md-6"><label for="checkoutTelefone" class="form-label fw-semibold">Telefone</label><input
-                id="checkoutTelefone" class="form-control" placeholder="(00) 00000-0000"></div>
-            <div class="col-md-4"><label for="checkoutCep" class="form-label fw-semibold">CEP</label><input
-                id="checkoutCep" class="form-control" placeholder="00000-000"></div>
-            <div class="col-md-8"><label for="checkoutRua" class="form-label fw-semibold">Rua / Avenida</label><input
-                id="checkoutRua" class="form-control" placeholder="Digite seu endereço"></div>
-            <div class="col-md-4"><label for="checkoutNumero" class="form-label fw-semibold">Número</label><input
-                id="checkoutNumero" class="form-control" placeholder="123"></div>
-            <div class="col-md-4"><label for="checkoutBairro" class="form-label fw-semibold">Bairro</label><input
-                id="checkoutBairro" class="form-control" placeholder="Seu bairro"></div>
-            <div class="col-md-4"><label for="checkoutCidade" class="form-label fw-semibold">Cidade</label><input
-                id="checkoutCidade" class="form-control" placeholder="Sua cidade"></div>
-            <div class="col-12"><label for="checkoutComplemento"
-                class="form-label fw-semibold">Complemento</label><input id="checkoutComplemento" class="form-control"
-                placeholder="Apartamento, bloco, referência..."></div>
-            <div class="col-md-6"><label for="metodoPagamento" class="form-label fw-semibold">Método de
-                pagamento</label><select id="metodoPagamento" class="form-select">
-                <option value="Pix">Pix</option>
-                <option value="Cartão">Cartão</option>
-                <option value="Boleto">Boleto</option>
-                <option value="Mercado Pago">Mercado Pago</option>
-              </select></div>
-            <div class="col-md-6 d-flex align-items-end"><button class="btn btn-success w-100"
-                onclick="confirmarPagamento()">Confirmar pedido</button></div>
+
+</div>
+
+
+<!-- =========================================================
+     CARRINHO
+========================================================= -->
+
+<div
+  class="modal fade"
+  id="cartModal"
+  tabindex="-1"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+
+    <div class="modal-content">
+
+
+      <div class="modal-header bg-dark text-white">
+
+        <h5 class="mb-0">
+          Seu carrinho
+        </h5>
+
+        <button
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Fechar">
+        </button>
+
+      </div>
+
+
+      <div class="modal-body p-4">
+
+        <div id="cart-items"></div>
+
+
+        <div class="summary-bar">
+
+          <div>
+
+            <div class="text-secondary">
+              Total da compra
+            </div>
+
+            <strong class="fs-4">
+
+              R$
+
+              <span id="cart-total">
+                0,00
+              </span>
+
+            </strong>
+
           </div>
+
+
+          <button
+            class="btn btn-success"
+            onclick="abrirPagamento()">
+
+            Finalizar compra
+
+          </button>
+
         </div>
+
       </div>
-    </div>      
-  </div>
-  
-  <div id="toastAviso" class="toast align-items-center text-bg-danger border-0 position-fixed bottom-0 end-0 m-3"
-    role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body" id="toastMensagem">Escolha um tamanho antes de continuar.</div><button type="button"
-        class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+
     </div>
+
   </div>
-  
-  <footer class="footer">© <span id="ano2"></span> Resenha Sports • <a href="login.html">Área do lojista</a></footer>
-  
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-    /* =========================================================
-       TAMANHOS CLICÁVEIS NO "VER MAIS"
-       Usa o <select id="mTamanho"> que já existe no projeto.
-       Assim, o restante do index.js continua funcionando.
-       ========================================================= */
-    (function () {
-      const select = document.getElementById("mTamanho");
-      const botoes = document.getElementById("mTamanhoBotoes");
-      const selecionado = document.getElementById("mTamanhoSelecionado");
-      const estoqueTexto = document.getElementById("mEstoqueSelecionadoTexto");
-      const estoqueTamanho = document.getElementById("mEstoqueSelecionadoTamanho");
-      const estoqueOriginal = document.getElementById("mEstoque");
+</div>
 
-      if (!select || !botoes) return;
 
-      function limparTexto(texto) {
-        return String(texto || "")
-          .replace(/\s+/g, " ")
-          .trim();
-      }
+<!-- =========================================================
+     PAGAMENTO
+========================================================= -->
 
-      function atualizarEstoqueVisual() {
-        const option = select.options[select.selectedIndex];
-        const tamanho = option ? limparTexto(option.textContent) : "";
-        const valor = option ? String(option.value || "") : "";
+<div
+  class="modal fade"
+  id="modalPagamento"
+  tabindex="-1"
+  aria-hidden="true">
 
-        if (selecionado) {
-          selecionado.textContent = tamanho && valor !== "" ? tamanho : "Nenhum";
-        }
+  <div class="modal-dialog modal-dialog-centered modal-lg">
 
-        if (estoqueTamanho) {
-          estoqueTamanho.textContent = tamanho && valor !== "" ? "Tamanho " + tamanho : "";
-        }
+    <div class="modal-content">
 
-        if (estoqueTexto) {
-          const estoqueAtual = estoqueOriginal
-            ? limparTexto(estoqueOriginal.textContent)
-            : "";
 
-          if (estoqueAtual && !/^carregando estoque/i.test(estoqueAtual)) {
-            estoqueTexto.textContent = estoqueAtual;
-          } else if (tamanho && valor !== "") {
-            estoqueTexto.textContent = "Estoque disponível";
-          } else {
-            estoqueTexto.textContent = "Selecione um tamanho";
-          }
-        }
-      }
+      <div class="modal-header bg-success text-white">
 
-      function criarBotoesTamanho() {
-        const opcoes = Array.from(select.options);
+        <h5 class="mb-0">
+          Finalizar compra
+        </h5>
 
-        botoes.innerHTML = "";
+        <button
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Fechar">
+        </button>
 
-        if (!opcoes.length) {
-          atualizarEstoqueVisual();
-          return;
-        }
+      </div>
 
-        opcoes.forEach(function (option) {
-          const botao = document.createElement("button");
-          botao.type = "button";
-          botao.className = "detail-size-option";
-          botao.textContent = limparTexto(option.textContent) || option.value;
-          botao.dataset.value = option.value;
 
-          const semValor = String(option.value || "") === "";
-          const desabilitado = option.disabled || semValor;
+      <div class="modal-body p-4">
 
-          if (desabilitado) {
-            botao.disabled = true;
-            botao.classList.add("unavailable");
-          }
+        <div class="row g-3">
 
-          botao.addEventListener("click", function () {
-            if (botao.disabled) return;
 
-            select.value = option.value;
-            select.dispatchEvent(new Event("change", { bubbles: true }));
+          <div class="col-md-6">
 
-            atualizarBotoesAtivos();
-            atualizarEstoqueVisual();
-          });
+            <label
+              for="checkoutNome"
+              class="form-label fw-semibold">
+              Nome completo
+            </label>
 
-          botoes.appendChild(botao);
-        });
+            <input
+              id="checkoutNome"
+              class="form-control"
+              placeholder="Seu nome">
 
-        atualizarBotoesAtivos();
-        atualizarEstoqueVisual();
-      }
+          </div>
 
-      function atualizarBotoesAtivos() {
-        const valorSelecionado = String(select.value || "");
 
-        botoes.querySelectorAll(".detail-size-option").forEach(function (botao) {
-          const ativo =
-            valorSelecionado !== "" &&
-            botao.dataset.value === valorSelecionado &&
-            !botao.disabled;
+          <div class="col-md-6">
 
-          botao.classList.toggle("active", ativo);
-          botao.setAttribute("aria-pressed", ativo ? "true" : "false");
-        });
-      }
+            <label
+              for="checkoutTelefone"
+              class="form-label fw-semibold">
+              Telefone
+            </label>
 
-      // Quando o código existente alterar o select, os botões acompanham.
-      select.addEventListener("change", function () {
-        atualizarBotoesAtivos();
-        atualizarEstoqueVisual();
-      });
+            <input
+              id="checkoutTelefone"
+              class="form-control"
+              placeholder="(00) 00000-0000">
 
-      // O index.js normalmente preenche o select depois que o produto é aberto.
-      // O observer recria os botões quando as opções forem inseridas/alteradas.
-      const observer = new MutationObserver(function () {
-        criarBotoesTamanho();
-      });
+          </div>
 
-      observer.observe(select, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["disabled"]
-      });
 
-      // Verifica também alterações de estoque feitas pelo código existente.
-      if (estoqueOriginal) {
-        const estoqueObserver = new MutationObserver(function () {
-          atualizarEstoqueVisual();
-        });
+          <div class="col-md-4">
 
-        estoqueObserver.observe(estoqueOriginal, {
-          childList: true,
-          characterData: true,
-          subtree: true
-        });
-      }
+            <label
+              for="checkoutCep"
+              class="form-label fw-semibold">
+              CEP
+            </label>
 
-      // Primeira montagem.
-      criarBotoesTamanho();
-    })();
-  </script>
+            <input
+              id="checkoutCep"
+              class="form-control"
+              placeholder="00000-000">
 
-  <script src="./js/index.js?v=9"></script>
+          </div>
+
+
+          <div class="col-md-8">
+
+            <label
+              for="checkoutRua"
+              class="form-label fw-semibold">
+              Rua / Avenida
+            </label>
+
+            <input
+              id="checkoutRua"
+              class="form-control"
+              placeholder="Digite seu endereço">
+
+          </div>
+
+
+          <div class="col-md-4">
+
+            <label
+              for="checkoutNumero"
+              class="form-label fw-semibold">
+              Número
+            </label>
+
+            <input
+              id="checkoutNumero"
+              class="form-control"
+              placeholder="123">
+
+          </div>
+
+
+          <div class="col-md-4">
+
+            <label
+              for="checkoutBairro"
+              class="form-label fw-semibold">
+              Bairro
+            </label>
+
+            <input
+              id="checkoutBairro"
+              class="form-control"
+              placeholder="Seu bairro">
+
+          </div>
+
+
+          <div class="col-md-4">
+
+            <label
+              for="checkoutCidade"
+              class="form-label fw-semibold">
+              Cidade
+            </label>
+
+            <input
+              id="checkoutCidade"
+              class="form-control"
+              placeholder="Sua cidade">
+
+          </div>
+
+
+          <div class="col-12">
+
+            <label
+              for="checkoutComplemento"
+              class="form-label fw-semibold">
+              Complemento
+            </label>
+
+            <input
+              id="checkoutComplemento"
+              class="form-control"
+              placeholder="Apartamento, bloco, referência...">
+
+          </div>
+
+
+          <div class="col-md-6">
+
+            <label
+              for="metodoPagamento"
+              class="form-label fw-semibold">
+              Método de pagamento
+            </label>
+
+            <select
+              id="metodoPagamento"
+              class="form-select">
+
+              <option value="Pix">
+                Pix
+              </option>
+
+              <option value="Cartão">
+                Cartão
+              </option>
+
+              <option value="Boleto">
+                Boleto
+              </option>
+
+              <option value="Mercado Pago">
+                Mercado Pago
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="col-md-6 d-flex align-items-end">
+
+            <button
+              class="btn btn-success w-100"
+              onclick="confirmarPagamento()">
+
+              Confirmar pedido
+
+            </button>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div
+  id="toastAviso"
+  class="toast align-items-center text-bg-danger border-0 position-fixed bottom-0 end-0 m-3"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true">
+
+  <div class="d-flex">
+
+    <div
+      class="toast-body"
+      id="toastMensagem">
+      Escolha um tamanho antes de continuar.
+    </div>
+
+    <button
+      type="button"
+      class="btn-close btn-close-white me-2 m-auto"
+      data-bs-dismiss="toast"
+      aria-label="Fechar">
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+  © <span id="ano2"></span>
+  Resenha Sports •
+
+  <a href="admin-login.html">
+    Área do lojista
+  </a>
+
+</footer>
+
+
+<!-- =========================================================
+     BOOTSTRAP
+========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- =========================================================
+     TAMANHOS CLICÁVEIS
+========================================================= -->
+
 <script>
+
 (function () {
-  const mobile = window.matchMedia('(max-width: 576px)').matches;
-  if (!mobile) return;
 
-  document.querySelectorAll('.banner-responsive[data-mobile-candidates]').forEach(function (img) {
-    const desktopSrc = img.getAttribute('src');
-    const candidates = img.dataset.mobileCandidates.split('|');
-    let index = 0;
+  const select =
+    document.getElementById("mTamanho");
 
-    function tryNext() {
-      if (index >= candidates.length) {
-        img.src = desktopSrc;
-        return;
-      }
-      const next = candidates[index++];
-      img.onerror = tryNext;
-      img.src = next;
+  const botoes =
+    document.getElementById("mTamanhoBotoes");
+
+  const selecionado =
+    document.getElementById("mTamanhoSelecionado");
+
+  const estoqueTexto =
+    document.getElementById("mEstoqueSelecionadoTexto");
+
+  const estoqueTamanho =
+    document.getElementById("mEstoqueSelecionadoTamanho");
+
+  const estoqueOriginal =
+    document.getElementById("mEstoque");
+
+
+  if (!select || !botoes) return;
+
+
+  function limparTexto(texto) {
+
+    return String(texto || "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  }
+
+
+  function atualizarEstoqueVisual() {
+
+    const option =
+      select.options[select.selectedIndex];
+
+    const tamanho =
+      option
+        ? limparTexto(option.textContent)
+        : "";
+
+    const valor =
+      option
+        ? String(option.value || "")
+        : "";
+
+
+    if (selecionado) {
+
+      selecionado.textContent =
+        tamanho && valor !== ""
+          ? tamanho
+          : "Nenhum";
+
     }
 
-    tryNext();
-  });
+
+    if (estoqueTamanho) {
+
+      estoqueTamanho.textContent =
+        tamanho && valor !== ""
+          ? "Tamanho " + tamanho
+          : "";
+
+    }
+
+
+    if (estoqueTexto) {
+
+      const estoqueAtual =
+        estoqueOriginal
+          ? limparTexto(estoqueOriginal.textContent)
+          : "";
+
+
+      if (
+        estoqueAtual &&
+        !/^carregando estoque/i.test(estoqueAtual)
+      ) {
+
+        estoqueTexto.textContent =
+          estoqueAtual;
+
+      } else if (
+        tamanho &&
+        valor !== ""
+      ) {
+
+        estoqueTexto.textContent =
+          "Estoque disponível";
+
+      } else {
+
+        estoqueTexto.textContent =
+          "Selecione um tamanho";
+
+      }
+
+    }
+
+  }
+
+
+  function criarBotoesTamanho() {
+
+    const opcoes =
+      Array.from(select.options);
+
+
+    botoes.innerHTML = "";
+
+
+    if (!opcoes.length) {
+
+      atualizarEstoqueVisual();
+
+      return;
+
+    }
+
+
+    opcoes.forEach(function (option) {
+
+      const botao =
+        document.createElement("button");
+
+
+      botao.type = "button";
+
+      botao.className =
+        "detail-size-option";
+
+      botao.textContent =
+        limparTexto(option.textContent) ||
+        option.value;
+
+      botao.dataset.value =
+        option.value;
+
+
+      const semValor =
+        String(option.value || "") === "";
+
+      const desabilitado =
+        option.disabled ||
+        semValor;
+
+
+      if (desabilitado) {
+
+        botao.disabled = true;
+
+        botao.classList.add(
+          "unavailable"
+        );
+
+      }
+
+
+      botao.addEventListener(
+        "click",
+        function () {
+
+          if (botao.disabled) return;
+
+
+          select.value =
+            option.value;
+
+
+          select.dispatchEvent(
+            new Event(
+              "change",
+              {
+                bubbles: true
+              }
+            )
+          );
+
+
+          atualizarBotoesAtivos();
+
+          atualizarEstoqueVisual();
+
+        }
+      );
+
+
+      botoes.appendChild(botao);
+
+    });
+
+
+    atualizarBotoesAtivos();
+
+    atualizarEstoqueVisual();
+
+  }
+
+
+  function atualizarBotoesAtivos() {
+
+    const valorSelecionado =
+      String(select.value || "");
+
+
+    botoes
+      .querySelectorAll(
+        ".detail-size-option"
+      )
+      .forEach(function (botao) {
+
+        const ativo =
+          valorSelecionado !== "" &&
+          botao.dataset.value ===
+            valorSelecionado &&
+          !botao.disabled;
+
+
+        botao.classList.toggle(
+          "active",
+          ativo
+        );
+
+
+        botao.setAttribute(
+          "aria-pressed",
+          ativo
+            ? "true"
+            : "false"
+        );
+
+      });
+
+  }
+
+
+  select.addEventListener(
+    "change",
+    function () {
+
+      atualizarBotoesAtivos();
+
+      atualizarEstoqueVisual();
+
+    }
+  );
+
+
+  const observer =
+    new MutationObserver(
+      function () {
+
+        criarBotoesTamanho();
+
+      }
+    );
+
+
+  observer.observe(
+    select,
+    {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: [
+        "disabled"
+      ]
+    }
+  );
+
+
+  if (estoqueOriginal) {
+
+    const estoqueObserver =
+      new MutationObserver(
+        function () {
+
+          atualizarEstoqueVisual();
+
+        }
+      );
+
+
+    estoqueObserver.observe(
+      estoqueOriginal,
+      {
+        childList: true,
+        characterData: true,
+        subtree: true
+      }
+    );
+
+  }
+
+
+  criarBotoesTamanho();
+
 })();
+
 </script>
+
+
+<!-- =========================================================
+     INDEX JS
+========================================================= -->
+
+<script src="./js/index.js?v=9"></script>
+
+
+<!-- =========================================================
+     IMAGENS MOBILE
+========================================================= -->
+
+<script>
+
+(function () {
+
+  const mobile =
+    window.matchMedia(
+      '(max-width: 576px)'
+    ).matches;
+
+
+  if (!mobile) return;
+
+
+  document
+    .querySelectorAll(
+      '.banner-responsive[data-mobile-candidates]'
+    )
+    .forEach(function (img) {
+
+      const desktopSrc =
+        img.getAttribute('src');
+
+
+      const candidates =
+        img.dataset.mobileCandidates
+          .split('|');
+
+
+      let index = 0;
+
+
+      function tryNext() {
+
+        if (
+          index >=
+          candidates.length
+        ) {
+
+          img.src =
+            desktopSrc;
+
+          return;
+
+        }
+
+
+        const next =
+          candidates[index++];
+
+
+        img.onerror =
+          tryNext;
+
+
+        img.src =
+          next;
+
+      }
+
+
+      tryNext();
+
+    });
+
+})();
+
+</script>
+
 
 </body>
 

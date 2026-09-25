@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 
 const express = require("express");
@@ -10,6 +9,7 @@ const { createClient } = require("@supabase/supabase-js");
 const produtosRouter = require("./backend/routes/produtos");
 const pedidosRouter = require("./backend/routes/pedidos");
 const pagamentosRouter = require("./backend/routes/pagamentos");
+const clientesRouter = require("./backend/routes/clientes");
 
 const { ensureSchema } = require("./backend/ensureSchema");
 
@@ -305,6 +305,15 @@ app.use(
 );
 
 // ============================================================
+// CLIENTES
+// ============================================================
+
+app.use(
+  "/api/clientes",
+  clientesRouter
+);
+
+// ============================================================
 // PAGAMENTOS MERCADO PAGO
 // ============================================================
 
@@ -408,6 +417,12 @@ if (process.env.VERCEL !== "1") {
           );
 
           console.log(
+            "Clientes: http://localhost:" +
+              PORT +
+              "/api/clientes"
+          );
+
+          console.log(
             "=========================================="
           );
         }
@@ -431,4 +446,3 @@ if (process.env.VERCEL !== "1") {
 // ============================================================
 
 module.exports = app;
-

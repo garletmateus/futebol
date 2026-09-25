@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Entrar | Resenha Sports</title>
+  <title>Criar conta | Resenha Sports</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +19,7 @@
     :root {
       --blue: #2230ad;
       --blue-dark: #182388;
+      --green: #0d7a5f;
       --bg: #eef4f3;
       --text: #122019;
       --muted: #60756d;
@@ -47,9 +48,9 @@
       padding: 30px 16px;
     }
 
-    .login-container {
+    .cadastro-container {
       width: 100%;
-      max-width: 440px;
+      max-width: 480px;
     }
 
     .logo {
@@ -93,7 +94,7 @@
     }
 
     .campo {
-      margin-bottom: 18px;
+      margin-bottom: 17px;
     }
 
     .campo label {
@@ -122,7 +123,7 @@
       box-shadow: 0 0 0 3px rgba(34, 48, 173, 0.10);
     }
 
-    .btn-login {
+    .btn-cadastrar {
       width: 100%;
       height: 50px;
       border: none;
@@ -134,14 +135,14 @@
       font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
-      margin-top: 4px;
+      margin-top: 5px;
     }
 
-    .btn-login:hover {
+    .btn-cadastrar:hover {
       background: var(--blue-dark);
     }
 
-    .btn-login:disabled {
+    .btn-cadastrar:disabled {
       opacity: 0.7;
       cursor: not-allowed;
     }
@@ -169,20 +170,20 @@
       border: 1px solid #b9e5d5;
     }
 
-    .cadastro-link {
+    .login-link {
       text-align: center;
       margin-top: 22px;
       color: var(--muted);
       font-size: 14px;
     }
 
-    .cadastro-link a {
+    .login-link a {
       color: var(--blue);
       font-weight: 700;
       text-decoration: none;
     }
 
-    .cadastro-link a:hover {
+    .login-link a:hover {
       text-decoration: underline;
     }
 
@@ -223,7 +224,7 @@
 
 <body>
 
-  <main class="login-container">
+  <main class="cadastro-container">
 
     <div class="logo">
       <h1>RESENHA SPORTS</h1>
@@ -232,15 +233,28 @@
 
     <section class="card">
 
-      <h2>Entrar na sua conta</h2>
+      <h2>Criar sua conta</h2>
 
       <p class="subtitulo">
-        Entre para acompanhar seus pedidos.
+        Cadastre-se para acompanhar seus pedidos.
       </p>
 
       <div id="mensagem" class="mensagem"></div>
 
-      <form id="formLogin">
+      <form id="formCadastro">
+
+        <div class="campo">
+          <label for="nome">Nome completo</label>
+
+          <input
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Digite seu nome"
+            autocomplete="name"
+            required
+          >
+        </div>
 
         <div class="campo">
           <label for="email">E-mail</label>
@@ -248,9 +262,22 @@
           <input
             type="email"
             id="email"
+            name="email"
             placeholder="seuemail@email.com"
             autocomplete="email"
             required
+          >
+        </div>
+
+        <div class="campo">
+          <label for="telefone">Telefone</label>
+
+          <input
+            type="tel"
+            id="telefone"
+            name="telefone"
+            placeholder="(46) 99999-9999"
+            autocomplete="tel"
           >
         </div>
 
@@ -260,25 +287,41 @@
           <input
             type="password"
             id="senha"
-            placeholder="Digite sua senha"
-            autocomplete="current-password"
+            name="senha"
+            placeholder="Mínimo de 6 caracteres"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          >
+        </div>
+
+        <div class="campo">
+          <label for="confirmarSenha">Confirmar senha</label>
+
+          <input
+            type="password"
+            id="confirmarSenha"
+            name="confirmarSenha"
+            placeholder="Digite a senha novamente"
+            autocomplete="new-password"
+            minlength="6"
             required
           >
         </div>
 
         <button
           type="submit"
-          class="btn-login"
-          id="btnLogin"
+          class="btn-cadastrar"
+          id="btnCadastrar"
         >
-          Entrar
+          Criar minha conta
         </button>
 
       </form>
 
-      <div class="cadastro-link">
-        Ainda não possui uma conta?
-        <a href="cadastro.html">Criar conta</a>
+      <div class="login-link">
+        Já possui uma conta?
+        <a href="login.html">Entrar</a>
       </div>
 
       <div class="voltar">
@@ -291,39 +334,58 @@
 
 
   <script>
-    const formLogin = document.getElementById("formLogin");
+    const formCadastro = document.getElementById("formCadastro");
     const mensagem = document.getElementById("mensagem");
-    const btnLogin = document.getElementById("btnLogin");
+    const btnCadastrar = document.getElementById("btnCadastrar");
 
     function mostrarMensagem(texto, tipo) {
       mensagem.textContent = texto;
       mensagem.className = "mensagem " + tipo;
     }
 
-    formLogin.addEventListener("submit", async function (event) {
+    formCadastro.addEventListener("submit", async function (event) {
 
       event.preventDefault();
 
+      const nome = document.getElementById("nome").value.trim();
       const email = document.getElementById("email").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
       const senha = document.getElementById("senha").value;
+      const confirmarSenha = document.getElementById("confirmarSenha").value;
 
       mensagem.className = "mensagem";
       mensagem.textContent = "";
 
-      if (!email || !senha) {
+      if (!nome || !email || !senha || !confirmarSenha) {
         mostrarMensagem(
-          "Informe o e-mail e a senha.",
+          "Preencha todos os campos obrigatórios.",
           "erro"
         );
         return;
       }
 
-      btnLogin.disabled = true;
-      btnLogin.textContent = "Entrando...";
+      if (senha.length < 6) {
+        mostrarMensagem(
+          "A senha deve ter pelo menos 6 caracteres.",
+          "erro"
+        );
+        return;
+      }
+
+      if (senha !== confirmarSenha) {
+        mostrarMensagem(
+          "As senhas não são iguais.",
+          "erro"
+        );
+        return;
+      }
+
+      btnCadastrar.disabled = true;
+      btnCadastrar.textContent = "Cadastrando...";
 
       try {
 
-        const resposta = await fetch("/api/clientes/login", {
+        const resposta = await fetch("/api/clientes/cadastro", {
           method: "POST",
 
           headers: {
@@ -331,8 +393,10 @@
           },
 
           body: JSON.stringify({
+            nome: nome,
             email: email,
-            senha: senha
+            senha: senha,
+            telefone: telefone
           })
         });
 
@@ -340,42 +404,34 @@
 
         if (!resposta.ok) {
           throw new Error(
-            dados.mensagem || "E-mail ou senha incorretos."
+            dados.mensagem || "Não foi possível realizar o cadastro."
           );
         }
 
-        /*
-         * Guarda os dados básicos do cliente
-         * para utilizarmos posteriormente em
-         * Meus Pedidos e no checkout.
-         */
-        localStorage.setItem(
-          "resenha_cliente",
-          JSON.stringify(dados.cliente)
-        );
-
         mostrarMensagem(
-          "Login realizado com sucesso!",
+          "Cadastro realizado com sucesso! Você já pode entrar.",
           "sucesso"
         );
 
+        formCadastro.reset();
+
         setTimeout(() => {
-          window.location.href = "conta.html";
-        }, 1000);
+          window.location.href = "login.html";
+        }, 1500);
 
       } catch (erro) {
 
-        console.error("Erro no login:", erro);
+        console.error("Erro no cadastro:", erro);
 
         mostrarMensagem(
-          erro.message || "Erro ao realizar login.",
+          erro.message || "Erro ao realizar cadastro.",
           "erro"
         );
 
       } finally {
 
-        btnLogin.disabled = false;
-        btnLogin.textContent = "Entrar";
+        btnCadastrar.disabled = false;
+        btnCadastrar.textContent = "Criar minha conta";
 
       }
 
