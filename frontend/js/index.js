@@ -1713,7 +1713,6 @@ async function abrirCheckoutMercadoPago(
   }
 
   const checkoutUrl =
-    dadosPagamento.sandboxInitPoint ||
     dadosPagamento.initPoint;
 
   if (!checkoutUrl) {
