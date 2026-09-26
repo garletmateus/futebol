@@ -42,6 +42,12 @@ async function startServer() {
   }
 }
 
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = app;
+
 // Só inicia o servidor localmente.
 // Na Vercel, apenas exporta o Express.
 if (require.main === module) {
